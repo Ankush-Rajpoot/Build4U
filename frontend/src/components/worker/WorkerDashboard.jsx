@@ -1,0 +1,270 @@
+import React, { useState, useEffect, Fragment } from 'react';
+import { useUser } from '../../context/UserContext';
+import { Dialog } from '@headlessui/react';
+import { serviceRequestService } from '../../services/serviceRequestService';
+import WorkerHeader from './WorkerHeader';
+import WorkerSidebar from './WorkerSidebar';
+import WorkerProfilePage from './WorkerProfilePage';
+import WorkerStats from './WorkerStats';
+import RequestList from '../shared/RequestList';
+import RequestDetailsWorker from '../shared/RequestDetailsWorker';
+
+const WorkerDashboard = () => {
+  const { userRole } = useUser();
+  const [activeTab, setActiveTab] = useState('available');
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [selectedRequest, setSelectedRequest] = useState(null);
+
+  const fetchRequests = async () => {
+    try {
+      setLoading(true);
+      let response;
+
+      // console.log('Fetching requests for tab:', activeTab);
+
+      if (activeTab === 'available') {
+        // Get jobs that are pending (available for workers to accept)
+        response = await serviceRequestService.getAvailableJobs();
+        setRequests(response.data.serviceRequests || []);
+        
+      } else if (activeTab === 'active') {
+        // Get only ACTIVE jobs (accepted + in-progress)
+        response = await serviceRequestService.getWorkerJobs();
+        let allJobs = response.data.serviceRequests || [];
+        const activeJobs = allJobs.filter(job => 
+          job.status === 'accepted' || job.status === 'in-progress'
+        );
+        // console.log(`Active Jobs: ${activeJobs.length} from ${allJobs.length} total`);
+        setRequests(activeJobs);
+        
+      } else if (activeTab === 'completed') {
+        // Get only completed jobs
+        response = await serviceRequestService.getCompletedJobs();
+        setRequests(response.data.serviceRequests || []);
+        
+      } else if (activeTab === 'all-jobs') {
+        // Get ALL jobs assigned to this worker (accepted, in-progress, completed, cancelled)
+        response = await serviceRequestService.getWorkerJobs();
+        let allJobs = response.data.serviceRequests || [];
+        
+        // Also get completed jobs and merge them
+        const completedResponse = await serviceRequestService.getCompletedJobs();
+        const completedJobs = completedResponse.data.serviceRequests || [];
+        
+        // Combine and remove duplicates
+        const allJobsMap = new Map();
+        [...allJobs, ...completedJobs].forEach(job => {
+          allJobsMap.set(job._id, job);
+        });
+        
+        const combinedJobs = Array.from(allJobsMap.values());
+        // console.log(`All My Jobs: ${combinedJobs.length} total jobs`);
+        setRequests(combinedJobs);
+      }
+
+      // Debug: Log fetched requests to check review data
+      // console.log('Fetched requests:', response?.data?.serviceRequests);
+      
+      // Check each request for review data
+      if (response?.data?.serviceRequests) {
+        response.data.serviceRequests.forEach((req, index) => {
+          console.log(`Request ${index + 1} (${req._id}):`, {
+            title: req.title,
+            status: req.status,
+            hasReview: !!req.review,
+            reviewData: req.review
+          });
+          
+          if (req.review) {
+            console.log(`Request ${index + 1} review details:`, {
+              rating: req.review.rating,
+              workQuality: req.review.workQuality,
+              communication: req.review.communication,
+              timeliness: req.review.timeliness,
+              professionalism: req.review.professionalism,
+              wouldRecommend: req.review.wouldRecommend,
+              comment: req.review.comment
+            });
+          }
+        });
+      }
+
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+      setError(error.response?.data?.message || 'Failed to fetch requests');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (userRole === 'worker') {
+      fetchRequests();
+    }
+  }, [userRole, activeTab]);
+
+  if (userRole !== 'worker') {
+    return null;
+  }
+
+  const getTabTitle = () => {
+    switch (activeTab) {
+      case 'available':
+        return 'Available Jobs';
+      case 'active':
+        return 'Active Jobs';
+      case 'completed':
+        return 'Completed Jobs';
+      case 'all-jobs':
+        return 'All My Jobs';
+      case 'profile':
+        return 'My Profile';
+      default:
+        return 'Jobs';
+    }
+  };
+
+  const getTabDescription = () => {
+    switch (activeTab) {
+      case 'available':
+        return 'New jobs you can accept and start working on';
+      case 'active':
+        return 'Jobs you are currently working on (accepted & in-progress)';
+      case 'completed':
+        return 'Jobs you have successfully completed';
+      case 'all-jobs':
+        return 'Complete history of all your jobs (active, completed, cancelled)';
+      default:
+        return '';
+    }
+  };
+
+  const getJobCounts = () => {
+    const counts = {
+      available: 0,
+      active: 0,
+      completed: 0,
+      total: 0
+    };
+
+    if (activeTab === 'all-jobs') {
+      counts.active = requests.filter(r => r.status === 'accepted' || r.status === 'in-progress').length;
+      counts.completed = requests.filter(r => r.status === 'completed').length;
+      counts.total = requests.length;
+    }
+
+    return counts;
+  };
+
+  const jobCounts = getJobCounts();
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <WorkerHeader />
+      <div className="flex flex-col md:flex-row flex-1">
+        <WorkerSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <main className="flex-1 p-2 sm:p-3 md:p-6 flex flex-col">
+          {activeTab === 'profile' ? (
+            <WorkerProfilePage />
+          ) : (
+            <>
+              <WorkerStats />
+              <div className="mt-3 md:mt-6 mb-3 md:mb-4">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                  <div>
+                    <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">
+                      {getTabTitle()}
+                      <span className="ml-2 text-sm md:text-base font-normal text-gray-500">
+                        ({requests.length})
+                      </span>
+                    </h1>
+                    <p className="text-gray-600 mt-0.5 text-sm md:text-base">
+                      {getTabDescription()}
+                    </p>
+                  </div>
+                  {activeTab === 'all-jobs' && jobCounts.total > 0 && (
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm border border-gray-200 w-full md:w-auto">
+                      <h3 className="text-xs md:text-sm font-medium text-gray-700 mb-1.5">Job Breakdown</h3>
+                      <div className="space-y-0.5 text-xs md:text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Active:</span>
+                      <span className="font-medium text-blue-600">{jobCounts.active}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Completed:</span>
+                      <span className="font-medium text-green-600">{jobCounts.completed}</span>
+                    </div>
+                    <div className="flex justify-between border-t pt-0.5">
+                      <span className="text-gray-700 font-medium">Total:</span>
+                      <span className="font-semibold">{jobCounts.total}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+              {error && (
+                <div className="mb-4 md:mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+                  {error}
+                </div>
+              )}
+              <div className="flex-1">
+                <RequestList 
+                  requests={requests} 
+                  userRole="worker"
+                  loading={loading}
+                  onUpdate={fetchRequests}
+                  onView={setSelectedRequest}
+                />
+              </div>
+            </>
+          )}
+          {/* Modal for details */}
+          <Dialog
+            as={Fragment}
+            open={!!selectedRequest}
+            onClose={() => setSelectedRequest(null)}
+          >
+            <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
+              <Dialog.Panel
+                className="bg-white rounded-xl shadow-2xl border border-gray-200 p-4 sm:p-6 w-full max-w-3xl mx-auto relative"
+                style={{
+                  maxHeight: '90vh',
+                  overflowY: 'auto',
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: '#22c55e #e5e7eb'
+                }}
+              >
+                {/* Custom scrollbar for Webkit browsers */}
+                <style>
+                  {`
+                    .worker-details-modal::-webkit-scrollbar {
+                      width: 6px;
+                    }
+                    .worker-details-modal::-webkit-scrollbar-thumb {
+                      background: #22c55e;
+                      border-radius: 6px;
+                    }
+                    .worker-details-modal::-webkit-scrollbar-track {
+                      background: #e5e7eb;
+                    }
+                  `}
+                </style>
+                <div className="worker-details-modal h-full overflow-y-auto">
+                  <RequestDetailsWorker 
+                    request={selectedRequest} 
+                    onClose={() => setSelectedRequest(null)} 
+                  />
+                </div>
+              </Dialog.Panel>
+            </div>
+          </Dialog>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default WorkerDashboard;
