@@ -170,33 +170,33 @@ const RequestDetailsClient = ({ request, onClose }) => {
   };
 
   return (
-    <div className="relative p-3 sm:p-4 md:p-6 max-h-[80vh] overflow-y-auto">
+    <div className="relative p-3 sm:p-4 max-h-[80vh] overflow-y-auto">
       <button
-        className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-100 text-gray-500"
+        className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-gray-100 text-gray-500"
         onClick={onClose}
         title="Close"
       >
-        <X className="h-5 w-5" />
+        <X className="h-4 w-4" />
       </button>
-      <h2 className="text-xl sm:text-2xl font-bold mb-2 break-words">{request.title}</h2>
+      <h2 className="text-lg sm:text-xl font-bold mb-2 break-words pr-8">{request.title}</h2>
       {renderTimeline()}
       {renderWorkerInfo()}
-      <div className="flex items-center space-x-2 mb-3">
-        <span className="inline-block px-3 py-1 rounded-full text-xs font-medium border bg-gray-100 text-gray-800 border-gray-200">
+      <div className="flex items-center flex-wrap gap-1.5 mb-3">
+        <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium border bg-gray-100 text-gray-800 border-gray-200">
           {request.status?.charAt(0).toUpperCase() + request.status?.slice(1)}
         </span>
-        <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-xs font-medium">
+        <span className="inline-block px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md text-xs font-medium">
           {request.category}
         </span>
         {request.review?.rating && (
-          <span className="flex items-center space-x-1 ml-2">
-            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+          <span className="flex items-center space-x-1">
+            <Star className="h-3 w-3 text-yellow-400 fill-current" />
             <span className="text-xs font-medium text-gray-600">{request.review.rating}</span>
           </span>
         )}
       </div>
-      <p className="text-gray-700 mb-4">{request.description}</p>
-      <div className="space-y-2 mb-4 text-xs sm:text-sm">
+      <p className="text-gray-700 mb-3 text-sm">{request.description}</p>
+      <div className="space-y-1.5 mb-3 text-xs sm:text-sm">
         <div className="flex items-center text-sm text-gray-600">
           <DollarSign className="h-4 w-4 mr-2 text-green-600" />
           <span className="font-medium">Budget: ${request.budget?.toLocaleString()}</span>

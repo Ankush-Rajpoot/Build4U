@@ -17,7 +17,7 @@ if (mongoose.connection.readyState === 0) {
 
 // Run every hour
 cron.schedule('0 * * * *', async () => {
-  // console.log('[CRON] Checking for completed jobs without reviews...');
+  console.log('[CRON] Checking for completed jobs without reviews...');
   const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
   const jobs = await ServiceRequest.find({
     status: 'completed',
@@ -39,7 +39,7 @@ cron.schedule('0 * * * *', async () => {
           link: `${process.env.FRONTEND_URL}/requests/${job._id}`
         })
       });
-      // console.log(`[CRON] Review reminder sent to ${job.client.email} for job ${job._id}`);
+      console.log(`[CRON] Review reminder sent to ${job.client.email} for job ${job._id}`);
     }
   }
 });

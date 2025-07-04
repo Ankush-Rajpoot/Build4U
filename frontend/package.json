@@ -17,6 +17,7 @@
     "cloudinary": "^1.41.3",
     "framer": "^2.4.1",
     "headlessui": "^0.0.0",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.344.0",
     "motion": "^12.19.2",
     "multer": "^2.0.1",

@@ -179,8 +179,8 @@ export const getServiceRequest = async (req, res) => {
     }
 
     // Debug: Log the review data being returned
-    // console.log('ServiceRequest found:', req.params.id);
-    // console.log('Review data in ServiceRequest:', serviceRequest.review);
+    console.log('ServiceRequest found:', req.params.id);
+    console.log('Review data in ServiceRequest:', serviceRequest.review);
 
     res.json({
       success: true,
@@ -570,7 +570,7 @@ export const completeServiceRequest = async (req, res) => {
               link: `${process.env.FRONTEND_URL}/requests/${updatedRequest._id}`
             })
           });
-          // console.log('Review reminder email sent to client:', client.email);
+          console.log('Review reminder email sent to client:', client.email);
         }
       }, 24 * 60 * 60 * 1000); // 24 hours
     }
@@ -847,11 +847,11 @@ export const getMatchingWorkers = async (req, res) => {
       });
     }
 
-    // console.log('=== MATCHING WORKERS DEBUG ===');
-    // console.log('Service Request ID:', req.params.id);
-    // console.log('Service Request Category:', serviceRequest.category);
-    // console.log('Service Request Required Skills:', serviceRequest.requiredSkills);
-    // console.log('Search Skills to use:', searchSkills);
+    console.log('=== MATCHING WORKERS DEBUG ===');
+    console.log('Service Request ID:', req.params.id);
+    console.log('Service Request Category:', serviceRequest.category);
+    console.log('Service Request Required Skills:', serviceRequest.requiredSkills);
+    console.log('Search Skills to use:', searchSkills);
 
     // Find workers who have at least one matching skill
     const matchingWorkers = await Worker.find({
@@ -859,8 +859,8 @@ export const getMatchingWorkers = async (req, res) => {
       isVerified: true
     }).select('name email skills experience hourlyRate rating profileImage location createdAt availability');
 
-    // console.log('Found matching workers count:', matchingWorkers.length);
-    // console.log('Matching workers:', matchingWorkers.map(w => ({ name: w.name, skills: w.skills })));
+    console.log('Found matching workers count:', matchingWorkers.length);
+    console.log('Matching workers:', matchingWorkers.map(w => ({ name: w.name, skills: w.skills })));
 
     // Calculate match percentage for each worker
     const workersWithMatchScore = matchingWorkers.map(worker => {
@@ -919,9 +919,9 @@ export const getMatchingWorkers = async (req, res) => {
 export const debugWorkers = async (req, res) => {
   try {
     const workers = await Worker.find({}).select('name email skills isVerified');
-    // console.log('=== ALL WORKERS DEBUG ===');
+    console.log('=== ALL WORKERS DEBUG ===');
     workers.forEach(worker => {
-      // console.log(`Worker: ${worker.name}, Email: ${worker.email}, Verified: ${worker.isVerified}, Skills:`, worker.skills);
+      console.log(`Worker: ${worker.name}, Email: ${worker.email}, Verified: ${worker.isVerified}, Skills:`, worker.skills);
     });
 
     res.json({

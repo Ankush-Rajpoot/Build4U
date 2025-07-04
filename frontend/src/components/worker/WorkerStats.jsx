@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { DollarSign, Star, Clock, CheckCircle, Award, MessageSquare, Users } from 'lucide-react';
+import { DollarSign, Star, Clock, CheckCircle, Award, MessageSquare, Users, Briefcase, Calendar, AlertCircle } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import { serviceRequestService } from '../../services/serviceRequestService';
 import { authService } from '../../services/authService';
@@ -11,7 +11,7 @@ const WorkerStats = () => {
     activeJobs: 0,
     completedJobs: 0,
     rating: { average: 0, count: 0 },
-    earnings: { thisMonth: 0 }
+    earnings: { thisMonth: 0, total: 0 }
   });
   const [reviewStats, setReviewStats] = useState({
     averageWorkQuality: 0,
@@ -42,6 +42,15 @@ const WorkerStats = () => {
         const profileResponse = await authService.getWorkerProfile();
         const workerProfile = profileResponse.data.worker;
 
+        // Get worker statistics that include earnings
+        const statsResponse = await authService.getWorkerStats();
+        const workerStats = statsResponse.data.stats || {};
+        
+        console.log('Worker Profile:', workerProfile);
+        console.log('Worker Stats:', workerStats);
+        console.log('Earnings from profile:', workerProfile?.earnings);
+        console.log('Total earned from stats:', workerStats.totalEarned);
+
         let reviewStatsData = {
           averageWorkQuality: 0,
           averageCommunication: 0,
@@ -64,7 +73,10 @@ const WorkerStats = () => {
           activeJobs: activeJobs.length,
           completedJobs: completedJobs.length,
           rating: workerProfile?.rating || { average: 0, count: 0 },
-          earnings: workerProfile?.earnings || { thisMonth: 0 }
+          earnings: {
+            thisMonth: workerProfile?.earnings?.thisMonth || 0,
+            total: workerStats.totalEarned || workerProfile?.earnings?.total || 0
+          }
         });
         setReviewStats(reviewStatsData);
       } catch (error) {
@@ -73,7 +85,10 @@ const WorkerStats = () => {
           activeJobs: 0,
           completedJobs: user?.completedJobs || 0,
           rating: user?.rating || { average: 0, count: 0 },
-          earnings: user?.earnings || { thisMonth: 0 }
+          earnings: {
+            thisMonth: user?.earnings?.thisMonth || 0,
+            total: user?.earnings?.total || 0
+          }
         });
         setReviewStats({
           averageWorkQuality: 0,
@@ -93,23 +108,44 @@ const WorkerStats = () => {
 
   useEffect(() => {
     const updateArrowPosition = () => {
-      if (ratingCardRef.current && detailedRatingRef.current) {
+      // Additional safety checks to prevent runtime errors
+      if (!ratingCardRef.current || 
+          !detailedRatingRef.current || 
+          !ratingCardRef.current.offsetParent ||
+          !document.contains(ratingCardRef.current) ||
+          !document.contains(detailedRatingRef.current)) {
+        return;
+      }
+
+      try {
         const ratingRect = ratingCardRef.current.getBoundingClientRect();
         const detailRect = detailedRatingRef.current.getBoundingClientRect();
-        const containerRect = ratingCardRef.current.offsetParent.getBoundingClientRect();
+        const offsetParent = ratingCardRef.current.offsetParent;
+        
+        // Double-check offsetParent is valid before calling getBoundingClientRect
+        if (!offsetParent || !document.contains(offsetParent)) {
+          return;
+        }
+        
+        const containerRect = offsetParent.getBoundingClientRect();
 
         // Shift up and towards left a bit
-        const top = ratingRect.bottom - containerRect.top-14; // was +36
-        const left = ratingRect.left - containerRect.left + 10; // was +30
+        const top = ratingRect.bottom - containerRect.top - 14;
+        const left = ratingRect.left - containerRect.left + 10;
         const width = detailRect.left - ratingRect.left + 80;
 
         setArrowPos({ top, left, width });
+      } catch (error) {
+        console.warn('Error updating arrow position:', error);
       }
     };
 
-    updateArrowPosition();
-    window.addEventListener('resize', updateArrowPosition);
-    return () => window.removeEventListener('resize', updateArrowPosition);
+    // Only update arrow position if not on mobile (where detailed rating is hidden)
+    if (window.innerWidth >= 768) {
+      updateArrowPosition();
+      window.addEventListener('resize', updateArrowPosition);
+      return () => window.removeEventListener('resize', updateArrowPosition);
+    }
   }, [loading]);
 
   const formatRating = (rating) => {
@@ -135,37 +171,113 @@ const WorkerStats = () => {
 
   return (
     <div className="relative">
+      {/* Desktop arrow connection - hidden on mobile */}
       <div
         className="hidden lg:block absolute z-0 pointer-events-none"
         style={{
           top: `${arrowPos.top}px`,
           left: `${arrowPos.left}px`,
           width: `${arrowPos.width}px`,
-          height: '70px' // was 50px
+          height: '70px'
         }}
       >
         <svg width={arrowPos.width} height="50" viewBox={`0 0 ${arrowPos.width} 70`} fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Vertical down from below rating card (longer) */}
           <path d="M30 0 V45" stroke="#22c55e" strokeWidth="2.5" fill="none" />
-          {/* Curve right (starts lower) */}
           <path d="M30 45 Q30 65, 80 65" stroke="#22c55e" strokeWidth="2.5" fill="none" />
-          {/* Horizontal right to detailed ratings (longer) */}
           <path d={`M80 65 H${arrowPos.width - 30}`} stroke="#22c55e" strokeWidth="2.5" fill="none" />
-          {/* Arrowhead */}
           <polygon points={`${arrowPos.width - 30},60 ${arrowPos.width - 20},65 ${arrowPos.width - 30},70`} fill="#22c55e" />
         </svg>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
-        <div ref={ratingCardRef} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      {/* Mobile compact layout - 2x2 grid - Professional design with fixed height */}
+      <div className="grid grid-cols-2 gap-2 sm:hidden relative z-10 mb-3 h-24">
+        {/* Rating Card - Compact */}
+        <div className="bg-gradient-to-br from-white to-gray-50 p-2.5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 h-full flex items-center">
+          <div className="flex items-center justify-between w-full">
+            <div className={`p-1.5 rounded-lg ${getRatingBgColor(stats.rating.average)} flex-shrink-0`}>
+              <Star className={`h-3 w-3 ${getRatingColor(stats.rating.average)} fill-current`} />
+            </div>
+            <div className="text-right flex-1 ml-2 min-w-0">
+              <p className="text-xs text-gray-600 font-medium leading-none">Rating</p>
+              <p className={`text-base font-bold leading-tight ${getRatingColor(stats.rating.average)}`}>
+                {formatRating(stats.rating.average)}
+              </p>
+              {stats.rating.count > 0 && (
+                <p className="text-xs text-gray-500 leading-none">({stats.rating.count})</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Earnings Card - Compact */}
+        <div className="bg-gradient-to-br from-white to-green-50 p-2.5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 h-full flex items-center">
+          <div className="flex items-center justify-between w-full">
+            <div className="p-1.5 rounded-lg bg-green-100 flex-shrink-0">
+              <DollarSign className="h-3 w-3 text-green-600" />
+            </div>
+            <div className="text-right flex-1 ml-2 min-w-0">
+              <p className="text-xs text-gray-600 font-medium leading-none">Total</p>
+              <p className="text-base font-bold text-green-700 truncate leading-tight">
+                ${stats.earnings.total > 999 
+                  ? `${Math.floor(stats.earnings.total / 1000)}k` 
+                  : stats.earnings.total?.toLocaleString() || '0'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Active Jobs Card - Compact */}
+        <div className="bg-gradient-to-br from-white to-yellow-50 p-2.5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 h-full flex flex-col justify-center">
+          <div className="flex items-center justify-between w-full">
+            <div className="p-1.5 rounded-lg bg-yellow-100 flex-shrink-0">
+              <Clock className="h-3 w-3 text-yellow-600" />
+            </div>
+            <div className="text-right flex-1 ml-2 min-w-0">
+              <p className="text-xs text-gray-600 font-medium leading-none">Active</p>
+              <p className="text-base font-bold text-yellow-700 leading-tight">{stats.activeJobs}</p>
+            </div>
+          </div>
+          <div className="w-full h-1 bg-gray-200 rounded-full mt-1.5">
+            <div
+              className={`h-1 rounded-full transition-all duration-300 ${
+                stats.activeJobs === 0 ? 'bg-green-400' : 
+                stats.activeJobs <= 2 ? 'bg-yellow-400' : 'bg-orange-400'
+              }`}
+              style={{ width: `${Math.min((stats.activeJobs / 5) * 100, 100)}%` }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Completed Jobs Card - Compact */}
+        <div className="bg-gradient-to-br from-white to-blue-50 p-2.5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 h-full flex flex-col justify-center">
+          <div className="flex items-center justify-between w-full">
+            <div className="p-1.5 rounded-lg bg-blue-100 flex-shrink-0">
+              <CheckCircle className="h-3 w-3 text-blue-600" />
+            </div>
+            <div className="text-right flex-1 ml-2 min-w-0">
+              <p className="text-xs text-gray-600 font-medium leading-none">Done</p>
+              <p className="text-base font-bold text-blue-700 leading-tight">{stats.completedJobs}</p>
+            </div>
+          </div>
+          {stats.completedJobs > 0 && (
+            <div className="w-full h-1 bg-gray-200 rounded-full mt-1.5">
+              <div className="h-1 bg-blue-400 rounded-full transition-all duration-300" style={{ width: '100%' }}></div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Tablet and Desktop layout */}
+      <div className="hidden sm:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 relative z-10 mb-2">
+        <div ref={ratingCardRef} className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="flex items-center">
-            <div className={`p-3 rounded-full ${getRatingBgColor(stats.rating.average)} mr-4`}>
-              <Star className={`h-6 w-6 ${getRatingColor(stats.rating.average)} fill-current`} />
+            <div className={`p-2 sm:p-3 rounded-full ${getRatingBgColor(stats.rating.average)} mr-3 sm:mr-4`}>
+              <Star className={`h-5 w-5 sm:h-6 sm:w-6 ${getRatingColor(stats.rating.average)} fill-current`} />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">Overall Rating</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-500">Overall Rating</p>
               <div className="flex items-center space-x-2">
-                <p className={`text-2xl font-semibold ${getRatingColor(stats.rating.average)}`}>
+                <p className={`text-xl sm:text-2xl font-semibold ${getRatingColor(stats.rating.average)}`}>
                   {formatRating(stats.rating.average)}
                 </p>
                 {stats.rating.average > 0 && (
@@ -173,7 +285,7 @@ const WorkerStats = () => {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
-                        className={`h-4 w-4 ${
+                        className={`h-3 w-3 sm:h-4 sm:w-4 ${
                           star <= Math.round(stats.rating.average)
                             ? 'text-yellow-400 fill-current'
                             : 'text-gray-300'
@@ -185,7 +297,7 @@ const WorkerStats = () => {
               </div>
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-3 sm:mt-4">
             <div className="h-1 w-full bg-gray-200 rounded-full">
               <div
                 className={`h-1 rounded-full transition-all duration-500 ${
@@ -210,37 +322,37 @@ const WorkerStats = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-green-100 mr-4">
-              <DollarSign className="h-6 w-6 text-green-600" />
+            <div className="p-2 sm:p-3 rounded-full bg-green-100 mr-3 sm:mr-4">
+              <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">Earnings (MTD)</p>
-              <p className="text-2xl font-semibold text-gray-900">
-                ${stats.earnings.thisMonth?.toLocaleString() || '0'}
+              <p className="text-xs sm:text-sm font-medium text-gray-500">Total Earnings</p>
+              <p className="text-xl sm:text-2xl font-semibold text-gray-900">
+                ${stats.earnings.total?.toLocaleString() || '0'}
               </p>
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-3 sm:mt-4">
             <div className="h-1 w-full bg-gray-200 rounded-full">
               <div className="h-1 bg-green-500 rounded-full" style={{ width: '70%' }}></div>
             </div>
-            <p className="mt-2 text-xs text-gray-500">70% of monthly goal</p>
+            <p className="mt-2 text-xs text-gray-500">This Month: ${stats.earnings.thisMonth?.toLocaleString() || '0'}</p>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-yellow-100 mr-4">
-              <Clock className="h-6 w-6 text-yellow-600" />
+            <div className="p-2 sm:p-3 rounded-full bg-yellow-100 mr-3 sm:mr-4">
+              <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">Active Jobs</p>
-              <p className="text-2xl font-semibold text-gray-900">{stats.activeJobs}</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-500">Active Jobs</p>
+              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.activeJobs}</p>
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-3 sm:mt-4">
             <div className="flex justify-between text-xs text-gray-500">
               <span>Current workload</span>
               <span>{stats.activeJobs > 0 ? 'In progress' : 'Available'}</span>
@@ -262,17 +374,17 @@ const WorkerStats = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-purple-100 mr-4">
-              <CheckCircle className="h-6 w-6 text-purple-600" />
+            <div className="p-2 sm:p-3 rounded-full bg-purple-100 mr-3 sm:mr-4">
+              <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">Completed Jobs</p>
-              <p className="text-2xl font-semibold text-gray-900">{stats.completedJobs}</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-500">Completed Jobs</p>
+              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.completedJobs}</p>
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-3 sm:mt-4">
             <div className="h-1 w-full bg-gray-200 rounded-full">
               <div className="h-1 bg-purple-500 rounded-full" style={{ width: '100%' }}></div>
             </div>
@@ -285,7 +397,8 @@ const WorkerStats = () => {
         </div>
       </div>
 
-      <div className="w-full flex justify-center mt-2">
+      {/* Detailed ratings bar - hidden on mobile for space */}
+      <div className="w-full justify-center mt-2 hidden sm:flex">
         <div
           ref={detailedRatingRef}
           className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-wrap items-center justify-center px-4 py-2"

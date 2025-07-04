@@ -204,7 +204,7 @@ const WorkerProfile = ({ onClose }) => {
             };
           }
         } catch (reviewError) {
-          // console.log('No reviews found or error fetching reviews');
+          console.log('No reviews found or error fetching reviews');
         }
       }
 

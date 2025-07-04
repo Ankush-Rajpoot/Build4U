@@ -35,11 +35,22 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'service_requests',   // optional
     resource_type: 'auto',
-    allowed_formats: ['jpg','jpeg','png','pdf','doc','docx'],
+    allowed_formats: ['jpg','jpeg','png','pdf','doc','docx','txt','mp4','mp3'],
+  },
+});
+
+const chatStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'chat_attachments',
+    resource_type: 'auto',
+    allowed_formats: ['jpg','jpeg','png','pdf','doc','docx','txt'],
   },
 });
 
 const parser = multer({ storage });
+const chatParser = multer({ storage: chatStorage });
 
 export default parser;
+export { chatParser };
 

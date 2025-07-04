@@ -1,6 +1,6 @@
 import express from 'express';
 import { protect } from '../middleware/auth.js';
-import parser from '../middleware/uploadMiddleware.js'; // Use the configured Cloudinary parser
+import parser, { chatParser } from '../middleware/uploadMiddleware.js'; // Use the configured Cloudinary parser
 
 const router = express.Router();
 
@@ -17,6 +17,21 @@ router.post('/', protect, parser.array('files'), async (req, res) => {
   } catch (error) {
     console.error('Cloudinary Upload Error:', error);
     res.status(500).json({ message: 'Upload failed', error: error.message });
+  }
+});
+
+// Chat-specific upload route
+router.post('/chat', protect, chatParser.array('files'), async (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: 'No files uploaded' });
+    }
+
+    const urls = req.files.map((file) => file.path);
+    res.json({ urls });
+  } catch (error) {
+    console.error('Chat Upload Error:', error);
+    res.status(500).json({ message: 'Chat upload failed', error: error.message });
   }
 });
 

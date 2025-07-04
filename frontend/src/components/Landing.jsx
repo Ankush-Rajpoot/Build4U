@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Option as Motion, Syringe as Spring } from 'lucide-react';
 import { useUser } from '../context/UserContext';
-import AuthForm from './auth/AuthForm';
+import AuthForm from './auth/AuthForm.jsx';
+import LottieBackground from './shared/LottieBackground';
 
 
 const TypewriterText = ({
@@ -98,10 +98,15 @@ const Landing = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-teal-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+      <div className="fixed inset-0 w-screen h-screen overflow-hidden" style={{ margin: 0, padding: 0 }}>
+        <LottieBackground />
+        
+        {/* Loading Content */}
+        <div className="relative z-20 flex items-center justify-center h-full">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+            <p className="mt-4 text-gray-700 font-medium">Loading...</p>
+          </div>
         </div>
       </div>
     );
@@ -109,18 +114,19 @@ const Landing = () => {
 
   if (selectedRole) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-200 via-blue-100 to-green-200 flex items-center justify-center px-4">
         <AuthForm role={selectedRole} onBack={() => setSelectedRole(null)} />
       </div>
     );
   }
 
   return (
-    // <div className="min-h-screen bg-gradient-to-b from-black to-[#000212]">
-    // <div className="min-h-screen bg-gradient-to-b from-[#000212] to-black">
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 to-black">
-     {/* <div className="min-h-screen bg-gradient-to-b from-black to-gray-950"> */}
-      <style>
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden" style={{ margin: 0, padding: 0 }}>
+      <LottieBackground />
+      
+      {/* Content */}
+      <div className="relative z-20 min-h-screen overflow-y-auto">
+        <style>
         {`
           @keyframes blink {
             0%, 100% { opacity: 1; }
@@ -129,43 +135,53 @@ const Landing = () => {
           .animate-blink {
             animation: blink 1s steps(1) infinite;
           }
+          
+          /* Ensure no body margins/padding interfere */
+          html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: hidden;
+            width: 100vw;
+            height: 100vh;
+          }
+          
+          * {
+            box-sizing: border-box;
+          }
+          
+          #root {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+          }
         `}
-      </style>
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="text-center mb-16">
-          {/* <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-500 mb-6">
-              SERVICE CONNECT
-          </h1> */}
-          <div className="h-12 flex items-center justify-center">
+        </style>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+        <div className="text-center mb-12 md:mb-16">
+          <div className="h-16 sm:h-12 flex items-center justify-center">
             <TypewriterText
               text="Connecting skilled professionals with clients seeking quality services"
               speed={40}
               delay={500}
               pauseDuration={3000}
-              className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
+              className="text-lg sm:text-xl md:text-2xl text-gray-900 max-w-3xl mx-auto leading-relaxed font-medium px-4"
             />
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 max-w-5xl mx-auto">
           <div 
-            className="w-full md:w-1/2 max-w-md group"
+            className="w-full md:w-1/2 max-w-sm md:max-w-md group"
             onClick={() => handleRoleSelect('client')}
           >
-            <div className="relative rounded-xl shadow-lg overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-xl cursor-pointer">
-              {/* Top gradient border - covers half width */}
-              <div className="absolute top-0 left-0 h-[2px] w-1/2 bg-gradient-to-r from-blue-700 to-transparent z-10"></div>
-              {/* Left gradient border - covers half height */}
-              <div className="absolute top-0 left-0 w-[2px] h-1/2 bg-gradient-to-b from-blue-700 to-transparent z-10"></div>
-              {/* Corner gradient to connect top and left borders */}
-              <div className="absolute top-0 left-0 w-[12px] h-[12px] bg-gradient-to-br from-blue-700 via-blue-700 to-transparent z-20 rounded-tl-xl"></div>
-              
-              <div className="p-8 bg-gradient-to-b from-black to-[#1A1C3E] rounded-xl">
-                <h2 className="text-2xl font-bold text-gray-400 mb-4">I'm a Client</h2>
-                <p className="text-gray-300 mb-6">
+            <div className="relative rounded-xl shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-3xl cursor-pointer">
+              <div className="bg-gradient-to-br from-white/85 to-blue-50/75 p-6 md:p-8 rounded-xl border border-blue-100 backdrop-blur-sm">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3 md:mb-4 text-center">I'm a Client</h2>
+                <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 text-center leading-relaxed">
                   I'm looking for skilled professionals to help with my projects and services.
                 </p>
-                <div className="bg-blue-100 text-blue-800 py-2 px-4 rounded-full inline-block font-medium transition-all duration-300 group-hover:bg-blue-200">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2 md:py-3 px-4 md:px-6 rounded-full font-medium transition-all duration-300 group-hover:shadow-lg text-center transform group-hover:-translate-y-1 text-sm md:text-base">
                   Find Services
                 </div>
               </div>
@@ -173,23 +189,16 @@ const Landing = () => {
           </div>
 
           <div 
-            className="w-full md:w-1/2 max-w-md group"
+            className="w-full md:w-1/2 max-w-sm md:max-w-md group"
             onClick={() => handleRoleSelect('worker')}
           >
-            <div className="relative rounded-xl shadow-lg overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-xl cursor-pointer">
-              {/* Top gradient border - covers half width */}
-              <div className="absolute top-0 left-0 h-[2px] w-1/2 bg-gradient-to-r from-green-700 to-transparent z-10"></div>
-              {/* Left gradient border - covers half height */}
-              <div className="absolute top-0 left-0 w-[2px] h-1/2 bg-gradient-to-b from-green-700 to-transparent z-10"></div>
-              {/* Corner gradient to connect top and left borders */}
-              <div className="absolute top-0 left-0 w-[12px] h-[12px] bg-gradient-to-br from-green-700 via-green-700 to-transparent z-20 rounded-tl-xl"></div>
-              
-              <div className="p-8 bg-gradient-to-b from-black to-[#051F20] rounded-xl">
-                <h2 className="text-2xl font-bold text-gray-400 mb-4">I'm a Worker</h2>
-                <p className="text-gray-300 mb-6">
+            <div className="relative rounded-xl shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-3xl cursor-pointer">
+              <div className="bg-gradient-to-br from-white/85 to-green-50/75 p-6 md:p-8 rounded-xl border border-green-100 backdrop-blur-sm">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3 md:mb-4 text-center">I'm a Contractor</h2>
+                <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 text-center leading-relaxed">
                   I offer professional services and I'm looking for clients who need my skills.
                 </p>
-                <div className="bg-green-100 text-green-800 py-2 px-4 rounded-full inline-block font-medium transition-all duration-300 group-hover:bg-green-200">
+                <div className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-2 md:py-3 px-4 md:px-6 rounded-full font-medium transition-all duration-300 group-hover:shadow-lg text-center transform group-hover:-translate-y-1 text-sm md:text-base">
                   Find Work
                 </div>
               </div>
@@ -197,11 +206,13 @@ const Landing = () => {
           </div>
         </div>
 
-        <div className="mt-24 text-center">
-          <p className="text-gray-500">
+        {/* <div className="mt-24 text-center">
+          <p className="text-gray-600 text-lg font-medium">
             What describes you the most? Select the option that best matches your needs.
           </p>
-        </div>
+        </div> */}
+        
+      </div>
       </div>
     </div>
   );

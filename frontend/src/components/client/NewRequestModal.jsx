@@ -134,20 +134,20 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
       <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity" onClick={handleClose} />
       
       {/* Modal */}
-      <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl transform transition-all">
+      <div className="flex min-h-full items-center justify-center p-2 sm:p-4">
+        <div className="relative w-full max-w-3xl bg-white rounded-xl shadow-2xl transform transition-all">
           {/* Header */}
-          <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 rounded-t-2xl">
+          <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 rounded-t-xl">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold text-white">Create New Service Request</h2>
-                <p className="text-blue-100 mt-0.5 text-sm">Tell us about your project and find the perfect professional</p>
+                <h2 className="text-lg font-bold text-white">Create New Service Request</h2>
+                <p className="text-blue-100 mt-0.5 text-xs">Tell us about your project and find the perfect professional</p>
               </div>
               <button 
                 onClick={handleClose}
-                className="p-1.5 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+                className="p-1 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
               >
-                <X className="h-5 w-5 text-white" />
+                <X className="h-4 w-4 text-white" />
               </button>
             </div>
           </div>

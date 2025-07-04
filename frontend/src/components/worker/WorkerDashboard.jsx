@@ -16,13 +16,22 @@ const WorkerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   const fetchRequests = async () => {
     try {
       setLoading(true);
       let response;
 
-      // console.log('Fetching requests for tab:', activeTab);
+      console.log('Fetching requests for tab:', activeTab);
 
       if (activeTab === 'available') {
         // Get jobs that are pending (available for workers to accept)
@@ -36,7 +45,7 @@ const WorkerDashboard = () => {
         const activeJobs = allJobs.filter(job => 
           job.status === 'accepted' || job.status === 'in-progress'
         );
-        // console.log(`Active Jobs: ${activeJobs.length} from ${allJobs.length} total`);
+        console.log(`Active Jobs: ${activeJobs.length} from ${allJobs.length} total`);
         setRequests(activeJobs);
         
       } else if (activeTab === 'completed') {
@@ -60,12 +69,12 @@ const WorkerDashboard = () => {
         });
         
         const combinedJobs = Array.from(allJobsMap.values());
-        // console.log(`All My Jobs: ${combinedJobs.length} total jobs`);
+        console.log(`All My Jobs: ${combinedJobs.length} total jobs`);
         setRequests(combinedJobs);
       }
 
       // Debug: Log fetched requests to check review data
-      // console.log('Fetched requests:', response?.data?.serviceRequests);
+      console.log('Fetched requests:', response?.data?.serviceRequests);
       
       // Check each request for review data
       if (response?.data?.serviceRequests) {
@@ -161,56 +170,74 @@ const WorkerDashboard = () => {
   const jobCounts = getJobCounts();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <WorkerHeader />
-      <div className="flex flex-col md:flex-row flex-1">
-        <WorkerSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-        <main className="flex-1 p-2 sm:p-3 md:p-6 flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col">
+      <WorkerHeader 
+        onMenuToggle={toggleMobileMenu} 
+        isMobileMenuOpen={isMobileMenuOpen} 
+      />
+      <div className="flex flex-1 overflow-hidden">
+        <WorkerSidebar 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab}
+          isMobileMenuOpen={isMobileMenuOpen}
+          onMenuClose={closeMobileMenu}
+        />
+        <main className="flex-1 flex flex-col overflow-hidden">
           {activeTab === 'profile' ? (
-            <WorkerProfilePage />
+            <div className="p-1.5 sm:p-2 md:p-3 flex-1 overflow-y-auto">
+              <WorkerProfilePage />
+            </div>
           ) : (
             <>
-              <WorkerStats />
-              <div className="mt-3 md:mt-6 mb-3 md:mb-4">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              {/* Stats section - compact on mobile */}
+              <div className="p-1.5 sm:p-2 md:p-3 pb-0 flex-shrink-0">
+                <WorkerStats />
+              </div>
+              
+              {/* Header section - compact on mobile */}
+              <div className="px-1.5 sm:px-2 md:px-3 py-1.5 flex-shrink-0">
+                <div className="flex items-center justify-between">
                   <div>
-                    <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">
+                    <h1 className="text-base sm:text-lg font-bold text-gray-800">
                       {getTabTitle()}
-                      <span className="ml-2 text-sm md:text-base font-normal text-gray-500">
+                      <span className="ml-2 text-xs font-normal text-gray-500">
                         ({requests.length})
                       </span>
                     </h1>
-                    <p className="text-gray-600 mt-0.5 text-sm md:text-base">
+                    {/* Commented out job descriptions for cleaner UI */}
+                    {/* <p className="text-gray-600 mt-0.5 text-sm">
                       {getTabDescription()}
-                    </p>
+                    </p> */}
                   </div>
                   {activeTab === 'all-jobs' && jobCounts.total > 0 && (
-                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm border border-gray-200 w-full md:w-auto">
-                      <h3 className="text-xs md:text-sm font-medium text-gray-700 mb-1.5">Job Breakdown</h3>
-                      <div className="space-y-0.5 text-xs md:text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Active:</span>
-                      <span className="font-medium text-blue-600">{jobCounts.active}</span>
+                    <div className="hidden sm:block bg-white p-2.5 rounded-lg shadow-sm border border-gray-200 w-auto">
+                      <h3 className="text-xs font-medium text-gray-700 mb-1.5">Job Breakdown</h3>
+                      <div className="space-y-1 text-xs">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Active:</span>
+                          <span className="font-medium text-blue-600">{jobCounts.active}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Completed:</span>
+                          <span className="font-medium text-green-600">{jobCounts.completed}</span>
+                        </div>
+                        <div className="flex justify-between border-t pt-1">
+                          <span className="text-gray-700 font-medium">Total:</span>
+                          <span className="font-semibold">{jobCounts.total}</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Completed:</span>
-                      <span className="font-medium text-green-600">{jobCounts.completed}</span>
-                    </div>
-                    <div className="flex justify-between border-t pt-0.5">
-                      <span className="text-gray-700 font-medium">Total:</span>
-                      <span className="font-semibold">{jobCounts.total}</span>
-                    </div>
+                  )}
+                </div>
+                {error && (
+                  <div className="mt-2 bg-red-50 border border-red-200 text-red-700 px-2.5 py-1.5 rounded-md text-xs">
+                    {error}
                   </div>
-                </div>
-              )}
-            </div>
-          </div>
-              {error && (
-                <div className="mb-4 md:mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
-                  {error}
-                </div>
-              )}
-              <div className="flex-1">
+                )}
+              </div>
+              
+              {/* Scrollable request list - takes remaining height */}
+              <div className="flex-1 overflow-y-auto px-1.5 sm:px-2 md:px-3 pb-1.5 sm:pb-2 md:pb-3">
                 <RequestList 
                   requests={requests} 
                   userRole="worker"
@@ -221,17 +248,17 @@ const WorkerDashboard = () => {
               </div>
             </>
           )}
-          {/* Modal for details */}
+          {/* Modal for details with enhanced mobile design */}
           <Dialog
             as={Fragment}
             open={!!selectedRequest}
             onClose={() => setSelectedRequest(null)}
           >
-            <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
+            <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-2 sm:p-4">
               <Dialog.Panel
-                className="bg-white rounded-xl shadow-2xl border border-gray-200 p-4 sm:p-6 w-full max-w-3xl mx-auto relative"
+                className="bg-white rounded-xl shadow-2xl border border-gray-200 p-3 sm:p-4 md:p-6 w-full max-w-3xl mx-auto relative overflow-hidden"
                 style={{
-                  maxHeight: '90vh',
+                  maxHeight: '92vh',
                   overflowY: 'auto',
                   scrollbarWidth: 'thin',
                   scrollbarColor: '#22c55e #e5e7eb'

@@ -150,14 +150,14 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
   return (
     <>
       <div ref={cardRef} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 min-w-0 relative">
-      <div className="p-3 sm:p-4 flex flex-col h-full">
-        <div className="flex flex-col sm:flex-row justify-between items-start mb-3 gap-2">
+      <div className="p-2 sm:p-3 flex flex-col h-full">
+        <div className="flex justify-between items-start mb-2 gap-2">
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 line-clamp-1 break-words">
+            <h3 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-1 break-words">
               {request.title}
             </h3>
-            <div className="flex flex-wrap items-center gap-1.5 sm:space-x-2">
-              <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium border ${getStatusColor()}`}>
+            <div className="flex flex-wrap items-center gap-1">
+              <span className={`inline-block px-1.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor()}`}>
                 {request.status.charAt(0).toUpperCase() + request.status.slice(1).replace('-', ' ')}
               </span>
               <span className="inline-block px-1.5 py-0.5 bg-gray-100 text-gray-700 rounded text-xs font-medium">
@@ -177,32 +177,31 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
             {userRole === 'client' && request.status === 'pending' && (
               <button
                 onClick={handleEdit}
-                className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                className="p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                 title="Edit Request"
               >
-                <Edit className="h-3.5 w-3.5" />
+                <Edit className="h-3 w-3" />
               </button>
             )}
             <button
               onClick={handleView}
-              className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+              className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded transition-colors"
               title="View Details"
             >
-              <Eye className="h-3.5 w-3.5" />
+              <Eye className="h-3 w-3" />
             </button>
           </div>
         </div>
         
-        <p className="text-gray-600 mb-2.5 text-xs line-clamp-2 break-words">
+        <p className="text-gray-600 mb-2 text-xs line-clamp-2 break-words">
           {request.description}
         </p>
         
         {/* Required Skills */}
         {request.requiredSkills && request.requiredSkills.length > 0 && (
-          <div className="mb-2.5">
-            <h4 className="text-xs font-medium text-gray-700 mb-1.5">Required Skills</h4>
+          <div className="mb-2">
             <div className="flex flex-wrap gap-1">
-              {request.requiredSkills.slice(0, 3).map((skill, index) => (
+              {request.requiredSkills.slice(0, 2).map((skill, index) => (
                 <span
                   key={index}
                   className="px-1.5 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full"
@@ -210,56 +209,56 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
                   {skill}
                 </span>
               ))}
-              {request.requiredSkills.length > 3 && (
+              {request.requiredSkills.length > 2 && (
                 <span className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
-                  +{request.requiredSkills.length - 3} more
+                  +{request.requiredSkills.length - 2}
                 </span>
               )}
             </div>
           </div>
         )}
         
-        <div className="flex flex-col space-y-1 mb-2.5">
+        <div className="flex flex-col space-y-1 mb-2">
           <div className="flex items-center text-xs text-gray-500">
-            <DollarSign className="h-3.5 w-3.5 mr-1.5 text-green-600" />
-            <span className="font-medium">Budget: ${request.budget?.toLocaleString()}</span>
+            <DollarSign className="h-3 w-3 mr-1 text-green-600" />
+            <span className="font-medium">${request.budget?.toLocaleString()}</span>
           </div>
           
           <div className="flex items-center text-xs text-gray-500">
-            <Calendar className="h-3.5 w-3.5 mr-1.5 text-blue-600" />
-            <span>Posted: {formattedDate}</span>
+            <Calendar className="h-3 w-3 mr-1 text-blue-600" />
+            <span>{formattedDate}</span>
           </div>
           
           {request.client && (
             <div className="flex items-center text-xs text-gray-500">
-              <User className="h-3.5 w-3.5 mr-1.5 text-purple-600" />
+              <User className="h-3 w-3 mr-1 text-purple-600" />
               <span>Client: {request.client.name}</span>
             </div>
           )}
 
           {request.worker && (
             <div className="flex items-center text-xs text-gray-500">
-              <User className="h-3.5 w-3.5 mr-1.5 text-orange-600" />
+              <User className="h-3 w-3 mr-1 text-orange-600" />
               <span>Worker: {request.worker.name}</span>
             </div>
           )}
           
           {(request.location?.city || request.location?.address) && (
             <div className="flex items-center text-xs text-gray-500">
-              <MapPin className="h-3.5 w-3.5 mr-1.5 text-red-600" />
+              <MapPin className="h-3 w-3 mr-1 text-red-600" />
               <span className="truncate">{request.location.address || `${request.location.city}, ${request.location.state}`}</span>
             </div>
           )}
         </div>
 
         {error && (
-          <div className="mb-3 sm:mb-4 text-xs sm:text-sm text-red-600 bg-red-50 p-2 rounded border border-red-200">
+          <div className="mb-2 text-xs text-red-600 bg-red-50 p-2 rounded border border-red-200">
             {error}
           </div>
         )}
         
         <div className="mt-auto">
-          <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1">
             {userRole === 'client' ? (
               <ClientActions 
                 request={request} 
@@ -352,40 +351,41 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
 
 const ClientActions = ({ request, onAction, loading, onMessage, canMessage, onEdit, onReview, hasReview, onView, onSeeProposals, onViewMatchingWorkers }) => {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1 sm:gap-2">
       {request.status === 'pending' && (
         <>
-          <div className="flex flex-wrap gap-2 w-full mb-1">
+          <div className="flex flex-wrap gap-1 sm:gap-2 w-full mb-1">
             <button 
               onClick={onEdit}
-              className="flex-1 min-w-[100px] px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm font-medium text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center"
+              className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-50 border border-blue-200 rounded text-xs sm:text-sm font-medium text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center"
               disabled={loading}
             >
-              <Edit className="h-4 w-4 mr-1" />
+              <Edit className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
               Edit
             </button>
             <button 
               onClick={() => onAction('cancel')}
               disabled={loading}
-              className="flex-1 min-w-[100px] px-3 py-2 bg-red-50 border border-red-200 rounded-lg text-sm font-medium text-red-700 hover:bg-red-100 disabled:opacity-50 transition-colors flex items-center justify-center"
+              className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-red-50 border border-red-200 rounded text-xs sm:text-sm font-medium text-red-700 hover:bg-red-100 disabled:opacity-50 transition-colors flex items-center justify-center"
             >
               {loading ? 'Cancelling...' : 'Cancel'}
             </button>
           </div>
-          <div className="flex flex-wrap gap-2 w-full mt-1">
+          <div className="flex flex-wrap gap-1 sm:gap-2 w-full mt-1">
             <button
-              className="flex-1 min-w-[100px] px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm font-medium text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center"
+              className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-50 border border-blue-200 rounded text-xs sm:text-sm font-medium text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center"
               onClick={onSeeProposals}
             >
-              See Proposals ({request.proposals?.length || 0})
+              Proposals ({request.proposals?.length || 0})
             </button>
             {/* Show matching workers only for pending jobs that need workers */}
             {((request.requiredSkills && request.requiredSkills.length > 0) || request.category) && (
               <button
-                className="flex-1 min-w-[100px] px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg text-sm font-medium text-purple-700 hover:bg-purple-100 transition-colors flex items-center justify-center"
+                className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-purple-50 border border-purple-200 rounded text-xs sm:text-sm font-medium text-purple-700 hover:bg-purple-100 transition-colors flex items-center justify-center"
                 onClick={onViewMatchingWorkers}
               >
-                View Matching Workers
+                <span className="hidden sm:inline">View Matching Workers</span>
+                <span className="sm:hidden">Workers</span>
               </button>
             )}
           </div>
@@ -395,7 +395,7 @@ const ClientActions = ({ request, onAction, loading, onMessage, canMessage, onEd
         <MessageButton
           onClick={() => onMessage(request)}
           serviceRequestId={request._id}
-          className="flex-1 min-w-[100px] px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
+          className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
         >
           Message
         </MessageButton>
@@ -403,19 +403,20 @@ const ClientActions = ({ request, onAction, loading, onMessage, canMessage, onEd
       {request.status === 'completed' && !hasReview && (
         <button 
           onClick={onReview}
-          className="flex-1 min-w-[180px] px-5 py-2 bg-green-50 border border-green-200 rounded-lg text-sm font-medium text-green-700 hover:bg-green-100 transition-colors flex items-center justify-center"
+          className="flex-1 min-w-[120px] sm:min-w-[180px] px-2 sm:px-5 py-1.5 sm:py-2 bg-green-50 border border-green-200 rounded text-xs sm:text-sm font-medium text-green-700 hover:bg-green-100 transition-colors flex items-center justify-center"
         >
-          <Star className="h-4 w-4 mr-1" />
+          <Star className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
           Leave Review
         </button>
       )}
       {/* Always show View Details button */}
       <button 
         onClick={() => onView(request)}
-        className="flex-1 min-w-[120px] px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
+        className="flex-1 min-w-[80px] sm:min-w-[120px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
       >
-        <Eye className="h-4 w-4 mr-1" />
-        View Details
+        <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+        <span className="hidden sm:inline">View Details</span>
+        <span className="sm:hidden">Details</span>
       </button>
     </div>
   );
@@ -427,24 +428,24 @@ const WorkerActions = ({ request, onAction, loading, onMessage, canMessage, onVi
     return (p.worker && (p.worker._id === user?._id || p.worker === user?._id));
   });
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1 sm:gap-2">
       {request.status === 'pending' && !hasSubmittedRequest && (
         <button 
           onClick={onProposal}
           disabled={loading}
-          className="flex-1 min-w-[120px] px-3 py-2 bg-green-500 rounded-lg text-sm font-medium text-white hover:bg-green-600 disabled:opacity-50 transition-colors"
+          className="flex-1 min-w-[80px] sm:min-w-[120px] px-2 sm:px-3 py-1.5 sm:py-2 bg-green-500 rounded text-xs sm:text-sm font-medium text-white hover:bg-green-600 disabled:opacity-50 transition-colors"
         >
           {loading ? 'Sending...' : 'Send Request'}
         </button>
       )}
       {request.status === 'pending' && hasSubmittedRequest && (
-        <span className="flex-1 min-w-[120px] px-3 py-2 bg-gray-200 rounded-lg text-sm font-medium text-gray-600 flex items-center justify-center cursor-default select-none">Submitted</span>
+        <span className="flex-1 min-w-[80px] sm:min-w-[120px] px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-200 rounded text-xs sm:text-sm font-medium text-gray-600 flex items-center justify-center cursor-default select-none">Submitted</span>
       )}
       {(request.status === 'accepted' || request.status === 'in-progress') && canMessage && (
         <MessageButton
           onClick={() => onMessage(request)}
           serviceRequestId={request._id}
-          className="flex-1 min-w-[100px] px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
+          className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
         >
           Message
         </MessageButton>
@@ -453,7 +454,7 @@ const WorkerActions = ({ request, onAction, loading, onMessage, canMessage, onVi
         <button 
           onClick={() => onAction('start')}
           disabled={loading}
-          className="flex-1 min-w-[100px] px-3 py-2 bg-blue-500 rounded-lg text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50 transition-colors"
+          className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-500 rounded text-xs sm:text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50 transition-colors"
         >
           {loading ? 'Starting...' : 'Start Work'}
         </button>
@@ -462,7 +463,7 @@ const WorkerActions = ({ request, onAction, loading, onMessage, canMessage, onVi
         <button 
           onClick={() => onAction('complete')}
           disabled={loading}
-          className="flex-1 min-w-[120px] px-3 py-2 bg-green-500 rounded-lg text-sm font-medium text-white hover:bg-green-600 disabled:opacity-50 transition-colors"
+          className="flex-1 min-w-[80px] sm:min-w-[120px] px-2 sm:px-3 py-1.5 sm:py-2 bg-green-500 rounded text-xs sm:text-sm font-medium text-white hover:bg-green-600 disabled:opacity-50 transition-colors"
         >
           {loading ? 'Completing...' : 'Mark Complete'}
         </button>
@@ -470,10 +471,11 @@ const WorkerActions = ({ request, onAction, loading, onMessage, canMessage, onVi
       {/* Always show a single View Details button for worker */}
       <button 
         onClick={() => onView(request)}
-        className="flex-1 min-w-[120px] px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
+        className="flex-1 min-w-[80px] sm:min-w-[120px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
       >
-        <Eye className="h-4 w-4 mr-1" />
-        View Details
+        <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+        <span className="hidden sm:inline">View Details</span>
+        <span className="sm:hidden">Details</span>
       </button>
     </div>
   );

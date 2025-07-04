@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, Paperclip, Smile, Minimize2, Maximize2, MessageCircle } from 'lucide-react';
+import { X, Send, Paperclip, Smile, Minimize2, Maximize2, MessageCircle, Download, Image, FileText } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import { useChat } from '../../context/ChatContext';
 import { useUser } from '../../context/UserContext';
@@ -10,12 +10,17 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [viewingImage, setViewingImage] = useState(null);
   const [typingUsers, setTypingUsers] = useState(new Set());
   const [isVisible, setIsVisible] = useState(false);
   const [fullServiceRequest, setFullServiceRequest] = useState(serviceRequest);
   const messagesEndRef = useRef(null);
   const typingTimeoutRef = useRef(null);
   const prevServiceRequestRef = useRef(null);
+  const inputRef = useRef(null);
+  const fileInputRef = useRef(null);
   
   const { 
     socket, 
@@ -29,6 +34,27 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
 
   const currentUserId = localStorage.getItem('userId');
   const currentUserRole = localStorage.getItem('userRole');
+  
+  // Color scheme based on user role
+  const colorScheme = currentUserRole === 'client' 
+    ? {
+        primary: 'blue',
+        headerBg: 'from-blue-500 to-blue-600',
+        messageBg: 'bg-blue-500',
+        messageText: 'text-blue-100',
+        focusRing: 'focus:ring-blue-500',
+        sendButton: 'bg-blue-500 hover:bg-blue-600',
+        spinnerBorder: 'border-blue-500'
+      }
+    : {
+        primary: 'green',
+        headerBg: 'from-green-500 to-green-600', 
+        messageBg: 'bg-green-500',
+        messageText: 'text-green-100',
+        focusRing: 'focus:ring-green-500',
+        sendButton: 'bg-green-500 hover:bg-green-600',
+        spinnerBorder: 'border-green-500'
+      };
   
   // Determine recipient based on current user role
   const recipientId = currentUserRole === 'client' 
@@ -148,12 +174,13 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!newMessage.trim() || sending || !recipientId) {
+    if ((!newMessage.trim() && selectedFiles.length === 0) || sending || !recipientId) {
       return;
     }
 
     try {
       setSending(true);
+      setUploadProgress(0);
       
       const messageData = {
         serviceRequestId: serviceRequest._id,
@@ -161,9 +188,17 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
         recipientId
       };
 
-      await messageService.sendMessage(messageData);
+      if (selectedFiles.length > 0) {
+        // Send message with attachments
+        await messageService.sendMessageWithAttachments(messageData, selectedFiles);
+      } else {
+        // Send text-only message
+        await messageService.sendMessage(messageData);
+      }
       
       setNewMessage('');
+      setSelectedFiles([]);
+      setUploadProgress(0);
       emitTyping(serviceRequest._id, false);
       
     } catch (error) {
@@ -239,6 +274,12 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
   const handleMinimize = () => {
     if (isMinimized) {
       maximizeChat();
+      // Focus input when maximizing
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 150);
     } else {
       minimizeChat();
     }
@@ -277,6 +318,129 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
     );
   }
 
+  // Focus management - keep input focused when chat is active
+  useEffect(() => {
+    if (!isMinimized && isVisible && inputRef.current) {
+      const timer = setTimeout(() => {
+        inputRef.current.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isMinimized, isVisible, loading]);
+
+  // Keep focus on input when messages change
+  useEffect(() => {
+    if (!isMinimized && !loading && inputRef.current) {
+      const timer = setTimeout(() => {
+        inputRef.current.focus();
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [messages, isMinimized, loading]);
+
+  // File handling functions
+  const handleFileSelect = (event) => {
+    const files = Array.from(event.target.files);
+    setSelectedFiles(prev => [...prev, ...files]);
+  };
+
+  const removeFile = (index) => {
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const getFileIcon = (fileType) => {
+    if (fileType.startsWith('image/')) {
+      return <Image className="h-4 w-4" />;
+    }
+    return <FileText className="h-4 w-4" />;
+  };
+
+  const isImageFile = (fileType) => {
+    return fileType && fileType.startsWith('image/');
+  };
+
+  const isPdfFile = (fileType) => {
+    return fileType && fileType.includes('pdf');
+  };
+
+  const renderAttachment = (attachment, isOwn) => {
+    if (isImageFile(attachment.fileType)) {
+      return (
+        <div className="mt-2">
+          <img 
+            src={attachment.url} 
+            alt={attachment.filename}
+            className="max-w-full max-h-48 rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+            onClick={() => setViewingImage(attachment)}
+            loading="lazy"
+          />
+          <p className={`text-xs mt-1 ${isOwn ? 'text-white text-opacity-75' : 'text-gray-500'}`}>
+            {attachment.filename}
+          </p>
+        </div>
+      );
+    } else if (isPdfFile(attachment.fileType)) {
+      return (
+        <div className="mt-2">
+          <div 
+            className="border border-opacity-20 rounded-lg p-3 cursor-pointer hover:bg-black hover:bg-opacity-10 transition-colors"
+            onClick={() => window.open(attachment.url, '_blank')}
+          >
+            <div className="flex items-center space-x-2">
+              <FileText className="h-6 w-6" />
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm truncate">
+                  {attachment.filename}
+                </p>
+                <p className={`text-xs ${isOwn ? 'text-white text-opacity-75' : 'text-gray-500'}`}>
+                  PDF • {formatFileSize(attachment.fileSize)}
+                </p>
+              </div>
+              <div className="text-xs font-medium">
+                View
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="mt-2">
+          <div 
+            className="border border-opacity-20 rounded-lg p-3 cursor-pointer hover:bg-black hover:bg-opacity-10 transition-colors"
+            onClick={() => {
+              const link = document.createElement('a');
+              link.href = attachment.url;
+              link.download = attachment.filename;
+              link.click();
+            }}
+          >
+            <div className="flex items-center space-x-2">
+              <FileText className="h-6 w-6" />
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm truncate">
+                  {attachment.filename}
+                </p>
+                <p className={`text-xs ${isOwn ? 'text-white text-opacity-75' : 'text-gray-500'}`}>
+                  {attachment.fileType?.split('/')[1]?.toUpperCase() || 'FILE'} • {formatFileSize(attachment.fileSize)}
+                </p>
+              </div>
+              <Download className="h-4 w-4" />
+            </div>
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
   return (
     <div className={`fixed bottom-4 right-4 z-50 transition-all duration-300 ease-in-out ${
       isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
@@ -286,7 +450,7 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
       }`}>
         
         {/* Header */}
-        <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-t-lg">
+        <div className={`flex items-center justify-between p-3 border-b border-gray-200 bg-gradient-to-r ${colorScheme.headerBg} text-white rounded-t-lg`}>
           <div className="flex items-center space-x-2">
             <div className="w-7 h-7 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
               <MessageCircle className="h-3.5 w-3.5" />
@@ -296,7 +460,7 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
                 {isMinimized ? 'Chat' : serviceRequest.title}
               </h3>
               {!isMinimized && (
-                <p className="text-xs text-blue-100 truncate">
+                <p className={`text-xs ${colorScheme.primary === 'blue' ? 'text-blue-100' : 'text-green-100'} truncate`}>
                   {recipientName || 'Unknown'}
                 </p>
               )}
@@ -329,7 +493,7 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
             <div className="flex-1 overflow-y-auto p-3 space-y-2 h-80">
               {loading ? (
                 <div className="flex justify-center items-center h-full">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+                  <div className={`animate-spin rounded-full h-5 w-5 border-b-2 ${colorScheme.spinnerBorder}`}></div>
                 </div>
               ) : (
                 <>
@@ -348,16 +512,28 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
                             className={`flex ${isOwn ? 'justify-end' : 'justify-start'} mb-1.5`}
                           >
                             <div
-                              className={`max-w-xs px-3 py-2 rounded-2xl text-sm ${
+                              className={`max-w-sm px-3 py-2 rounded-2xl text-sm ${
                                 isOwn
-                                  ? 'bg-blue-500 text-white rounded-br-md'
+                                  ? `${colorScheme.messageBg} text-white rounded-br-md`
                                   : 'bg-gray-100 text-gray-900 rounded-bl-md'
                               }`}
                             >
-                              <p>{message.message}</p>
+                              {message.message && <p className="break-words">{message.message}</p>}
+                              
+                              {/* Render attachments */}
+                              {message.attachments && message.attachments.length > 0 && (
+                                <div className={`${message.message ? 'mt-2' : ''}`}>
+                                  {message.attachments.map((attachment, attIndex) => (
+                                    <div key={attIndex}>
+                                      {renderAttachment(attachment, isOwn)}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              
                               <p
                                 className={`text-xs mt-1 ${
-                                  isOwn ? 'text-blue-100' : 'text-gray-500'
+                                  isOwn ? colorScheme.messageText : 'text-gray-500'
                                 }`}
                               >
                                 {formatTime(message.createdAt)}
@@ -394,9 +570,55 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
 
             {/* Message Input */}
             <div className="border-t border-gray-200 p-2">
+              {/* Selected files preview */}
+              {selectedFiles.length > 0 && (
+                <div className="mb-2 max-h-32 overflow-y-auto">
+                  <div className="space-y-2">
+                    {selectedFiles.map((file, index) => (
+                      <div key={index} className="bg-gray-50 rounded-lg p-2 flex items-center space-x-2">
+                        {isImageFile(file.type) ? (
+                          <div className="relative">
+                            <img 
+                              src={URL.createObjectURL(file)} 
+                              alt={file.name}
+                              className="w-12 h-12 object-cover rounded"
+                              onLoad={() => URL.revokeObjectURL(URL.createObjectURL(file))}
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
+                            {getFileIcon(file.type)}
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{file.name}</p>
+                          <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFile(index)}
+                          className="text-red-500 hover:text-red-700 p-1"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
               <form onSubmit={handleSendMessage} className="flex items-center space-x-1.5">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileSelect}
+                  multiple
+                  accept="image/*,.pdf,.doc,.docx"
+                  className="hidden"
+                />
                 <button
                   type="button"
+                  onClick={() => fileInputRef.current?.click()}
                   className="p-1.5 text-gray-400 hover:text-gray-600 transition-colors rounded-full hover:bg-gray-100"
                 >
                   <Paperclip className="h-3.5 w-3.5" />
@@ -408,8 +630,20 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
                     value={newMessage}
                     onChange={(e) => handleTypingChange(e.target.value)}
                     placeholder="Type your message..."
-                    className="w-full px-2.5 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    className={`w-full px-2.5 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-2 ${colorScheme.focusRing} focus:border-transparent text-sm caret-${colorScheme.primary}-600`}
                     disabled={sending}
+                    ref={inputRef}
+                    autoFocus
+                    onBlur={(e) => {
+                      // Re-focus if chat is not minimized and no other element is being focused
+                      if (!isMinimized && document.activeElement !== e.target) {
+                        setTimeout(() => {
+                          if (inputRef.current && !isMinimized) {
+                            inputRef.current.focus();
+                          }
+                        }, 100);
+                      }
+                    }}
                   />
                   <button
                     type="button"
@@ -421,12 +655,23 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
                 
                 <button
                   type="submit"
-                  disabled={!newMessage.trim() || sending || !recipientId}
-                  className="p-1.5 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={(!newMessage.trim() && selectedFiles.length === 0) || sending || !recipientId}
+                  className={`p-1.5 ${colorScheme.sendButton} text-white rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
-                  <Send className="h-3.5 w-3.5" />
+                  {sending ? (
+                    <div className={`animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-white`}></div>
+                  ) : (
+                    <Send className="h-3.5 w-3.5" />
+                  )}
                 </button>
               </form>
+              
+              {/* Upload progress */}
+              {sending && selectedFiles.length > 0 && (
+                <div className="mt-1 text-xs text-gray-500 text-center">
+                  Uploading files...
+                </div>
+              )}
               
               {!recipientId && (
                 <div className="mt-1 text-xs text-red-500 text-center">
@@ -437,6 +682,34 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
           </>
         )}
       </div>
+      
+      {/* Image Viewer Modal */}
+      {viewingImage && (
+        <div 
+          className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"
+          onClick={() => setViewingImage(null)}
+        >
+          <div className="relative max-w-full max-h-full">
+            <img 
+              src={viewingImage.url} 
+              alt={viewingImage.filename}
+              className="max-w-full max-h-full object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={() => setViewingImage(null)}
+              className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-colors"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <div className="absolute bottom-4 left-4 right-4 text-center">
+              <p className="text-white text-sm bg-black bg-opacity-50 rounded px-3 py-1 inline-block">
+                {viewingImage.filename}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

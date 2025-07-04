@@ -28,7 +28,7 @@ class NotificationService {
         };
 
         this.io.to(`user_${notification.recipient}`).emit('notification', socketData);
-        // console.log(`Notification emitted to user_${notification.recipient}:`, notification.type);
+        console.log(`Notification emitted to user_${notification.recipient}:`, notification.type);
       }
 
       return notification;
@@ -142,7 +142,7 @@ class NotificationService {
         location: serviceRequest.location,
         timestamp: new Date()
       });
-      // console.log('New job notification broadcasted to all workers');
+      console.log('New job notification broadcasted to all workers');
     }
   }
 
@@ -204,7 +204,7 @@ class NotificationService {
         createdAt: { $lt: cutoffDate },
         isRead: true
       });
-      // console.log(`Cleaned up ${result.deletedCount} old notifications`);
+      console.log(`Cleaned up ${result.deletedCount} old notifications`);
       return result.deletedCount;
     } catch (error) {
       console.error('Error cleaning up old notifications:', error);

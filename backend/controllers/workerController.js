@@ -39,11 +39,11 @@ export const registerWorker = async (req, res) => {
       });
     }
 
-    // Generate verification token - COMMENTED OUT FOR TESTING
-    // const verificationToken = crypto.randomBytes(32).toString('hex');
-    // const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+    // Generate verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
-    // Create worker with verification disabled for testing
+    // Create worker
     const worker = await Worker.create({
       name,
       email,
@@ -53,22 +53,22 @@ export const registerWorker = async (req, res) => {
       skills,
       experience,
       hourlyRate,
-      // verificationToken,
-      // verificationTokenExpires,
-      isVerified: true // Set to true for testing - no email verification required
+      verificationToken,
+      verificationTokenExpires,
+      isVerified: false // Email verification required
     });
 
-    // Send verification email - COMMENTED OUT FOR TESTING
-    // const verifyUrl = `${process.env.FRONTEND_URL}/verify?token=${verificationToken}&role=worker`;
-    // await sendEmail({
-    //   to: worker.email,
-    //   subject: 'Verify your email',
-    //   html: verificationEmail(worker.name, verifyUrl)
-    // });
+    // Send verification email
+    const verifyUrl = `${process.env.FRONTEND_URL}/verify?token=${verificationToken}&role=worker`;
+    await sendEmail({
+      to: worker.email,
+      subject: 'Verify your email',
+      html: verificationEmail(worker.name, verifyUrl)
+    });
 
     res.status(201).json({
       success: true,
-      message: 'Worker registered successfully. You can now login directly.', // Updated message
+      message: 'Worker registered successfully. Please check your email to verify your account.',
       data: {
         worker: { ...worker.toJSON(), password: undefined },
       }
@@ -139,13 +139,13 @@ export const loginWorker = async (req, res) => {
       });
     }
 
-    // Block login if not verified - COMMENTED OUT FOR TESTING
-    // if (!worker.isVerified) {
-    //   return res.status(403).json({
-    //     success: false,
-    //     message: 'Please verify your email before logging in.'
-    //   });
-    // }
+    // Block login if not verified
+    if (!worker.isVerified) {
+      return res.status(403).json({
+        success: false,
+        message: 'Please verify your email before logging in.'
+      });
+    }
 
     const token = generateToken(worker._id);
 
@@ -281,7 +281,7 @@ export const getAvailableJobs = async (req, res) => {
       if (maxBudget) query.budget.$lte = parseInt(maxBudget);
     }
 
-    // console.log('Available jobs query:', query);
+    console.log('Available jobs query:', query);
 
     const serviceRequests = await ServiceRequest.find(query)
       .populate('client', 'name email phone location profileImage')
@@ -291,7 +291,7 @@ export const getAvailableJobs = async (req, res) => {
 
     const total = await ServiceRequest.countDocuments(query);
 
-    // console.log(`Found ${serviceRequests.length} available jobs`);
+    console.log(`Found ${serviceRequests.length} available jobs`);
 
     res.json({
       success: true,
@@ -329,7 +329,7 @@ export const getWorkerJobs = async (req, res) => {
     }
     // If no status specified, get all jobs assigned to this worker
 
-    // console.log('Worker jobs query:', query);
+    console.log('Worker jobs query:', query);
 
     const serviceRequests = await ServiceRequest.find(query)
       .populate('client', 'name email phone location profileImage')
@@ -339,7 +339,7 @@ export const getWorkerJobs = async (req, res) => {
 
     const total = await ServiceRequest.countDocuments(query);
 
-    // console.log(`Found ${serviceRequests.length} jobs for worker ${req.user.id}`);
+    console.log(`Found ${serviceRequests.length} jobs for worker ${req.user.id}`);
 
     res.json({
       success: true,
@@ -374,7 +374,7 @@ export const getCompletedJobs = async (req, res) => {
       status: 'completed'
     };
 
-    // console.log('Completed jobs query:', query);
+    console.log('Completed jobs query:', query);
 
     const serviceRequests = await ServiceRequest.find(query)
       .populate('client', 'name email phone location profileImage')
@@ -384,7 +384,7 @@ export const getCompletedJobs = async (req, res) => {
 
     const total = await ServiceRequest.countDocuments(query);
 
-    // console.log(`Found ${serviceRequests.length} completed jobs for worker ${req.user.id}`);
+    console.log(`Found ${serviceRequests.length} completed jobs for worker ${req.user.id}`);
 
     res.json({
       success: true,

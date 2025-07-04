@@ -16,19 +16,19 @@ import Client from './models/Client.js';
 import Worker from './models/Worker.js';
 
 dotenv.config();
-// console.log('--- ENVIRONMENT VARIABLES ---');
-// console.log('EMAIL_HOST:', process.env.EMAIL_HOST);
-// console.log('EMAIL_PORT:', process.env.EMAIL_PORT);
-// console.log('EMAIL_SECURE:', process.env.EMAIL_SECURE);
-// console.log('EMAIL_USER:', process.env.EMAIL_USER);
-// console.log('EMAIL_FROM:', process.env.EMAIL_FROM);
-// console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
-// console.log('-----------------------------');
+console.log('--- ENVIRONMENT VARIABLES ---');
+console.log('EMAIL_HOST:', process.env.EMAIL_HOST);
+console.log('EMAIL_PORT:', process.env.EMAIL_PORT);
+console.log('EMAIL_SECURE:', process.env.EMAIL_SECURE);
+console.log('EMAIL_USER:', process.env.EMAIL_USER);
+console.log('EMAIL_FROM:', process.env.EMAIL_FROM);
+console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
+console.log('-----------------------------');
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: true, // Allow all origins
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -41,7 +41,7 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: true, // Allow all origins
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Allow all origins
   credentials: true
 }));
 app.use(express.json());
@@ -83,7 +83,7 @@ io.use(async (socket, next) => {
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {
-  // console.log(`User connected: ${socket.user.name} (${socket.userRole}) - ID: ${socket.userId}`);
+  console.log(`User connected: ${socket.user.name} (${socket.userRole}) - ID: ${socket.userId}`);
   
   // Store user connection
   connectedUsers.set(socket.userId, {
@@ -95,16 +95,16 @@ io.on('connection', (socket) => {
 
   // Join user to their personal room
   socket.join(`user_${socket.userId}`);
-  // console.log(`User ${socket.user.name} joined room: user_${socket.userId}`);
+  console.log(`User ${socket.user.name} joined room: user_${socket.userId}`);
 
   // Always join user room for notifications (redundant, but ensures join)
   socket.join(`user_${socket.userId}`);
-  // console.log(`User ${socket.user.name} joined room: user_${socket.userId}`);
+  console.log(`User ${socket.user.name} joined room: user_${socket.userId}`);
 
   // Listen for explicit join_user_room from frontend (for redundancy)
   socket.on('join_user_room', (userId) => {
     socket.join(`user_${userId}`);
-    // console.log(`Socket ${socket.id} joined user room: user_${userId}`);
+    console.log(`Socket ${socket.id} joined user room: user_${userId}`);
   });
 
   // Emit online status to relevant users
@@ -117,13 +117,13 @@ io.on('connection', (socket) => {
   // Handle joining service request rooms
   socket.on('join_request_room', (requestId) => {
     socket.join(`request_${requestId}`);
-    // console.log(`${socket.user.name} joined request room: request_${requestId}`);
+    console.log(`${socket.user.name} joined request room: request_${requestId}`);
   });
 
   // Handle leaving service request rooms
   socket.on('leave_request_room', (requestId) => {
     socket.leave(`request_${requestId}`);
-    // console.log(`${socket.user.name} left request room: request_${requestId}`);
+    console.log(`${socket.user.name} left request room: request_${requestId}`);
   });
 
   // Handle sending messages
@@ -150,10 +150,10 @@ io.on('connection', (socket) => {
           type: 'message',
           serviceRequestId: requestId
         });
-        // console.log(`Message notification sent to user_${recipientId}`);
+        console.log(`Message notification sent to user_${recipientId}`);
       }
 
-      // console.log(`Message sent in request ${requestId} by ${socket.user.name}`);
+      console.log(`Message sent in request ${requestId} by ${socket.user.name}`);
     } catch (error) {
       console.error('Send message error:', error);
       socket.emit('error', { message: 'Failed to send message' });
@@ -181,7 +181,7 @@ io.on('connection', (socket) => {
   socket.on('request_status_update', (data) => {
     const { requestId, status, clientId, workerId } = data;
     
-    // console.log('Status update received:', { requestId, status, clientId, workerId });
+    console.log('Status update received:', { requestId, status, clientId, workerId });
     
     // Emit to request room
     io.to(`request_${requestId}`).emit('status_updated', {
@@ -203,18 +203,18 @@ io.on('connection', (socket) => {
 
     if (clientId && clientId !== socket.userId) {
       io.to(`user_${clientId}`).emit('notification', notificationData);
-      // console.log(`[SOCKET DEBUG] Emitted notification to user_${clientId}:`, notificationData);
+      console.log(`[SOCKET DEBUG] Emitted notification to user_${clientId}:`, notificationData);
     }
     
     if (workerId && workerId !== socket.userId) {
       io.to(`user_${workerId}`).emit('notification', notificationData);
-      // console.log(`[SOCKET DEBUG] Emitted notification to user_${workerId}:`, notificationData);
+      console.log(`[SOCKET DEBUG] Emitted notification to user_${workerId}:`, notificationData);
     }
   });
 
   // Handle new service request notifications
   socket.on('new_service_request', (data) => {
-    // console.log('New service request notification:', data);
+    console.log('New service request notification:', data);
     
     // Notify all workers about new service request
     socket.broadcast.emit('new_job_available', {
@@ -227,12 +227,12 @@ io.on('connection', (socket) => {
       timestamp: new Date()
     });
     
-    // console.log('New job notification broadcasted to all workers');
+    console.log('New job notification broadcasted to all workers');
   });
 
   // Handle disconnection
   socket.on('disconnect', () => {
-    // console.log(`User disconnected: ${socket.user.name}`);
+    console.log(`User disconnected: ${socket.user.name}`);
     
     // Update last seen and remove from connected users
     if (connectedUsers.has(socket.userId)) {
@@ -256,7 +256,7 @@ io.on('connection', (socket) => {
   // Debug: Log all events received by this socket
   socket.onAny((event, ...args) => {
     if (!['user_typing', 'typing_start', 'typing_stop'].includes(event)) {
-      // console.log(`[SOCKET DEBUG] Event received: ${event}`, args);
+      console.log(`[SOCKET DEBUG] Event received: ${event}`, args);
     }
   });
 });
@@ -292,9 +292,9 @@ app.use('*', (req, res) => {
 });
 
 server.listen(PORT, () => {
-  // console.log(`Server is running on port ${PORT}`);
-  // console.log(`Socket.IO server is ready for connections`);
-  // console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Server is running on port ${PORT}`);
+  console.log(`Socket.IO server is ready for connections`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 export default app;

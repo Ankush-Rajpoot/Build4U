@@ -105,7 +105,7 @@ export const createReview = async (req, res) => {
         reviewId: review._id,
         timestamp: new Date()
       });
-      // console.log(`Emitted review notification to worker ${serviceRequest.worker._id}`);
+      console.log(`Emitted review notification to worker ${serviceRequest.worker._id}`);
     }
     // Send email to worker about the new review
     const worker = await Worker.findById(serviceRequest.worker._id);
@@ -121,7 +121,7 @@ export const createReview = async (req, res) => {
           link: `${process.env.FRONTEND_URL}/jobs/${serviceRequest._id}`
         })
       });
-      // console.log('Review notification email sent to worker:', worker.email);
+      console.log('Review notification email sent to worker:', worker.email);
     }
 
     res.status(201).json({
@@ -448,8 +448,8 @@ export const respondToReview = async (req, res) => {
 export const getReviewByServiceRequestId = async (req, res) => {
   try {
     const { serviceRequestId } = req.params;
-    // console.log('--- [getReviewByServiceRequestId] Route hit ---');
-    // console.log('serviceRequestId param:', serviceRequestId);
+    console.log('--- [getReviewByServiceRequestId] Route hit ---');
+    console.log('serviceRequestId param:', serviceRequestId);
 
     // Ensure ObjectId type for query
     const srId = mongoose.Types.ObjectId.isValid(serviceRequestId)
@@ -457,7 +457,7 @@ export const getReviewByServiceRequestId = async (req, res) => {
       : serviceRequestId;
 
     // Log the query being made
-    // console.log('Querying Review.findOne with:', { serviceRequest: srId });
+    console.log('Querying Review.findOne with:', { serviceRequest: srId });
 
     const review = await Review.findOne({ serviceRequest: srId })
       .populate('client', 'name profileImage')
@@ -465,7 +465,7 @@ export const getReviewByServiceRequestId = async (req, res) => {
       .populate('serviceRequest', 'title category');
 
     if (!review) {
-      // console.log(`[getReviewByServiceRequestId] No review found for serviceRequestId: ${serviceRequestId}`);
+      console.log(`[getReviewByServiceRequestId] No review found for serviceRequestId: ${serviceRequestId}`);
       return res.status(404).json({
         success: false,
         message: 'Review not found for this service request'
@@ -473,19 +473,19 @@ export const getReviewByServiceRequestId = async (req, res) => {
     }
 
     // Log all review attributes for debugging
-    // console.log(`[getReviewByServiceRequestId] Review found for serviceRequestId: ${serviceRequestId}`);
-    // console.log('- _id:', review._id);
-    // console.log('- serviceRequest:', review.serviceRequest?._id || review.serviceRequest);
-    // console.log('- client:', review.client?._id || review.client);
-    // console.log('- worker:', review.worker?._id || review.worker);
-    // console.log('- rating:', review.rating);
-    // console.log('- comment:', review.comment);
-    // console.log('- workQuality:', review.workQuality);
-    // console.log('- communication:', review.communication);
-    // console.log('- timeliness:', review.timeliness);
-    // console.log('- professionalism:', review.professionalism);
-    // console.log('- wouldRecommend:', review.wouldRecommend);
-    // console.log('- reviewedAt:', review.reviewedAt || review.createdAt);
+    console.log(`[getReviewByServiceRequestId] Review found for serviceRequestId: ${serviceRequestId}`);
+    console.log('- _id:', review._id);
+    console.log('- serviceRequest:', review.serviceRequest?._id || review.serviceRequest);
+    console.log('- client:', review.client?._id || review.client);
+    console.log('- worker:', review.worker?._id || review.worker);
+    console.log('- rating:', review.rating);
+    console.log('- comment:', review.comment);
+    console.log('- workQuality:', review.workQuality);
+    console.log('- communication:', review.communication);
+    console.log('- timeliness:', review.timeliness);
+    console.log('- professionalism:', review.professionalism);
+    console.log('- wouldRecommend:', review.wouldRecommend);
+    console.log('- reviewedAt:', review.reviewedAt || review.createdAt);
 
     res.json({ success: true, review });
   } catch (error) {

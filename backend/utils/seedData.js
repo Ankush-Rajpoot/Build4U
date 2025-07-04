@@ -175,7 +175,7 @@ const seedData = async () => {
       }
     ]);
 
-    // console.log('Sample data created successfully!');
+    console.log('Sample data created successfully!');
     process.exit(0);
   } catch (error) {
     console.error('Error seeding data:', error);

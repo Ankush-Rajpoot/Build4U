@@ -38,33 +38,33 @@ export const registerClient = async (req, res) => {
       });
     }
 
-    // Generate verification token - COMMENTED OUT FOR TESTING
-    // const verificationToken = crypto.randomBytes(32).toString('hex');
-    // const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+    // Generate verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
-    // Create client with verification disabled for testing
+    // Create client
     const client = await Client.create({
       name,
       email,
       password,
       phone,
       location,
-      // verificationToken,
-      // verificationTokenExpires,
-      isVerified: true // Set to true for testing - no email verification required
+      verificationToken,
+      verificationTokenExpires,
+      isVerified: false // Email verification required
     });
 
-    // Send verification email - COMMENTED OUT FOR TESTING
-    // const verifyUrl = `${process.env.FRONTEND_URL}/verify?token=${verificationToken}&role=client`;
-    // await sendEmail({
-    //   to: client.email,
-    //   subject: 'Verify your email',
-    //   html: verificationEmail(client.name, verifyUrl)
-    // });
+    // Send verification email
+    const verifyUrl = `${process.env.FRONTEND_URL}/verify?token=${verificationToken}&role=client`;
+    await sendEmail({
+      to: client.email,
+      subject: 'Verify your email',
+      html: verificationEmail(client.name, verifyUrl)
+    });
 
     res.status(201).json({
       success: true,
-      message: 'Client registered successfully. You can now login directly.', // Updated message
+      message: 'Client registered successfully. Please check your email to verify your account.',
       data: {
         client: { ...client.toJSON(), password: undefined },
       }
@@ -135,13 +135,13 @@ export const loginClient = async (req, res) => {
       });
     }
 
-    // Block login if not verified - COMMENTED OUT FOR TESTING
-    // if (!client.isVerified) {
-    //   return res.status(403).json({
-    //     success: false,
-    //     message: 'Please verify your email before logging in.'
-    //   });
-    // }
+    // Block login if not verified
+    if (!client.isVerified) {
+      return res.status(403).json({
+        success: false,
+        message: 'Please verify your email before logging in.'
+      });
+    }
 
     const token = generateToken(client._id);
 
@@ -255,7 +255,7 @@ export const getClientServiceRequests = async (req, res) => {
       query.status = status;
     }
 
-    // console.log('Client service requests query:', query);
+    console.log('Client service requests query:', query);
 
     const serviceRequests = await ServiceRequest.find(query)
       .populate('worker', 'name email rating skills')
@@ -265,7 +265,7 @@ export const getClientServiceRequests = async (req, res) => {
 
     const total = await ServiceRequest.countDocuments(query);
 
-    // console.log(`Found ${serviceRequests.length} requests for client ${req.user.id} with status: ${status || 'all'}`);
+    console.log(`Found ${serviceRequests.length} requests for client ${req.user.id} with status: ${status || 'all'}`);
 
     res.json({
       success: true,

@@ -75,15 +75,16 @@ export const sendMessage = async (req, res) => {
       });
     }
 
-    const { serviceRequestId, message, recipientId } = req.body;
+    const { serviceRequestId, message, recipientId, attachments } = req.body;
 
-    // console.log('Send message request:', {
-    //   serviceRequestId,
-    //   message: message?.substring(0, 50) + '...',
-    //   recipientId,
-    //   senderId: req.user.id,
-    //   senderRole: req.userRole
-    // });
+    console.log('Send message request:', {
+      serviceRequestId,
+      message: message?.substring(0, 50) + '...',
+      recipientId,
+      senderId: req.user.id,
+      senderRole: req.userRole,
+      hasAttachments: attachments && attachments.length > 0
+    });
 
     // Verify service request exists and user has access
     const serviceRequest = await ServiceRequest.findById(serviceRequestId)
@@ -116,13 +117,29 @@ export const sendMessage = async (req, res) => {
       recipientModel = 'Client';
     }
 
+    // Determine message type and validate
+    let messageType = 'text';
+    if (attachments && attachments.length > 0) {
+      messageType = attachments.some(att => att.fileType && att.fileType.startsWith('image/')) ? 'image' : 'file';
+    }
+
+    // Validate that we have either message text or attachments
+    if (!message && (!attachments || attachments.length === 0)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Message must contain either text or attachments'
+      });
+    }
+
     const newMessage = await Message.create({
       serviceRequest: serviceRequestId,
       sender: req.user.id,
       senderModel: req.userRole === 'client' ? 'Client' : 'Worker',
       recipient: recipientId,
       recipientModel,
-      message
+      message: message || '', // Allow empty message if there are attachments
+      messageType,
+      attachments: attachments || []
     });
 
     const populatedMessage = await Message.findById(newMessage._id)
@@ -136,6 +153,8 @@ export const sendMessage = async (req, res) => {
       const messageData = {
         _id: populatedMessage._id,
         message: populatedMessage.message,
+        messageType: populatedMessage.messageType,
+        attachments: populatedMessage.attachments,
         sender: populatedMessage.sender,
         recipient: populatedMessage.recipient,
         createdAt: populatedMessage.createdAt,
