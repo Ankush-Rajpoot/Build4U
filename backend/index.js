@@ -28,7 +28,8 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    // origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin:true,
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -41,7 +42,8 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Allow all origins
+  // origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Allow all origins
+  origin: true, // Allow all origins
   credentials: true
 }));
 app.use(express.json());

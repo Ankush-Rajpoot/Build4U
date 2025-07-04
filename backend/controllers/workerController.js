@@ -40,8 +40,8 @@ export const registerWorker = async (req, res) => {
     }
 
     // Generate verification token
-    const verificationToken = crypto.randomBytes(32).toString('hex');
-    const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+    // const verificationToken = crypto.randomBytes(32).toString('hex');
+    // const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
     // Create worker
     const worker = await Worker.create({
@@ -53,22 +53,23 @@ export const registerWorker = async (req, res) => {
       skills,
       experience,
       hourlyRate,
-      verificationToken,
-      verificationTokenExpires,
-      isVerified: false // Email verification required
+      // verificationToken,
+      // verificationTokenExpires,
+      isVerified: true // Email verification required
     });
 
     // Send verification email
-    const verifyUrl = `${process.env.FRONTEND_URL}/verify?token=${verificationToken}&role=worker`;
-    await sendEmail({
-      to: worker.email,
-      subject: 'Verify your email',
-      html: verificationEmail(worker.name, verifyUrl)
-    });
+    // const verifyUrl = `${process.env.FRONTEND_URL}/verify?token=${verificationToken}&role=worker`;
+    // await sendEmail({
+    //   to: worker.email,
+    //   subject: 'Verify your email',
+    //   html: verificationEmail(worker.name, verifyUrl)
+    // });
 
     res.status(201).json({
       success: true,
-      message: 'Worker registered successfully. Please check your email to verify your account.',
+      // message: 'Worker registered successfully. Please check your email to verify your account.',
+      message: 'Worker registered successfully. You can now login directly.',
       data: {
         worker: { ...worker.toJSON(), password: undefined },
       }
@@ -140,12 +141,12 @@ export const loginWorker = async (req, res) => {
     }
 
     // Block login if not verified
-    if (!worker.isVerified) {
-      return res.status(403).json({
-        success: false,
-        message: 'Please verify your email before logging in.'
-      });
-    }
+    // if (!worker.isVerified) {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: 'Please verify your email before logging in.'
+    //   });
+    // }
 
     const token = generateToken(worker._id);
 

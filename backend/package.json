@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules index.js"
+    "dev": "node index.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
