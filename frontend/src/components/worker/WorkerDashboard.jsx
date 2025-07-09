@@ -31,7 +31,7 @@ const WorkerDashboard = () => {
       setLoading(true);
       let response;
 
-      console.log('Fetching requests for tab:', activeTab);
+      // console.log('Fetching requests for tab:', activeTab);
 
       if (activeTab === 'available') {
         // Get jobs that are pending (available for workers to accept)
@@ -45,7 +45,7 @@ const WorkerDashboard = () => {
         const activeJobs = allJobs.filter(job => 
           job.status === 'accepted' || job.status === 'in-progress'
         );
-        console.log(`Active Jobs: ${activeJobs.length} from ${allJobs.length} total`);
+        // console.log(`Active Jobs: ${activeJobs.length} from ${allJobs.length} total`);
         setRequests(activeJobs);
         
       } else if (activeTab === 'completed') {
@@ -69,7 +69,7 @@ const WorkerDashboard = () => {
         });
         
         const combinedJobs = Array.from(allJobsMap.values());
-        console.log(`All My Jobs: ${combinedJobs.length} total jobs`);
+        // console.log(`All My Jobs: ${combinedJobs.length} total jobs`);
         setRequests(combinedJobs);
       }
 
@@ -77,31 +77,31 @@ const WorkerDashboard = () => {
       console.log('Fetched requests:', response?.data?.serviceRequests);
       
       // Check each request for review data
-      if (response?.data?.serviceRequests) {
-        response.data.serviceRequests.forEach((req, index) => {
-          console.log(`Request ${index + 1} (${req._id}):`, {
-            title: req.title,
-            status: req.status,
-            hasReview: !!req.review,
-            reviewData: req.review
-          });
+      // if (response?.data?.serviceRequests) {
+      //   response.data.serviceRequests.forEach((req, index) => {
+      //     console.log(`Request ${index + 1} (${req._id}):`, {
+      //       title: req.title,
+      //       status: req.status,
+      //       hasReview: !!req.review,
+      //       reviewData: req.review
+      //     });
           
-          if (req.review) {
-            console.log(`Request ${index + 1} review details:`, {
-              rating: req.review.rating,
-              workQuality: req.review.workQuality,
-              communication: req.review.communication,
-              timeliness: req.review.timeliness,
-              professionalism: req.review.professionalism,
-              wouldRecommend: req.review.wouldRecommend,
-              comment: req.review.comment
-            });
-          }
-        });
-      }
+      //     if (req.review) {
+      //       console.log(`Request ${index + 1} review details:`, {
+      //         rating: req.review.rating,
+      //         workQuality: req.review.workQuality,
+      //         communication: req.review.communication,
+      //         timeliness: req.review.timeliness,
+      //         professionalism: req.review.professionalism,
+      //         wouldRecommend: req.review.wouldRecommend,
+      //         comment: req.review.comment
+      //       });
+      //     }
+      //   });
+      // }
 
     } catch (error) {
-      console.error('Error fetching requests:', error);
+      // console.error('Error fetching requests:', error);
       setError(error.response?.data?.message || 'Failed to fetch requests');
     } finally {
       setLoading(false);

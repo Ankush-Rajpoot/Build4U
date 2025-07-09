@@ -151,7 +151,7 @@ const ReviewModal = ({ isOpen, onClose, onSuccess, serviceRequest }) => {
             <div className="flex items-center space-x-2 text-xs text-gray-600">
               <span className="bg-gray-200 px-1 py-0.5 rounded">{serviceRequest.category}</span>
               <span>Worker: {serviceRequest.worker?.name}</span>
-              <span>Budget: ${serviceRequest.budget?.toLocaleString()}</span>
+              <span>Budget: ₹{serviceRequest.budget?.toLocaleString()}</span>
             </div>
           </div>
           {error && (

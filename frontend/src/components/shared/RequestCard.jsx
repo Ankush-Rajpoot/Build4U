@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DollarSign, Calendar, MapPin, User, Edit, Eye, Star, Users } from 'lucide-react';
+import { IndianRupee, Calendar, MapPin, User, Edit, Eye, Star, Users } from 'lucide-react';
 import { serviceRequestService } from '../../services/serviceRequestService';
 import { useChat } from '../../context/ChatContext';
 import { useSocket } from '../../context/SocketContext';
@@ -220,8 +220,8 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
         
         <div className="flex flex-col space-y-1 mb-2">
           <div className="flex items-center text-xs text-gray-500">
-            <DollarSign className="h-3 w-3 mr-1 text-green-600" />
-            <span className="font-medium">${request.budget?.toLocaleString()}</span>
+            <IndianRupee className="h-3 w-3 mr-1 text-green-600" />
+            <span className="font-medium">₹{request.budget?.toLocaleString()}</span>
           </div>
           
           <div className="flex items-center text-xs text-gray-500">
@@ -233,6 +233,9 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
             <div className="flex items-center text-xs text-gray-500">
               <User className="h-3 w-3 mr-1 text-purple-600" />
               <span>Client: {request.client.name}</span>
+              {request.client.phone && (
+                <span className="ml-1 text-gray-400">• {request.client.phone}</span>
+              )}
             </div>
           )}
 
@@ -240,6 +243,9 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
             <div className="flex items-center text-xs text-gray-500">
               <User className="h-3 w-3 mr-1 text-orange-600" />
               <span>Worker: {request.worker.name}</span>
+              {request.worker.phone && (
+                <span className="ml-1 text-gray-400">• {request.worker.phone}</span>
+              )}
             </div>
           )}
           
@@ -395,7 +401,7 @@ const ClientActions = ({ request, onAction, loading, onMessage, canMessage, onEd
         <MessageButton
           onClick={() => onMessage(request)}
           serviceRequestId={request._id}
-          className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
+          className="min-w-[70px] sm:min-w-[90px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
         >
           Message
         </MessageButton>
@@ -403,7 +409,7 @@ const ClientActions = ({ request, onAction, loading, onMessage, canMessage, onEd
       {request.status === 'completed' && !hasReview && (
         <button 
           onClick={onReview}
-          className="flex-1 min-w-[120px] sm:min-w-[180px] px-2 sm:px-5 py-1.5 sm:py-2 bg-green-50 border border-green-200 rounded text-xs sm:text-sm font-medium text-green-700 hover:bg-green-100 transition-colors flex items-center justify-center"
+          className="min-w-[110px] sm:min-w-[160px] px-2 sm:px-4 py-1.5 sm:py-2 bg-green-50 border border-green-200 rounded text-xs sm:text-sm font-medium text-green-700 hover:bg-green-100 transition-colors flex items-center justify-center"
         >
           <Star className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
           Leave Review
@@ -412,7 +418,7 @@ const ClientActions = ({ request, onAction, loading, onMessage, canMessage, onEd
       {/* Always show View Details button */}
       <button 
         onClick={() => onView(request)}
-        className="flex-1 min-w-[80px] sm:min-w-[120px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
+        className="min-w-[70px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
       >
         <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
         <span className="hidden sm:inline">View Details</span>
@@ -427,6 +433,7 @@ const WorkerActions = ({ request, onAction, loading, onMessage, canMessage, onVi
   const hasSubmittedRequest = (request.proposals || []).some(p => {
     return (p.worker && (p.worker._id === user?._id || p.worker === user?._id));
   });
+
   return (
     <div className="flex flex-wrap gap-1 sm:gap-2">
       {request.status === 'pending' && !hasSubmittedRequest && (

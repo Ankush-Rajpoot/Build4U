@@ -28,12 +28,12 @@ class NotificationService {
         };
 
         this.io.to(`user_${notification.recipient}`).emit('notification', socketData);
-        console.log(`Notification emitted to user_${notification.recipient}:`, notification.type);
+        // console.log(`Notification emitted to user_${notification.recipient}:`, notification.type);
       }
 
       return notification;
     } catch (error) {
-      console.error('Error creating and emitting notification:', error);
+      // console.error('Error creating and emitting notification:', error);
       throw error;
     }
   }
@@ -142,7 +142,7 @@ class NotificationService {
         location: serviceRequest.location,
         timestamp: new Date()
       });
-      console.log('New job notification broadcasted to all workers');
+      // console.log('New job notification broadcasted to all workers');
     }
   }
 
@@ -192,7 +192,7 @@ class NotificationService {
         await notification.markAsDelivered();
       }
     } catch (error) {
-      console.error('Error marking notification as delivered:', error);
+      // console.error('Error marking notification as delivered:', error);
     }
   }
 
@@ -204,13 +204,34 @@ class NotificationService {
         createdAt: { $lt: cutoffDate },
         isRead: true
       });
-      console.log(`Cleaned up ${result.deletedCount} old notifications`);
+      // console.log(`Cleaned up ${result.deletedCount} old notifications`);
       return result.deletedCount;
     } catch (error) {
-      console.error('Error cleaning up old notifications:', error);
+      // console.error('Error cleaning up old notifications:', error);
       throw error;
     }
   }
 }
+
+// Create singleton instance
+let notificationServiceInstance = null;
+
+// Initialize function to set up the instance with socket.io
+export const initializeNotificationService = (io) => {
+  if (!notificationServiceInstance) {
+    notificationServiceInstance = new NotificationService(io);
+  } else {
+    notificationServiceInstance.io = io;
+  }
+  return notificationServiceInstance;
+};
+
+// Export the instance getter
+export const getNotificationService = () => {
+  if (!notificationServiceInstance) {
+    throw new Error('NotificationService not initialized. Call initializeNotificationService(io) first.');
+  }
+  return notificationServiceInstance;
+};
 
 export default NotificationService;

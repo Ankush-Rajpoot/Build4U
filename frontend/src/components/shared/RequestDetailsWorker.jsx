@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { X, DollarSign, Calendar, MapPin, User, Star, Image as ImageIcon, ClipboardList, ThumbsUp, ThumbsDown, Award, MessageSquare, Clock, Users } from 'lucide-react';
+import { X, IndianRupee, Calendar, MapPin, User, Star, Image as ImageIcon, ClipboardList, ThumbsUp, ThumbsDown, Award, MessageSquare, Clock, Users, CreditCard, Plus } from 'lucide-react';
 import { reviewService } from '../../services/reviewService';
+import PaymentCenterModal from '../payments/PaymentCenterModal';
+import PaymentRequestModal from '../payments/PaymentRequestModal';
 
 // Function to get initials from name
 const getInitials = (name) => {
@@ -81,6 +83,8 @@ const renderStars = (value) => (
 const RequestDetailsWorker = ({ request, onClose }) => {
   const [review, setReview] = useState(null);
   const [reviewNotFound, setReviewNotFound] = useState(false);
+  const [activeTab, setActiveTab] = useState('details');
+  const [showPaymentRequest, setShowPaymentRequest] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -153,19 +157,28 @@ const RequestDetailsWorker = ({ request, onClose }) => {
         <Avatar person={request.client} size="lg" />
         <div>
           <div className="font-bold text-green-900">{request.client.name}</div>
+          {request.client.email && (
+            <div className="text-xs text-green-700 mb-1">
+              Email: {request.client.email}
+            </div>
+          )}
+          {request.client.phone && (
+            <div className="text-xs text-green-700 mb-1">
+              Phone: {request.client.phone}
+            </div>
+          )}
           {request.client.location && (
             <div className="text-xs text-green-700 mb-1">
               Location: {request.client.location}
             </div>
           )}
-          {/* You can add more client info here if available */}
         </div>
       </div>
     );
   };
 
   return (
-    <div className="relative">
+    <div className="relative p-3 sm:p-4 max-h-[80vh] overflow-y-auto">
       <button
         className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-gray-100 text-gray-500"
         onClick={onClose}
@@ -173,203 +186,320 @@ const RequestDetailsWorker = ({ request, onClose }) => {
       >
         <X className="h-4 w-4" />
       </button>
-      <h2 className="text-lg sm:text-xl font-bold mb-2 pr-8">{request.title}</h2>
-      {renderTimeline()}
-      {renderClientInfo()}
-      <div className="flex items-center flex-wrap gap-1.5 mb-3">
-        <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium border bg-gray-100 text-gray-800 border-gray-200">
-          {request.status?.charAt(0).toUpperCase() + request.status?.slice(1)}
-        </span>
-        <span className="inline-block px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md text-xs font-medium">
-          {request.category}
-        </span>
-        {request.review?.rating && (
-          <span className="flex items-center space-x-1">
-            <Star className="h-3 w-3 text-yellow-400 fill-current" />
-            <span className="text-xs font-medium text-gray-600">{request.review.rating}</span>
-          </span>
+      
+      <h2 className="text-lg sm:text-xl font-bold mb-2 break-words pr-8">{request.title}</h2>
+      
+      {/* Tab Navigation */}
+      <div className="flex space-x-1 mb-4 bg-gray-100 rounded-lg p-1">
+        <button
+          onClick={() => setActiveTab('details')}
+          className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+            activeTab === 'details'
+              ? 'bg-white text-green-600 shadow-sm'
+              : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          <ClipboardList className="h-4 w-4 inline mr-2" />
+          Details
+        </button>
+        {(request.status === 'in-progress' || request.status === 'completed') && (
+          <button
+            onClick={() => setActiveTab('payments')}
+            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+              activeTab === 'payments'
+                ? 'bg-white text-green-600 shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <CreditCard className="h-4 w-4 inline mr-2" />
+            Payments
+          </button>
         )}
       </div>
-      <p className="text-gray-700 mb-3 text-sm">{request.description}</p>
-      <div className="space-y-1.5 mb-3">
-        <div className="flex items-center text-sm text-gray-600">
-          <DollarSign className="h-3 w-3 mr-1.5 text-green-600" />
-          <span className="font-medium">Budget: ${request.budget?.toLocaleString()}</span>
-        </div>
-        <div className="flex items-center text-sm text-gray-600">
-          <Calendar className="h-3 w-3 mr-1.5 text-blue-600" />
-          <span>Posted: {formatDateTime(request.createdAt)}</span>
-        </div>
-        {request.scheduledDate && (
-          <div className="flex items-center text-sm text-gray-600">
-            <Calendar className="h-4 w-4 mr-2 text-indigo-600" />
-            <span>Scheduled Start: {formatDateTime(request.scheduledDate)}</span>
-          </div>
-        )}
-        {request.status === 'accepted' && request.updatedAt && (
-          <div className="flex items-center text-sm text-gray-600">
-            <Calendar className="h-4 w-4 mr-2 text-blue-400" />
-            <span>Accepted At: {formatDateTime(request.updatedAt)}</span>
-          </div>
-        )}
-        {request.completedDate && (
-          <div className="flex items-center text-sm text-gray-600">
-            <Calendar className="h-4 w-4 mr-2 text-green-600" />
-            <span>Completed At: {formatDateTime(request.completedDate)}</span>
-          </div>
-        )}
-        {(request.location?.city || request.location?.address) && (
-          <div className="flex items-center text-sm text-gray-600">
-            <MapPin className="h-4 w-4 mr-2 text-red-600" />
-            <span>
-              {request.location.address || `${request.location.city}, ${request.location.state} ${request.location.zipCode || ''}`}
+
+      {/* Tab Content */}
+      {activeTab === 'details' ? (
+        <>
+          {renderTimeline()}
+          {renderClientInfo()}
+          <div className="flex items-center flex-wrap gap-1.5 mb-3">
+            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium border bg-gray-100 text-gray-800 border-gray-200">
+              {request.status?.charAt(0).toUpperCase() + request.status?.slice(1)}
             </span>
+            <span className="inline-block px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md text-xs font-medium">
+              {request.category}
+            </span>
+            {request.review?.rating && (
+              <span className="flex items-center space-x-1">
+                <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                <span className="text-xs font-medium text-gray-600">{request.review.rating}</span>
+              </span>
+            )}
           </div>
-        )}
-      </div>
-      <div className="mb-4">
-        <div className="flex items-center text-sm text-gray-600 mb-1">
-          <Avatar person={request.client} size="sm" />
-          <span className="ml-2">Client: {request.client?.name || '-'}</span>
-        </div>
-        {request.worker && (
-          <div className="flex items-center text-sm text-gray-600">
-            <Avatar person={request.worker} size="sm" />
-            <span className="ml-2">Worker: {request.worker?.name || '-'}</span>
-          </div>
-        )}
-      </div>
-      {request.images && request.images.length > 0 && (
-        <div className="mb-4">
-          <div className="flex items-center mb-2">
-            <ImageIcon className="h-5 w-5 mr-2 text-blue-400" />
-            <span className="font-medium text-gray-700">Images:</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {request.images.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                alt={`request-img-${idx}`}
-                className="w-24 h-24 object-cover rounded border border-gray-200"
-              />
-            ))}
-          </div>
-        </div>
-      )}
-      {request.requirements && request.requirements.length > 0 && (
-        <div className="mb-4">
-          <div className="flex items-center mb-2">
-            <ClipboardList className="h-5 w-5 mr-2 text-gray-500" />
-            <span className="font-medium text-gray-700">Requirements:</span>
-          </div>
-          <ul className="list-disc list-inside text-gray-600 text-sm">
-            {request.requirements.map((req, idx) => (
-              <li key={idx}>{req}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {review && review.rating ? (
-        <div className="mb-4">
-          <div className="flex items-center mb-3">
-            <Star className="h-5 w-5 mr-2 text-yellow-400" />
-            <span className="font-medium text-gray-700">Client Review</span>
-          </div>
-          {/* Overall Rating */}
-          <div className="mb-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-gray-700">Overall Rating:</span>
-              <div className="flex items-center space-x-2">
-                {renderStars(review.rating)}
+          <p className="text-gray-700 mb-3 text-sm">{request.description}</p>
+          <div className="space-y-1.5 mb-3">
+            <div className="flex items-center text-sm text-gray-600">
+              <IndianRupee className="h-4 w-4 mr-2 text-green-600" />
+              <span className="font-medium">Budget: ₹{request.budget?.toLocaleString()}</span>
+            </div>
+            <div className="flex items-center text-sm text-gray-600">
+              <Calendar className="h-4 w-4 mr-2 text-blue-600" />
+              <span>Posted: {formatDateTime(request.createdAt)}</span>
+            </div>
+            {request.scheduledDate && (
+              <div className="flex items-center text-sm text-gray-600">
+                <Calendar className="h-4 w-4 mr-2 text-indigo-600" />
+                <span>Scheduled Start: {formatDateTime(request.scheduledDate)}</span>
               </div>
-            </div>
-          </div>
-          {/* Detailed Review Attributes */}
-          {(typeof review.workQuality === 'number' && review.workQuality >= 1) ||
-           (typeof review.communication === 'number' && review.communication >= 1) ||
-           (typeof review.timeliness === 'number' && review.timeliness >= 1) ||
-           (typeof review.professionalism === 'number' && review.professionalism >= 1) ? (
-            <div className="bg-gray-50 rounded-lg p-4 mb-3">
-              <h4 className="text-sm font-semibold text-gray-700 mb-3">Detailed Ratings</h4>
-              <div className="grid grid-cols-2 gap-3">
-                {typeof review.workQuality === 'number' && review.workQuality >= 1 && (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Award className="h-4 w-4 mr-2 text-blue-600" />
-                      <span className="text-xs font-medium text-gray-700">Work Quality:</span>
-                    </div>
-                    {renderStars(review.workQuality)}
-                  </div>
-                )}
-                {typeof review.communication === 'number' && review.communication >= 1 && (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <MessageSquare className="h-4 w-4 mr-2 text-green-600" />
-                      <span className="text-xs font-medium text-gray-700">Communication:</span>
-                    </div>
-                    {renderStars(review.communication)}
-                  </div>
-                )}
-                {typeof review.timeliness === 'number' && review.timeliness >= 1 && (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Clock className="h-4 w-4 mr-2 text-purple-600" />
-                      <span className="text-xs font-medium text-gray-700">Timeliness:</span>
-                    </div>
-                    {renderStars(review.timeliness)}
-                  </div>
-                )}
-                {typeof review.professionalism === 'number' && review.professionalism >= 1 && (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Users className="h-4 w-4 mr-2 text-orange-600" />
-                      <span className="text-xs font-medium text-gray-700">Professionalism:</span>
-                    </div>
-                    {renderStars(review.professionalism)}
-                  </div>
-                )}
+            )}
+            {request.status === 'accepted' && request.updatedAt && (
+              <div className="flex items-center text-sm text-gray-600">
+                <Calendar className="h-4 w-4 mr-2 text-blue-400" />
+                <span>Accepted At: {formatDateTime(request.updatedAt)}</span>
               </div>
+            )}
+            {request.completedDate && (
+              <div className="flex items-center text-sm text-gray-600">
+                <Calendar className="h-4 w-4 mr-2 text-green-600" />
+                <span>Completed At: {formatDateTime(request.completedDate)}</span>
+              </div>
+            )}
+            {(request.location?.city || request.location?.address) && (
+              <div className="flex items-center text-sm text-gray-600">
+                <MapPin className="h-4 w-4 mr-2 text-red-600" />
+                <span>
+                  {request.location.address || `${request.location.city}, ${request.location.state} ${request.location.zipCode || ''}`}
+                </span>
+              </div>
+            )}
+          </div>
+          <div className="mb-4">
+            <div className="flex items-center text-sm text-gray-600 mb-1">
+              <Avatar person={request.client} size="sm" />
+              <span className="ml-2">Client: {request.client?.name || '-'}</span>
             </div>
-          ) : null}
-          {/* Written Review */}
-          {review.comment && (
-            <div className="mb-3">
-              <span className="text-sm font-semibold text-gray-700">Review Comment:</span>
-              <p className="text-sm text-gray-600 mt-1 bg-gray-50 p-3 rounded-lg italic">
-                "{review.comment}"
-              </p>
-            </div>
-          )}
-          {/* Recommendation */}
-          {typeof review.wouldRecommend === 'boolean' && (
-            <div className="mb-3">
-              <div className="flex items-center space-x-2">
-                {review.wouldRecommend ? (
-                  <>
-                    <ThumbsUp className="h-4 w-4 text-green-600" />
-                    <span className="text-sm font-medium text-green-700">Client recommends this worker</span>
-                  </>
-                ) : (
-                  <>
-                    <ThumbsDown className="h-4 w-4 text-red-600" />
-                    <span className="text-sm font-medium text-red-700">Client does not recommend this worker</span>
-                  </>
-                )}
+            {request.worker && (
+              <div className="flex items-center text-sm text-gray-600">
+                <Avatar person={request.worker} size="sm" />
+                <span className="ml-2">Worker: {request.worker?.name || '-'}</span>
+              </div>
+            )}
+          </div>
+          {request.images && request.images.length > 0 && (
+            <div className="mb-4">
+              <div className="flex items-center mb-2">
+                <ImageIcon className="h-5 w-5 mr-2 text-blue-400" />
+                <span className="font-medium text-gray-700">Images:</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {request.images.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`request-img-${idx}`}
+                    className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded border border-gray-200"
+                  />
+                ))}
               </div>
             </div>
           )}
-          {/* Review Date */}
-          {(review.reviewedAt || review.createdAt) && (
-            <div className="text-xs text-gray-500 border-t pt-2">
-              Reviewed on: {formatDateTime(review.reviewedAt || review.createdAt)}
+          {request.requirements && request.requirements.length > 0 && (
+            <div className="mb-4">
+              <div className="flex items-center mb-2">
+                <ClipboardList className="h-5 w-5 mr-2 text-gray-500" />
+                <span className="font-medium text-gray-700">Requirements:</span>
+              </div>
+              <ul className="list-disc list-inside text-gray-600 text-sm">
+                {request.requirements.map((req, idx) => (
+                  <li key={idx}>{req}</li>
+                ))}
+              </ul>
             </div>
           )}
-        </div>
-      ) : reviewNotFound ? (
-        <div className="mb-4 text-gray-400 italic">No review for this job yet.</div>
+          
+          {review && review.rating ? (
+            <div className="mb-4">
+              <div className="flex items-center mb-3">
+                <Star className="h-5 w-5 mr-2 text-yellow-400" />
+                <span className="font-medium text-gray-700">Client Review</span>
+              </div>
+              {/* Overall Rating */}
+              <div className="mb-3">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-1 sm:space-y-0">
+                  <span className="text-sm font-semibold text-gray-700">Overall Rating:</span>
+                  <div className="flex items-center space-x-2">
+                    {renderStars(review.rating)}
+                  </div>
+                </div>
+              </div>
+              {/* Detailed Review Attributes */}
+              {(typeof review.workQuality === 'number' && review.workQuality >= 1) ||
+               (typeof review.communication === 'number' && review.communication >= 1) ||
+               (typeof review.timeliness === 'number' && review.timeliness >= 1) ||
+               (typeof review.professionalism === 'number' && review.professionalism >= 1) ? (
+                <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-3">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-2 sm:mb-3">Detailed Ratings</h4>
+                  <div className="space-y-2 sm:space-y-3">
+                    {/* First Row: Work Quality and Communication */}
+                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                      {typeof review.workQuality === 'number' && review.workQuality >= 1 && (
+                        <div className="flex flex-col space-y-1">
+                          <div className="flex items-center">
+                            <Award className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-blue-600 flex-shrink-0" />
+                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Work Quality:</span>
+                          </div>
+                          <div className="flex justify-start">
+                            <span className="flex items-center space-x-0.5">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.workQuality ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
+                                />
+                              ))}
+                              <span className="ml-1 text-xs text-gray-700">{review.workQuality}/5</span>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      {typeof review.communication === 'number' && review.communication >= 1 && (
+                        <div className="flex flex-col space-y-1">
+                          <div className="flex items-center">
+                            <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-green-600 flex-shrink-0" />
+                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Communication:</span>
+                          </div>
+                          <div className="flex justify-start">
+                            <span className="flex items-center space-x-0.5">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.communication ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
+                                />
+                              ))}
+                              <span className="ml-1 text-xs text-gray-700">{review.communication}/5</span>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {/* Second Row: Timeliness and Professionalism */}
+                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                      {typeof review.timeliness === 'number' && review.timeliness >= 1 && (
+                        <div className="flex flex-col space-y-1">
+                          <div className="flex items-center">
+                            <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-600 flex-shrink-0" />
+                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Timeliness:</span>
+                          </div>
+                          <div className="flex justify-start">
+                            <span className="flex items-center space-x-0.5">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.timeliness ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
+                                />
+                              ))}
+                              <span className="ml-1 text-xs text-gray-700">{review.timeliness}/5</span>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      {typeof review.professionalism === 'number' && review.professionalism >= 1 && (
+                        <div className="flex flex-col space-y-1">
+                          <div className="flex items-center">
+                            <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-orange-600 flex-shrink-0" />
+                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Professionalism:</span>
+                          </div>
+                          <div className="flex justify-start">
+                            <span className="flex items-center space-x-0.5">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.professionalism ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
+                                />
+                              ))}
+                              <span className="ml-1 text-xs text-gray-700">{review.professionalism}/5</span>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+              {/* Written Review */}
+              {review.comment && (
+                <div className="mb-3">
+                  <span className="text-sm font-semibold text-gray-700">Review Comment:</span>
+                  <p className="text-sm text-gray-600 mt-1 bg-gray-50 p-3 rounded-lg italic">
+                    "{review.comment}"
+                  </p>
+                </div>
+              )}
+              {/* Recommendation */}
+              {typeof review.wouldRecommend === 'boolean' && (
+                <div className="mb-3">
+                  <div className="flex items-center space-x-2">
+                    {review.wouldRecommend ? (
+                      <>
+                        <ThumbsUp className="h-4 w-4 text-green-600" />
+                        <span className="text-sm font-medium text-green-700">Client recommends this worker</span>
+                      </>
+                    ) : (
+                      <>
+                        <ThumbsDown className="h-4 w-4 text-red-600" />
+                        <span className="text-sm font-medium text-red-700">Client does not recommend this worker</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+              {/* Review Date */}
+              {(review.reviewedAt || review.createdAt) && (
+                <div className="text-xs text-gray-500 border-t pt-2">
+                  Reviewed on: {formatDateTime(review.reviewedAt || review.createdAt)}
+                </div>
+              )}
+            </div>
+          ) : reviewNotFound ? (
+            <div className="mb-4 text-gray-400 italic">No review for this job yet.</div>
+          ) : (
+            <div className="mb-4 text-gray-400 italic">Loading review...</div>
+          )}
+        </>
       ) : (
-        <div className="mb-4 text-gray-400 italic">Loading review...</div>
+        <div className="h-96">
+          {/* Request Payment Button - Only for workers */}
+          {(request.status === 'in-progress' || request.status === 'completed') && (
+            <div className="mb-4">
+              <button
+                onClick={() => setShowPaymentRequest(true)}
+                className="w-full bg-emerald-600 text-white py-3 px-4 rounded-lg hover:bg-emerald-700 transition-colors font-medium inline-flex items-center justify-center"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Request Payment
+              </button>
+            </div>
+          )}
+          
+          <PaymentCenterModal
+            serviceRequestId={request._id}
+            userType="Worker"
+            request={request}
+            onClose={() => {}} // Don't close the main modal
+            embedded={true}
+          />
+        </div>
+      )}
+
+      {/* Payment Request Modal */}
+      {showPaymentRequest && (
+        <PaymentRequestModal
+          isOpen={showPaymentRequest}
+          serviceRequest={request}
+          onClose={() => setShowPaymentRequest(false)}
+          onPaymentRequested={() => {
+            setShowPaymentRequest(false);
+          }}
+        />
       )}
     </div>
   );

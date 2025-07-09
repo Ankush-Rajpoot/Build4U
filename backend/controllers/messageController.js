@@ -77,14 +77,14 @@ export const sendMessage = async (req, res) => {
 
     const { serviceRequestId, message, recipientId, attachments } = req.body;
 
-    console.log('Send message request:', {
-      serviceRequestId,
-      message: message?.substring(0, 50) + '...',
-      recipientId,
-      senderId: req.user.id,
-      senderRole: req.userRole,
-      hasAttachments: attachments && attachments.length > 0
-    });
+    // console.log('Send message request:', {
+    //   serviceRequestId,
+    //   message: message?.substring(0, 50) + '...',
+    //   recipientId,
+    //   senderId: req.user.id,
+    //   senderRole: req.userRole,
+    //   hasAttachments: attachments && attachments.length > 0
+    // });
 
     // Verify service request exists and user has access
     const serviceRequest = await ServiceRequest.findById(serviceRequestId)

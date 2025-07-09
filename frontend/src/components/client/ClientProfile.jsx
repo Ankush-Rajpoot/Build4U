@@ -308,7 +308,7 @@ const ClientProfile = ({ onClose }) => {
               </div>
               <div>
                 <p className="text-sm text-purple-600 font-medium">Total Spent</p>
-                <p className="text-2xl font-bold text-purple-800">${stats.totalSpent.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-purple-800">₹{stats.totalSpent.toLocaleString()}</p>
               </div>
             </div>
           </div>

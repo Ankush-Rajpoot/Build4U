@@ -45,7 +45,7 @@ const ProposalsModal = ({ open, requestId, onClose, onSelectWorker, anchorRef })
         <img
           src={worker.profilePicture}
           alt={worker.name || 'Worker'}
-          className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm flex-shrink-0"
+          className="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm flex-shrink-0"
         />
       );
     }
@@ -54,8 +54,8 @@ const ProposalsModal = ({ open, requestId, onClose, onSelectWorker, anchorRef })
     const colorClass = getAvatarColor(worker.name);
     
     return (
-      <div className={`w-10 h-10 rounded-full ${colorClass} flex items-center justify-center border-2 border-white shadow-sm flex-shrink-0`}>
-        <span className="text-white font-semibold text-sm">{initials}</span>
+      <div className={`w-8 h-8 rounded-full ${colorClass} flex items-center justify-center border-2 border-white shadow-sm flex-shrink-0`}>
+        <span className="text-white font-semibold text-xs">{initials}</span>
       </div>
     );
   };
@@ -184,30 +184,28 @@ const ProposalsModal = ({ open, requestId, onClose, onSelectWorker, anchorRef })
               {workers.map((worker, idx) => (
                 <div key={worker._id || idx} className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg p-3 hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 border border-gray-100 hover:border-blue-200 hover:shadow-sm">
                   <div className="flex items-center gap-3">
-                    {/* <img
-                      src={worker.profilePicture || '/default-avatar.png'}
-                      alt={worker.name || 'Worker'}
-                      className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm flex-shrink-0"
-                    /> */}
-                     <Avatar worker={worker} />
-                    <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-gray-900 truncate text-sm">{worker.name || 'Worker'}</div>
-                      <div className="text-xs text-gray-600 truncate">{worker.email}</div>
+                    <Avatar worker={worker} />
+                    <div className="flex-1 min-w-0 pr-2">
+                      <div className="font-semibold text-gray-900 truncate text-xs">{worker.name || 'Worker'}</div>
+                      <div className="text-xs text-gray-500 truncate">{worker.email}</div>
+                      {worker.phone && (
+                        <div className="text-xs text-gray-500 truncate">📱 {worker.phone}</div>
+                      )}
                       <div className="flex items-center gap-1 text-amber-600 text-xs mt-0.5">
                         <Star className="w-3 h-3 fill-current" />
                         <span>{worker.rating ? `${worker.rating}/5` : 'New'}</span>
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col gap-1.5 flex-shrink-0">
                       <button
-                        className="px-2 py-1.5 bg-gray-100 text-gray-700 text-xs rounded-md hover:bg-gray-200 transition-colors font-medium flex items-center gap-1"
+                        className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md hover:bg-gray-200 transition-colors font-medium flex items-center gap-1 whitespace-nowrap"
                         onClick={() => setPortfolioModal({ isOpen: true, worker })}
                       >
                         <Eye className="w-3 h-3" />
                         Past Work
                       </button>
                       <button
-                        className="px-3 py-1.5 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition-colors font-medium shadow-sm hover:shadow-md flex-shrink-0"
+                        className="px-2 py-1 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition-colors font-medium shadow-sm hover:shadow-md whitespace-nowrap"
                         onClick={() => onSelectWorker(worker)}
                       >
                         Select

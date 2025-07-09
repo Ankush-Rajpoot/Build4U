@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { authService } from '../../services/authService';
-import { User, Phone, MapPin, Briefcase, DollarSign, Mail, Lock, Star, ChevronRight, ChevronLeft } from 'lucide-react';
+import { User, Phone, MapPin, Briefcase, IndianRupee, Mail, Lock, Star, ChevronRight, ChevronLeft } from 'lucide-react';
 import InputField from './InputField';
 import SkillSelector from '../shared/SkillSelector';
 
@@ -109,7 +109,8 @@ const SignUp = ({ role, theme, onToggleMode, setError, setInfo, setLoading, load
         response = await authService.registerWorker(userData);
       }
 
-      setInfo('Registration successful! Please check your email to verify your account.');
+      // setInfo('Registration successful! Please check your email to verify your account.');
+      setInfo('Registration successful! Please login with your credentials.');
       setFormData({
         name: '',
         email: '',
@@ -235,8 +236,8 @@ const SignUp = ({ role, theme, onToggleMode, setError, setInfo, setLoading, load
           />
           
           <InputField
-            icon={DollarSign}
-            label="Hourly Rate (USD)"
+            icon={IndianRupee}
+            label="Hourly Rate (INR)"
             name="hourlyRate"
             type="number"
             min="0"

@@ -42,7 +42,7 @@ export const createServiceRequest = async (req, res) => {
     );
 
     const populatedRequest = await ServiceRequest.findById(serviceRequest._id)
-      .populate('client', 'name email location');
+      .populate('client', 'name email phone location profileImage');
 
     // Emit new job notification to all workers using NotificationService
     const io = req.app.get('io');
@@ -169,7 +169,7 @@ export const getServiceRequest = async (req, res) => {
     const serviceRequest = await ServiceRequest.findById(req.params.id)
       .populate('client', 'name email phone location profileImage')
       .populate('worker', 'name email phone skills rating profileImage')
-      .populate('proposals.worker', 'name email skills rating');
+      .populate('proposals.worker', 'name email phone skills rating profileImage');
 
     if (!serviceRequest) {
       return res.status(404).json({
@@ -179,8 +179,8 @@ export const getServiceRequest = async (req, res) => {
     }
 
     // Debug: Log the review data being returned
-    console.log('ServiceRequest found:', req.params.id);
-    console.log('Review data in ServiceRequest:', serviceRequest.review);
+    // console.log('ServiceRequest found:', req.params.id);
+    // console.log('Review data in ServiceRequest:', serviceRequest.review);
 
     res.json({
       success: true,
@@ -253,7 +253,7 @@ export const updateServiceRequest = async (req, res) => {
         new: true,
         runValidators: true
       }
-    ).populate('client', 'name email location');
+    ).populate('client', 'name email phone location profileImage');
 
     // Emit update notification to workers who might be interested
     const io = req.app.get('io');
@@ -342,8 +342,8 @@ export const acceptServiceRequest = async (req, res) => {
         status: 'accepted'
       },
       { new: true }
-    ).populate('client', 'name email phone location')
-     .populate('worker', 'name email phone skills');
+    ).populate('client', 'name email phone location profileImage')
+     .populate('worker', 'name email phone skills profileImage');
 
     // Emit status update notification using NotificationService
     const io = req.app.get('io');
@@ -434,8 +434,8 @@ export const startWork = async (req, res) => {
       req.params.id,
       { status: 'in-progress' },
       { new: true }
-    ).populate('client', 'name email phone location')
-     .populate('worker', 'name email phone skills');
+    ).populate('client', 'name email phone location profileImage')
+     .populate('worker', 'name email phone skills profileImage');
 
     // Emit status update notification using NotificationService
     const io = req.app.get('io');
@@ -525,8 +525,8 @@ export const completeServiceRequest = async (req, res) => {
         completedDate: new Date()
       },
       { new: true }
-    ).populate('client', 'name email phone location')
-     .populate('worker', 'name email phone skills');
+    ).populate('client', 'name email phone location profileImage')
+     .populate('worker', 'name email phone skills profileImage');
 
     // Update worker's completed jobs count
     await Worker.findByIdAndUpdate(
@@ -570,7 +570,7 @@ export const completeServiceRequest = async (req, res) => {
               link: `${process.env.FRONTEND_URL}/requests/${updatedRequest._id}`
             })
           });
-          console.log('Review reminder email sent to client:', client.email);
+          // console.log('Review reminder email sent to client:', client.email);
         }
       }, 24 * 60 * 60 * 1000); // 24 hours
     }
@@ -639,8 +639,8 @@ export const cancelServiceRequest = async (req, res) => {
       req.params.id,
       { status: 'cancelled' },
       { new: true }
-    ).populate('client', 'name email location')
-     .populate('worker', 'name email skills');
+    ).populate('client', 'name email phone location profileImage')
+     .populate('worker', 'name email phone skills profileImage');
 
     // Emit status update notification using NotificationService
     const io = req.app.get('io');
@@ -782,7 +782,7 @@ export const sendRequest = async (req, res) => {
 // @access  Private (Client only)
 export const getWorkerRequests = async (req, res) => {
   try {
-    const serviceRequest = await ServiceRequest.findById(req.params.id).populate('proposals.worker', 'name email rating profileImage');
+    const serviceRequest = await ServiceRequest.findById(req.params.id).populate('proposals.worker', 'name email phone rating profileImage');
     if (!serviceRequest) {
       return res.status(404).json({ success: false, message: 'Service request not found' });
     }
@@ -847,20 +847,20 @@ export const getMatchingWorkers = async (req, res) => {
       });
     }
 
-    console.log('=== MATCHING WORKERS DEBUG ===');
-    console.log('Service Request ID:', req.params.id);
-    console.log('Service Request Category:', serviceRequest.category);
-    console.log('Service Request Required Skills:', serviceRequest.requiredSkills);
-    console.log('Search Skills to use:', searchSkills);
+    // console.log('=== MATCHING WORKERS DEBUG ===');
+    // console.log('Service Request ID:', req.params.id);
+    // console.log('Service Request Category:', serviceRequest.category);
+    // console.log('Service Request Required Skills:', serviceRequest.requiredSkills);
+    // console.log('Search Skills to use:', searchSkills);
 
     // Find workers who have at least one matching skill
     const matchingWorkers = await Worker.find({
       skills: { $in: searchSkills },
       isVerified: true
-    }).select('name email skills experience hourlyRate rating profileImage location createdAt availability');
+    }).select('name email phone skills experience hourlyRate rating profileImage location createdAt availability');
 
-    console.log('Found matching workers count:', matchingWorkers.length);
-    console.log('Matching workers:', matchingWorkers.map(w => ({ name: w.name, skills: w.skills })));
+    // console.log('Found matching workers count:', matchingWorkers.length);
+    // console.log('Matching workers:', matchingWorkers.map(w => ({ name: w.name, skills: w.skills })));
 
     // Calculate match percentage for each worker
     const workersWithMatchScore = matchingWorkers.map(worker => {
@@ -918,10 +918,10 @@ export const getMatchingWorkers = async (req, res) => {
 // @access  Private
 export const debugWorkers = async (req, res) => {
   try {
-    const workers = await Worker.find({}).select('name email skills isVerified');
-    console.log('=== ALL WORKERS DEBUG ===');
+    const workers = await Worker.find({}).select('name email phone skills isVerified');
+    // console.log('=== ALL WORKERS DEBUG ===');
     workers.forEach(worker => {
-      console.log(`Worker: ${worker.name}, Email: ${worker.email}, Verified: ${worker.isVerified}, Skills:`, worker.skills);
+      // console.log(`Worker: ${worker.name}, Email: ${worker.email}, Verified: ${worker.isVerified}, Skills:`, worker.skills);
     });
 
     res.json({
@@ -942,6 +942,43 @@ export const debugWorkers = async (req, res) => {
       success: false,
       message: 'Server error',
       error: error.message
+    });
+  }
+};
+
+// @desc    Assign worker to service request (FOR TESTING ONLY)
+// @route   PUT /api/service-requests/:id/assign-worker
+// @access  Private (Worker only)
+export const assignWorkerForTesting = async (req, res) => {
+  try {
+    const serviceRequest = await ServiceRequest.findById(req.params.id);
+    
+    if (!serviceRequest) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Service request not found' 
+      });
+    }
+
+    // Assign the current worker to the service request
+    serviceRequest.worker = req.user.id;
+    serviceRequest.status = 'accepted';
+    await serviceRequest.save();
+
+    const updatedServiceRequest = await ServiceRequest.findById(req.params.id)
+      .populate('client', 'name email')
+      .populate('worker', 'name email');
+
+    res.json({ 
+      success: true, 
+      message: 'Worker assigned successfully for testing', 
+      serviceRequest: updatedServiceRequest 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error', 
+      error: error.message 
     });
   }
 };

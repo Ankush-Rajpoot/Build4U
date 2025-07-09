@@ -144,7 +144,7 @@ export const NotificationProvider = ({ children }) => {
             id: Date.now() + Math.random(),
             type: 'new_job',
             title: 'New Job Available',
-            message: `${data.title} - Budget: $${data.budget}`,
+            message: `${data.title} - Budget: ₹${data.budget}`,
             timestamp: data.timestamp || new Date(),
             serviceRequestId: data.requestId,
             isRead: false

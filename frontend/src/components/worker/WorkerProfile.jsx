@@ -204,7 +204,7 @@ const WorkerProfile = ({ onClose }) => {
             };
           }
         } catch (reviewError) {
-          console.log('No reviews found or error fetching reviews');
+          // console.log('No reviews found or error fetching reviews');
         }
       }
 
@@ -404,7 +404,7 @@ const WorkerProfile = ({ onClose }) => {
               </div>
               <div>
                 <p className="text-sm text-purple-600 font-medium">Total Earned</p>
-                <p className="text-2xl font-bold text-purple-800">${stats.totalEarnings.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-purple-800">₹{stats.totalEarnings.toLocaleString()}</p>
               </div>
             </div>
           </div>

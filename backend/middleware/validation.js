@@ -83,3 +83,29 @@ export const validateServiceRequest = [
     .isFloat({ min: 1 })
     .withMessage('Budget must be at least $1')
 ];
+
+export const validatePaymentRequest = [
+  body('serviceRequestId')
+    .notEmpty()
+    .isMongoId()
+    .withMessage('Valid service request ID is required'),
+  body('amount')
+    .isNumeric()
+    .isFloat({ min: 1 })
+    .withMessage('Amount must be at least ₹1'),
+  body('description')
+    .trim()
+    .isLength({ min: 5, max: 200 })
+    .withMessage('Description must be between 5 and 200 characters')
+];
+
+export const validatePaymentResponse = [
+  body('action')
+    .isIn(['approve', 'decline'])
+    .withMessage('Action must be either approve or decline'),
+  body('declineReason')
+    .optional()
+    .trim()
+    .isLength({ max: 300 })
+    .withMessage('Decline reason cannot exceed 300 characters')
+];

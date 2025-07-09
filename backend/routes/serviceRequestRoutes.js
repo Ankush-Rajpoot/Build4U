@@ -13,7 +13,8 @@ import {
   sendRequest,
   getWorkerRequests,
   getMatchingWorkers,
-  debugWorkers
+  debugWorkers,
+  assignWorkerForTesting
 } from '../controllers/serviceRequestController.js';
 import { protect, restrictTo } from '../middleware/auth.js';
 import { validateServiceRequest } from '../middleware/validation.js';
@@ -44,5 +45,6 @@ router.put('/:id/start', restrictTo('worker'), startWork);
 router.put('/:id/complete', restrictTo('worker'), completeServiceRequest);
 router.post('/:id/proposals', restrictTo('worker'), submitProposal);
 router.post('/:id/send-request', restrictTo('worker'), sendRequest);
+router.put('/:id/assign-worker', restrictTo('worker'), assignWorkerForTesting);
 
 export default router;

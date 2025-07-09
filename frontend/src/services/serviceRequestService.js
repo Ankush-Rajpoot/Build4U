@@ -166,6 +166,12 @@ export const serviceRequestService = {
     const response = await api.get(`/service-requests/${id}/matching-workers`);
     return response.data;
   },
+
+  // Assign worker to service request (FOR TESTING ONLY)
+  assignWorkerForTesting: async (id) => {
+    const response = await api.put(`/service-requests/${id}/assign-worker`);
+    return response.data;
+  },
 };
 
 

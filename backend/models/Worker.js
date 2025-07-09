@@ -120,7 +120,22 @@ const workerSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     }
-  }]
+  }],
+  bankDetails: {
+    accountHolderName: String,
+    accountNumber: String,
+    ifsc: String,
+    bankName: String,
+    accountType: {
+      type: String,
+      enum: ['savings', 'current'],
+      default: 'savings'
+    },
+    isVerified: {
+      type: Boolean,
+      default: false
+    }
+  }
 }, {
   timestamps: true
 });

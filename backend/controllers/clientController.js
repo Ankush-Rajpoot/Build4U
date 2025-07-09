@@ -256,17 +256,17 @@ export const getClientServiceRequests = async (req, res) => {
       query.status = status;
     }
 
-    console.log('Client service requests query:', query);
+    // console.log('Client service requests query:', query);
 
     const serviceRequests = await ServiceRequest.find(query)
-      .populate('worker', 'name email rating skills')
+      .populate('worker', 'name email phone rating skills profileImage')
       .sort({ createdAt: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
     const total = await ServiceRequest.countDocuments(query);
 
-    console.log(`Found ${serviceRequests.length} requests for client ${req.user.id} with status: ${status || 'all'}`);
+    // console.log(`Found ${serviceRequests.length} requests for client ${req.user.id} with status: ${status || 'all'}`);
 
     res.json({
       success: true,

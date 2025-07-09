@@ -128,4 +128,29 @@ serviceRequestSchema.index({ worker: 1, status: 1 });
 serviceRequestSchema.index({ category: 1, status: 1 });
 serviceRequestSchema.index({ createdAt: -1 });
 
+// Middleware to initialize budget tracking when worker is assigned
+serviceRequestSchema.post('findOneAndUpdate', async function(doc) {
+  if (doc && doc.worker && doc.status === 'accepted') {
+    try {
+      const { BudgetTracking } = await import('./Payment.js');
+      
+      // Check if budget tracking already exists
+      const existingTracking = await BudgetTracking.findOne({ 
+        serviceRequest: doc._id 
+      });
+
+      if (!existingTracking) {
+        // Create budget tracking entry
+        await BudgetTracking.create({
+          serviceRequest: doc._id,
+          totalBudget: doc.budget,
+          remainingBudget: doc.budget
+        });
+      }
+    } catch (error) {
+      console.error('Error initializing budget tracking:', error);
+    }
+  }
+});
+
 export default mongoose.model('ServiceRequest', serviceRequestSchema);

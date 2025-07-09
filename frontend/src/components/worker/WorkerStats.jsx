@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { DollarSign, Star, Clock, CheckCircle, Award, MessageSquare, Users, Briefcase, Calendar, AlertCircle } from 'lucide-react';
+import { IndianRupee, Star, Clock, CheckCircle, Award, MessageSquare, Users, Briefcase, Calendar, AlertCircle } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import { serviceRequestService } from '../../services/serviceRequestService';
 import { authService } from '../../services/authService';
@@ -46,10 +46,10 @@ const WorkerStats = () => {
         const statsResponse = await authService.getWorkerStats();
         const workerStats = statsResponse.data.stats || {};
         
-        console.log('Worker Profile:', workerProfile);
-        console.log('Worker Stats:', workerStats);
-        console.log('Earnings from profile:', workerProfile?.earnings);
-        console.log('Total earned from stats:', workerStats.totalEarned);
+        // console.log('Worker Profile:', workerProfile);
+        // console.log('Worker Stats:', workerStats);
+        // console.log('Earnings from profile:', workerProfile?.earnings);
+        // console.log('Total earned from stats:', workerStats.totalEarned);
 
         let reviewStatsData = {
           averageWorkQuality: 0,
@@ -213,12 +213,12 @@ const WorkerStats = () => {
         <div className="bg-gradient-to-br from-white to-green-50 p-2.5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 h-full flex items-center">
           <div className="flex items-center justify-between w-full">
             <div className="p-1.5 rounded-lg bg-green-100 flex-shrink-0">
-              <DollarSign className="h-3 w-3 text-green-600" />
+              <IndianRupee className="h-3 w-3 text-green-600" />
             </div>
             <div className="text-right flex-1 ml-2 min-w-0">
               <p className="text-xs text-gray-600 font-medium leading-none">Total</p>
               <p className="text-base font-bold text-green-700 truncate leading-tight">
-                ${stats.earnings.total > 999 
+                ₹{stats.earnings.total > 999 
                   ? `${Math.floor(stats.earnings.total / 1000)}k` 
                   : stats.earnings.total?.toLocaleString() || '0'}
               </p>
@@ -325,12 +325,12 @@ const WorkerStats = () => {
         <div className="bg-white p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="flex items-center">
             <div className="p-2 sm:p-3 rounded-full bg-green-100 mr-3 sm:mr-4">
-              <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+              <IndianRupee className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
             </div>
             <div>
               <p className="text-xs sm:text-sm font-medium text-gray-500">Total Earnings</p>
               <p className="text-xl sm:text-2xl font-semibold text-gray-900">
-                ${stats.earnings.total?.toLocaleString() || '0'}
+                ₹{stats.earnings.total?.toLocaleString() || '0'}
               </p>
             </div>
           </div>
@@ -338,7 +338,7 @@ const WorkerStats = () => {
             <div className="h-1 w-full bg-gray-200 rounded-full">
               <div className="h-1 bg-green-500 rounded-full" style={{ width: '70%' }}></div>
             </div>
-            <p className="mt-2 text-xs text-gray-500">This Month: ${stats.earnings.thisMonth?.toLocaleString() || '0'}</p>
+            <p className="mt-2 text-xs text-gray-500">This Month: ₹{stats.earnings.thisMonth?.toLocaleString() || '0'}</p>
           </div>
         </div>
 

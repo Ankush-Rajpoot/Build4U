@@ -63,7 +63,7 @@ const WorkerProfilePage = () => {
   useEffect(() => {
     const userId = user?._id || user?.id;
     if (user && userId) {
-      console.log('User data available, user ID:', userId);
+      // console.log('User data available, user ID:', userId);
       setFormData({
         name: user.name || '',
         email: user.email || '',
@@ -81,7 +81,7 @@ const WorkerProfilePage = () => {
       fetchWorkerReviews();
       fetchWorkerPortfolio();
     } else {
-      console.log('User data not available yet or missing ID');
+      // console.log('User data not available yet or missing ID');
     }
   }, [user]);
 
@@ -153,14 +153,14 @@ const WorkerProfilePage = () => {
       // Make sure user and user ID exist before making the request
       const userId = user?._id || user?.id;
       if (!user || !userId) {
-        console.log('User or user ID not available yet for portfolio fetch');
+        // console.log('User or user ID not available yet for portfolio fetch');
         return;
       }
       
-      console.log('Fetching portfolio for user ID:', userId);
+      // console.log('Fetching portfolio for user ID:', userId);
       const response = await portfolioService.getPortfolio(userId);
       setPortfolio(response.data || []);
-      console.log('Portfolio fetched successfully:', response.data);
+      // console.log('Portfolio fetched successfully:', response.data);
     } catch (error) {
       console.error('Error fetching worker portfolio:', error);
       setPortfolio([]);
@@ -432,7 +432,7 @@ const WorkerProfilePage = () => {
                     </div>
                     <div>
                       <h3 className="font-medium text-gray-900 text-sm">Payments</h3>
-                      <p className="text-xs text-gray-600">${stats.totalEarned?.toLocaleString() || '0'} earned</p>
+                      <p className="text-xs text-gray-600">₹{stats.totalEarned?.toLocaleString() || '0'} earned</p>
                     </div>
                   </div>
                   <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-green-600 transition-colors" />
@@ -677,7 +677,7 @@ const WorkerProfilePage = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Hourly Rate ($)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Hourly Rate (₹)</label>
                   <input
                     type="number"
                     name="hourlyRate"

@@ -50,7 +50,7 @@ const ClientDashboard = () => {
         filters.status = 'cancelled';
       }
 
-      console.log('Fetching client requests with filters:', filters);
+      // console.log('Fetching client requests with filters:', filters);
       const response = await serviceRequestService.getClientServiceRequests(filters);
       let fetchedRequests = response.data.serviceRequests || [];
       
@@ -61,10 +61,10 @@ const ClientDashboard = () => {
         );
       }
       
-      console.log(`Found ${fetchedRequests.length} requests for ${activeTab} tab`);
+      // console.log(`Found ${fetchedRequests.length} requests for ${activeTab} tab`);
       setRequests(fetchedRequests);
     } catch (error) {
-      console.error('Error fetching requests:', error);
+      // console.error('Error fetching requests:', error);
       setError(error.response?.data?.message || 'Failed to fetch requests');
     } finally {
       setLoading(false);

@@ -282,7 +282,7 @@ export const getAvailableJobs = async (req, res) => {
       if (maxBudget) query.budget.$lte = parseInt(maxBudget);
     }
 
-    console.log('Available jobs query:', query);
+    // console.log('Available jobs query:', query);
 
     const serviceRequests = await ServiceRequest.find(query)
       .populate('client', 'name email phone location profileImage')
@@ -292,7 +292,7 @@ export const getAvailableJobs = async (req, res) => {
 
     const total = await ServiceRequest.countDocuments(query);
 
-    console.log(`Found ${serviceRequests.length} available jobs`);
+    // console.log(`Found ${serviceRequests.length} available jobs`);
 
     res.json({
       success: true,
@@ -306,7 +306,7 @@ export const getAvailableJobs = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error fetching available jobs:', error);
+    // console.error('Error fetching available jobs:', error);
     res.status(500).json({
       success: false,
       message: 'Server error',
@@ -330,7 +330,7 @@ export const getWorkerJobs = async (req, res) => {
     }
     // If no status specified, get all jobs assigned to this worker
 
-    console.log('Worker jobs query:', query);
+    // console.log('Worker jobs query:', query);
 
     const serviceRequests = await ServiceRequest.find(query)
       .populate('client', 'name email phone location profileImage')
@@ -340,7 +340,7 @@ export const getWorkerJobs = async (req, res) => {
 
     const total = await ServiceRequest.countDocuments(query);
 
-    console.log(`Found ${serviceRequests.length} jobs for worker ${req.user.id}`);
+    // console.log(`Found ${serviceRequests.length} jobs for worker ${req.user.id}`);
 
     res.json({
       success: true,
@@ -354,7 +354,7 @@ export const getWorkerJobs = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error fetching worker jobs:', error);
+    // console.error('Error fetching worker jobs:', error);
     res.status(500).json({
       success: false,
       message: 'Server error',
@@ -375,7 +375,7 @@ export const getCompletedJobs = async (req, res) => {
       status: 'completed'
     };
 
-    console.log('Completed jobs query:', query);
+    // console.log('Completed jobs query:', query);
 
     const serviceRequests = await ServiceRequest.find(query)
       .populate('client', 'name email phone location profileImage')
@@ -385,7 +385,7 @@ export const getCompletedJobs = async (req, res) => {
 
     const total = await ServiceRequest.countDocuments(query);
 
-    console.log(`Found ${serviceRequests.length} completed jobs for worker ${req.user.id}`);
+    // console.log(`Found ${serviceRequests.length} completed jobs for worker ${req.user.id}`);
 
     res.json({
       success: true,
@@ -399,7 +399,7 @@ export const getCompletedJobs = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error fetching completed jobs:', error);
+    // console.error('Error fetching completed jobs:', error);
     res.status(500).json({
       success: false,
       message: 'Server error',
@@ -491,7 +491,7 @@ export const getWorkerStats = async (req, res) => {
       data: { stats }
     });
   } catch (error) {
-    console.error('Get worker stats error:', error);
+    // console.error('Get worker stats error:', error);
     res.status(500).json({
       success: false,
       message: 'Error fetching worker statistics'
