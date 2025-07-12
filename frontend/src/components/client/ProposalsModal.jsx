@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Star, X, Eye } from 'lucide-react';
 import { serviceRequestService } from '../../services/serviceRequestService';
 import WorkerPortfolioModal from '../worker/WorkerPortfolioModal';
+import { WorkerCardSkeleton } from '../shared/skeletons';
 
 const ProposalsModal = ({ open, requestId, onClose, onSelectWorker, anchorRef }) => {
   const [workers, setWorkers] = React.useState([]);
@@ -157,11 +158,10 @@ const ProposalsModal = ({ open, requestId, onClose, onSelectWorker, anchorRef })
       {/* Content area that fills the exact card dimensions */}
       <div className="flex flex-col" style={{ height: 'calc(100% - 4rem)' }}>
         {loading ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="flex flex-col items-center gap-2">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-              <div className="text-gray-500 text-sm">Loading workers...</div>
-            </div>
+          <div className="flex-1 overflow-y-auto p-3 space-y-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <WorkerCardSkeleton key={i} />
+            ))}
           </div>
         ) : error ? (
           <div className="flex items-center justify-center h-full">

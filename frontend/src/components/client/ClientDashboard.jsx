@@ -10,6 +10,7 @@ import RequestDetailsClient from '../shared/RequestDetailsClient';
 import NewRequestModal from './NewRequestModal';
 import EditRequestModal from './EditRequestModal';
 import ReviewModal from '../reviews/ReviewModal';
+import { DashboardSkeleton } from '../shared/skeletons';
 
 const ClientDashboard = () => {
   const { userRole } = useUser();

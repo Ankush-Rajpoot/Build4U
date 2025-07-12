@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Bell, X, MessageSquare, Briefcase, CheckCircle, AlertCircle, Clock, XCircle, Play, Trash2 } from 'lucide-react';
 import { useNotifications } from '../../context/NotificationContext';
+import { NotificationSkeleton } from '../shared/skeletons';
 
 const NotificationCenter = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,8 @@ const NotificationCenter = () => {
     clearAllNotifications,
     clearAllMessageNotifications,
     removeNotification,
-    removeMessageNotification
+    removeMessageNotification,
+    loading
   } = useNotifications();
 
   const totalUnreadCount = unreadCount + unreadMessageCount;
@@ -179,7 +181,13 @@ const NotificationCenter = () => {
 
             {/* Notifications List */}
             <div className="flex-1 overflow-y-auto overscroll-contain">
-              {displayNotifications.length === 0 ? (
+              {loading ? (
+                <div className="p-3 space-y-3">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <NotificationSkeleton key={index} />
+                  ))}
+                </div>
+              ) : displayNotifications.length === 0 ? (
                 <div className="p-4 sm:p-6 text-center text-gray-500 dark:text-gray-400">
                   <Bell className="h-8 w-8 sm:h-10 sm:w-10 mx-auto mb-2 text-gray-300 dark:text-gray-600" />
                   <p className="font-medium text-sm">No notifications yet</p>

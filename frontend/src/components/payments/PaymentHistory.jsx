@@ -10,6 +10,7 @@ import {
   Eye
 } from 'lucide-react';
 import paymentService from '../../services/paymentService.js';
+import { PaymentHistorySkeleton } from '../shared/skeletons';
 
 const PaymentHistory = ({ serviceRequestId, userType }) => {
   const [paymentData, setPaymentData] = useState(null);
@@ -67,11 +68,7 @@ const PaymentHistory = ({ serviceRequestId, userType }) => {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent" />
-      </div>
-    );
+    return <PaymentHistorySkeleton />;
   }
 
   if (error) {

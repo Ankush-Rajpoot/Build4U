@@ -4,6 +4,7 @@ import { useUser } from '../../context/UserContext';
 import { serviceRequestService } from '../../services/serviceRequestService';
 import { authService } from '../../services/authService';
 import { reviewService } from '../../services/reviewService';
+import { WorkerStatsSkeleton } from '../shared/skeletons';
 
 const WorkerStats = () => {
   const { user } = useUser();
@@ -105,6 +106,12 @@ const WorkerStats = () => {
       fetchStats();
     }
   }, [user]);
+
+  // ...existing code...
+
+  if (loading) {
+    return <WorkerStatsSkeleton />;
+  }
 
   useEffect(() => {
     const updateArrowPosition = () => {

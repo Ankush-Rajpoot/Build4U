@@ -3,6 +3,7 @@ import { X, DollarSign, Send, Clock, CheckCircle, XCircle, AlertCircle, Trending
 import paymentService from '../../services/paymentService.js';
 import { serviceRequestService } from '../../services/serviceRequestService.js';
 import { useUser } from '../../context/UserContext.jsx';
+import { PaymentHistorySkeleton } from '../shared/skeletons';
 
 const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => {
   const { user } = useUser();
@@ -328,9 +329,7 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
 
               <div className="p-6 overflow-y-auto h-[calc(100%-80px)]">
                 {historyLoading ? (
-                  <div className="flex items-center justify-center py-12">
-                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent" />
-                  </div>
+                  <PaymentHistorySkeleton />
                 ) : paymentData ? (
                   <div className="space-y-6">
                     {/* Budget Overview */}
@@ -465,9 +464,7 @@ const ClientPaymentRequests = ({ serviceRequest, onApprove, onDecline, getStatus
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent" />
-      </div>
+      <PaymentHistorySkeleton />
     );
   }
 

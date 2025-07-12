@@ -10,6 +10,7 @@ import ClientDashboard from './components/client/ClientDashboard';
 import WorkerDashboard from './components/worker/WorkerDashboard';
 import GlobalMessageCenter from './components/messaging/GlobalMessageCenter';
 import VerifyEmail from './components/auth/VerifyEmail';
+import { LoadingScreenSkeleton } from './components/shared/skeletons';
 
 const ProtectedRoute = ({ element, requiredRole }) => {
   const { userRole, loading } = useUser();
@@ -17,10 +18,7 @@ const ProtectedRoute = ({ element, requiredRole }) => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-dark-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 dark:border-dark-primary mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-dark-text-secondary">Loading...</p>
-        </div>
+        <LoadingScreenSkeleton />
       </div>
     );
   }

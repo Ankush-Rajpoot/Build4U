@@ -8,6 +8,7 @@ import WorkerProfilePage from './WorkerProfilePage';
 import WorkerStats from './WorkerStats';
 import RequestList from '../shared/RequestList';
 import RequestDetailsWorker from '../shared/RequestDetailsWorker';
+import { DashboardSkeleton } from '../shared/skeletons';
 
 const WorkerDashboard = () => {
   const { userRole } = useUser();

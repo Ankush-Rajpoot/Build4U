@@ -16,6 +16,7 @@ import {
   Users
 } from 'lucide-react';
 import paymentService from '../../services/paymentService.js';
+import { PaymentHistorySkeleton } from '../shared/skeletons';
 
 const PaymentCenterModal = ({ isOpen = true, onClose, serviceRequestId, userType, request, embedded = false }) => {
   const [paymentData, setPaymentData] = useState(null);
@@ -142,10 +143,7 @@ const PaymentCenterModal = ({ isOpen = true, onClose, serviceRequestId, userType
         )}
 
         {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-indigo-500 border-t-transparent" />
-            <span className="ml-3 text-gray-600 dark:text-gray-400">Loading payment data...</span>
-          </div>
+          <PaymentHistorySkeleton />
         ) : error ? (
           <div className="p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg text-center">
             <XCircle className="h-8 w-8 text-red-500 mx-auto mb-3" />
@@ -376,10 +374,7 @@ const PaymentCenterModal = ({ isOpen = true, onClose, serviceRequestId, userType
           {/* Content */}
           <div className="p-6">
             {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-2 border-indigo-500 border-t-transparent" />
-                <span className="ml-3 text-gray-600 dark:text-gray-300">Loading payment data...</span>
-              </div>
+              <PaymentHistorySkeleton />
             ) : error ? (
               <div className="p-6 bg-red-50 border border-red-200 rounded-lg text-center">
                 <XCircle className="h-8 w-8 text-red-500 mx-auto mb-3" />

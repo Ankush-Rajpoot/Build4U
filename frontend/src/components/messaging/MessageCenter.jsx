@@ -4,6 +4,7 @@ import { useSocket } from '../../context/SocketContext';
 import { useChat } from '../../context/ChatContext';
 import { useUser } from '../../context/UserContext';
 import { messageService } from '../../services/messageService';
+import { MessageSkeleton } from '../shared/skeletons';
 
 const MessageCenter = ({ serviceRequest, onClose }) => {
   const [messages, setMessages] = useState([]);
@@ -492,8 +493,10 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
           <>
             <div className="flex-1 overflow-y-auto p-3 space-y-2 h-80">
               {loading ? (
-                <div className="flex justify-center items-center h-full">
-                  <div className={`animate-spin rounded-full h-5 w-5 border-b-2 ${colorScheme.spinnerBorder}`}></div>
+                <div className="space-y-4">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <MessageSkeleton key={i} isOwn={i % 2 === 0} />
+                  ))}
                 </div>
               ) : (
                 <>

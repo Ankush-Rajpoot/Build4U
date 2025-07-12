@@ -1,12 +1,14 @@
 import React from 'react';
 import RequestCard from './RequestCard';
+import { RequestCardSkeleton } from './skeletons';
 
 const RequestList = ({ requests, userRole, loading, onUpdate, onEdit, onView, onReview }) => {
   if (loading) {
     return (
-      <div className="bg-white dark:bg-dark-surface p-8 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border text-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-dark-primary mx-auto mb-4"></div>
-        <p className="text-gray-500 dark:text-dark-text-secondary">Loading requests...</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2.5 sm:gap-3">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <RequestCardSkeleton key={index} />
+        ))}
       </div>
     );
   }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { User, Star, MapPin, Clock, Badge, CheckCircle, AlertCircle, Users, Eye } from 'lucide-react';
 import { serviceRequestService } from '../../services/serviceRequestService';
 import WorkerPortfolioModal from '../worker/WorkerPortfolioModal';
+import { WorkerCardSkeleton } from './skeletons';
 
 const MatchingWorkers = ({ serviceRequestId, onClose }) => {
   const [matchingData, setMatchingData] = useState(null);
@@ -73,10 +74,11 @@ const MatchingWorkers = ({ serviceRequestId, onClose }) => {
   if (loading) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg p-4 max-w-xs w-full mx-2 shadow-md">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
-            <p className="text-gray-600 text-sm">Finding matching workers...</p>
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 max-w-md w-full mx-2 shadow-md">
+          <div className="space-y-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <WorkerCardSkeleton key={i} />
+            ))}
           </div>
         </div>
       </div>

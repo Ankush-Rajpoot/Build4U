@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import AuthForm from './auth/AuthForm.jsx';
 import LottieBackground from './shared/LottieBackground';
+import { LoadingScreenSkeleton } from './shared/skeletons';
 
 
 const TypewriterText = ({
@@ -103,10 +104,7 @@ const Landing = () => {
         
         {/* Loading Content */}
         <div className="relative z-20 flex items-center justify-center h-full">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-            <p className="mt-4 text-gray-700 font-medium">Loading...</p>
-          </div>
+          <LoadingScreenSkeleton />
         </div>
       </div>
     );
