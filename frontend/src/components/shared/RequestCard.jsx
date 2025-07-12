@@ -32,17 +32,17 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
   const getStatusColor = () => {
     switch (request.status) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 border-yellow-200 dark:border-yellow-700';
       case 'accepted':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 border-blue-200 dark:border-blue-700';
       case 'in-progress':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
+        return 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-400 border-purple-200 dark:border-purple-700';
       case 'completed':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 border-green-200 dark:border-green-700';
       case 'cancelled':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 border-red-200 dark:border-red-700';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 border-gray-200 dark:border-gray-600';
     }
   };
 
@@ -149,24 +149,24 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
 
   return (
     <>
-      <div ref={cardRef} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 min-w-0 relative">
+      <div ref={cardRef} className="bg-white dark:bg-dark-surface rounded-lg shadow-sm border border-gray-200 dark:border-dark-border overflow-hidden hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 min-w-0 relative">
       <div className="p-2 sm:p-3 flex flex-col h-full">
         <div className="flex justify-between items-start mb-2 gap-2">
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-1 break-words">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-text mb-1 line-clamp-1 break-words">
               {request.title}
             </h3>
             <div className="flex flex-wrap items-center gap-1">
               <span className={`inline-block px-1.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor()}`}>
                 {request.status.charAt(0).toUpperCase() + request.status.slice(1).replace('-', ' ')}
               </span>
-              <span className="inline-block px-1.5 py-0.5 bg-gray-100 text-gray-700 rounded text-xs font-medium">
+              <span className="inline-block px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded text-xs font-medium">
                 {request.category}
               </span>
               {hasReview && (
                 <div className="flex items-center space-x-0.5">
                   <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                  <span className="text-xs font-medium text-gray-600">{request.review.rating}</span>
+                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{request.review.rating}</span>
                 </div>
               )}
             </div>
@@ -177,7 +177,7 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
             {userRole === 'client' && request.status === 'pending' && (
               <button
                 onClick={handleEdit}
-                className="p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                className="p-1 text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors"
                 title="Edit Request"
               >
                 <Edit className="h-3 w-3" />
@@ -185,7 +185,7 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
             )}
             <button
               onClick={handleView}
-              className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded transition-colors"
+              className="p-1 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded transition-colors"
               title="View Details"
             >
               <Eye className="h-3 w-3" />
@@ -193,7 +193,7 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
           </div>
         </div>
         
-        <p className="text-gray-600 mb-2 text-xs line-clamp-2 break-words">
+        <p className="text-gray-600 dark:text-dark-text-secondary mb-2 text-xs line-clamp-2 break-words">
           {request.description}
         </p>
         
@@ -204,13 +204,13 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
               {request.requiredSkills.slice(0, 2).map((skill, index) => (
                 <span
                   key={index}
-                  className="px-1.5 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full"
+                  className="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-xs rounded-full"
                 >
                   {skill}
                 </span>
               ))}
               {request.requiredSkills.length > 2 && (
-                <span className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
+                <span className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">
                   +{request.requiredSkills.length - 2}
                 </span>
               )}
@@ -219,46 +219,46 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
         )}
         
         <div className="flex flex-col space-y-1 mb-2">
-          <div className="flex items-center text-xs text-gray-500">
-            <IndianRupee className="h-3 w-3 mr-1 text-green-600" />
+          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+            <IndianRupee className="h-3 w-3 mr-1 text-green-600 dark:text-green-400" />
             <span className="font-medium">₹{request.budget?.toLocaleString()}</span>
           </div>
           
-          <div className="flex items-center text-xs text-gray-500">
-            <Calendar className="h-3 w-3 mr-1 text-blue-600" />
+          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+            <Calendar className="h-3 w-3 mr-1 text-blue-600 dark:text-blue-400" />
             <span>{formattedDate}</span>
           </div>
           
           {request.client && (
-            <div className="flex items-center text-xs text-gray-500">
-              <User className="h-3 w-3 mr-1 text-purple-600" />
+            <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+              <User className="h-3 w-3 mr-1 text-purple-600 dark:text-purple-400" />
               <span>Client: {request.client.name}</span>
               {request.client.phone && (
-                <span className="ml-1 text-gray-400">• {request.client.phone}</span>
+                <span className="ml-1 text-gray-400 dark:text-gray-500">• {request.client.phone}</span>
               )}
             </div>
           )}
 
           {request.worker && (
-            <div className="flex items-center text-xs text-gray-500">
-              <User className="h-3 w-3 mr-1 text-orange-600" />
+            <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+              <User className="h-3 w-3 mr-1 text-orange-600 dark:text-orange-400" />
               <span>Worker: {request.worker.name}</span>
               {request.worker.phone && (
-                <span className="ml-1 text-gray-400">• {request.worker.phone}</span>
+                <span className="ml-1 text-gray-400 dark:text-gray-500">• {request.worker.phone}</span>
               )}
             </div>
           )}
           
           {(request.location?.city || request.location?.address) && (
-            <div className="flex items-center text-xs text-gray-500">
-              <MapPin className="h-3 w-3 mr-1 text-red-600" />
+            <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+              <MapPin className="h-3 w-3 mr-1 text-red-600 dark:text-red-400" />
               <span className="truncate">{request.location.address || `${request.location.city}, ${request.location.state}`}</span>
             </div>
           )}
         </div>
 
         {error && (
-          <div className="mb-2 text-xs text-red-600 bg-red-50 p-2 rounded border border-red-200">
+          <div className="mb-2 text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 p-2 rounded border border-red-200 dark:border-red-700">
             {error}
           </div>
         )}
@@ -305,22 +305,22 @@ const RequestCard = ({ request, userRole, onUpdate, onEdit, onView, onReview }) 
       {/* Confirmation Dialog */}
       {showConfirmDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-xl shadow-2xl border border-gray-200 p-6 w-full max-w-md mx-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Confirm Request Submission</h3>
-            <p className="text-gray-600 mb-6">
+          <div className="bg-white dark:bg-dark-surface rounded-xl shadow-2xl border border-gray-200 dark:border-dark-border p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text mb-3">Confirm Request Submission</h3>
+            <p className="text-gray-600 dark:text-dark-text-secondary mb-6">
               Are you sure you want to send a request for this service? This will notify the client about your interest.
             </p>
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowConfirmDialog(false)}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium"
               >
                 Cancel
               </button>
               <button
                 onClick={handleProposalSubmit}
                 disabled={proposalLoading}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors font-medium"
+                className="px-4 py-2 bg-green-600 dark:bg-green-700 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-800 disabled:opacity-50 transition-colors font-medium"
               >
                 {proposalLoading ? 'Submitting...' : 'Submit Request'}
               </button>
@@ -397,15 +397,26 @@ const ClientActions = ({ request, onAction, loading, onMessage, canMessage, onEd
           </div>
         </>
       )}
-      {(request.status === 'accepted' || request.status === 'in-progress') && canMessage && (
-        <MessageButton
-          onClick={() => onMessage(request)}
-          serviceRequestId={request._id}
-          className="min-w-[70px] sm:min-w-[90px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
+      {/* Group Message and View Details buttons together */}
+      <div className="flex flex-wrap gap-1 sm:gap-2 w-full">
+        {(request.status === 'accepted' || request.status === 'in-progress') && canMessage && (
+          <MessageButton
+            onClick={() => onMessage(request)}
+            serviceRequestId={request._id}
+            className="flex-1 min-w-[70px] sm:min-w-[90px] px-2 sm:px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center justify-center transition-colors"
+          >
+            Message
+          </MessageButton>
+        )}
+        {/* Always show View Details button */}
+        <button 
+          onClick={() => onView(request)}
+          className="flex-1 min-w-[70px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center whitespace-nowrap"
         >
-          Message
-        </MessageButton>
-      )}
+          <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+          Details
+        </button>
+      </div>
       {request.status === 'completed' && !hasReview && (
         <button 
           onClick={onReview}
@@ -415,15 +426,6 @@ const ClientActions = ({ request, onAction, loading, onMessage, canMessage, onEd
           Leave Review
         </button>
       )}
-      {/* Always show View Details button */}
-      <button 
-        onClick={() => onView(request)}
-        className="min-w-[70px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
-      >
-        <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-        <span className="hidden sm:inline">View Details</span>
-        <span className="sm:hidden">Details</span>
-      </button>
     </div>
   );
 };
@@ -452,7 +454,7 @@ const WorkerActions = ({ request, onAction, loading, onMessage, canMessage, onVi
         <MessageButton
           onClick={() => onMessage(request)}
           serviceRequestId={request._id}
-          className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
+          className="flex-1 min-w-[80px] sm:min-w-[100px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center justify-center transition-colors"
         >
           Message
         </MessageButton>
@@ -478,67 +480,13 @@ const WorkerActions = ({ request, onAction, loading, onMessage, canMessage, onVi
       {/* Always show a single View Details button for worker */}
       <button 
         onClick={() => onView(request)}
-        className="flex-1 min-w-[80px] sm:min-w-[120px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white border border-gray-300 rounded text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
+        className="flex-1 min-w-[80px] sm:min-w-[120px] px-2 sm:px-3 py-1.5 sm:py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center"
       >
         <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-        <span className="hidden sm:inline">View Details</span>
-        <span className="sm:hidden">Details</span>
+        Details
       </button>
     </div>
   );
 };
 
 export default RequestCard;
-
-// const getInitials = (name) => {
-//   if (!name) return 'U';
-//   const nameParts = name.trim().split(' ');
-//   if (nameParts.length === 1) {
-//     return nameParts[0].charAt(0).toUpperCase();
-//   }
-//   return (nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0)).toUpperCase();
-// };
-
-// // Function to get consistent background color based on name
-// const getAvatarColor = (name) => {
-//   const colors = [
-//     'bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 
-//     'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 'bg-teal-500',
-//     'bg-orange-500', 'bg-cyan-500', 'bg-emerald-500', 'bg-rose-500'
-//   ];
-  
-//   if (!name) return 'bg-gray-500';
-  
-//   // Generate consistent color based on name
-//   let hash = 0;
-//   for (let i = 0; i < name.length; i++) {
-//     hash = name.charCodeAt(i) + ((hash << 5) - hash);
-//   }
-//   return colors[Math.abs(hash) % colors.length];
-// };
-
-// Avatar component
-// const Avatar = ({ person, size = 'sm' }) => {
-//   if (!person) return null;
-  
-//   const sizeClasses = size === 'sm' ? 'w-5 h-5 text-xs' : 'w-8 h-8 text-sm';
-  
-//   if (person.profileImage || person.profilePicture) {
-//     return (
-//       <img
-//         src={person.profileImage || person.profilePicture}
-//         alt={person.name || 'User'}
-//         className={`${sizeClasses} rounded-full object-cover border border-gray-200 flex-shrink-0`}
-//       />
-//     );
-//   }
-  
-//   const initials = getInitials(person.name);
-//   const colorClass = getAvatarColor(person.name);
-  
-//   return (
-//     <div className={`${sizeClasses} rounded-full ${colorClass} flex items-center justify-center border border-gray-200 flex-shrink-0`}>
-//       <span className="text-white font-semibold">{initials}</span>
-//     </div>
-//   );
-// };

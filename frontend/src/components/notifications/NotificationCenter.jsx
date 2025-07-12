@@ -101,7 +101,7 @@ const NotificationCenter = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-1.5 sm:p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        className="relative p-1.5 sm:p-2 rounded-full text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-dark-primary transition-colors"
       >
         <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
         {totalUnreadCount > 0 && (
@@ -117,29 +117,29 @@ const NotificationCenter = () => {
             className="fixed inset-0 z-10" 
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-0 sm:transform-none mt-2 w-72 xs:w-80 sm:w-80 md:w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-20 max-h-[70vh] sm:max-h-[500px] flex flex-col min-w-0 max-w-[calc(100vw-2rem)] mx-4 sm:mx-0">
+          <div className="absolute left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-0 sm:transform-none mt-2 w-72 xs:w-80 sm:w-80 md:w-96 bg-white dark:bg-dark-surface rounded-lg shadow-xl border border-gray-200 dark:border-dark-border z-20 max-h-[70vh] sm:max-h-[500px] flex flex-col min-w-0 max-w-[calc(100vw-2rem)] mx-4 sm:mx-0">
             {/* Header */}
-            <div className="p-3 sm:p-4 border-b border-gray-200 flex-shrink-0">
+            <div className="p-3 sm:p-4 border-b border-gray-200 dark:border-dark-border flex-shrink-0">
               <div className="flex items-center justify-between mb-2 sm:mb-3">
-                <h3 className="text-sm sm:text-base font-semibold text-gray-900">
+                <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-dark-text">
                   Notifications
                 </h3>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
                 >
-                  <X className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500" />
+                  <X className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 dark:text-gray-400" />
                 </button>
               </div>
               
               {/* Tabs */}
-              <div className="flex space-x-1 bg-gray-100 rounded-lg p-0.5">
+              <div className="flex space-x-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
                 <button
                   onClick={() => setActiveTab('all')}
                   className={`flex-1 px-2 py-1 text-xs font-medium rounded-md transition-colors ${
                     activeTab === 'all'
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-white dark:bg-dark-surface text-gray-900 dark:text-dark-text shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
                   }`}
                 >
                   All ({unreadCount})
@@ -148,8 +148,8 @@ const NotificationCenter = () => {
                   onClick={() => setActiveTab('messages')}
                   className={`flex-1 px-2 py-1 text-xs font-medium rounded-md transition-colors ${
                     activeTab === 'messages'
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-white dark:bg-dark-surface text-gray-900 dark:text-dark-text shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
                   }`}
                 >
                   Messages ({unreadMessageCount})
@@ -162,14 +162,14 @@ const NotificationCenter = () => {
                   {displayUnreadCount > 0 && (
                     <button
                       onClick={handleMarkAllAsRead}
-                      className="text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 hover:bg-blue-50 rounded transition-colors"
+                      className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium px-2 py-1 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors"
                     >
                       Mark all read
                     </button>
                   )}
                   <button
                     onClick={handleClearAll}
-                    className="text-xs text-red-600 hover:text-red-800 font-medium px-2 py-1 hover:bg-red-50 rounded transition-colors"
+                    className="text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium px-2 py-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                   >
                     Clear all
                   </button>
@@ -180,8 +180,8 @@ const NotificationCenter = () => {
             {/* Notifications List */}
             <div className="flex-1 overflow-y-auto overscroll-contain">
               {displayNotifications.length === 0 ? (
-                <div className="p-4 sm:p-6 text-center text-gray-500">
-                  <Bell className="h-8 w-8 sm:h-10 sm:w-10 mx-auto mb-2 text-gray-300" />
+                <div className="p-4 sm:p-6 text-center text-gray-500 dark:text-gray-400">
+                  <Bell className="h-8 w-8 sm:h-10 sm:w-10 mx-auto mb-2 text-gray-300 dark:text-gray-600" />
                   <p className="font-medium text-sm">No notifications yet</p>
                   <p className="text-xs mt-1 px-2">
                     {activeTab === 'messages' 
@@ -191,13 +191,13 @@ const NotificationCenter = () => {
                   </p>
                 </div>
               ) : (
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y divide-gray-100 dark:divide-gray-700">
                   {displayNotifications.map((notification) => (
                     <div
                       key={notification.id}
                       onClick={() => handleNotificationClick(notification, activeTab === 'messages')}
-                      className={`p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-colors group ${
-                        !notification.isRead ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
+                      className={`p-3 sm:p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors group ${
+                        !notification.isRead ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500 dark:border-l-blue-400' : ''
                       }`}
                     >
                       <div className="flex items-start space-x-3">
@@ -208,27 +208,27 @@ const NotificationCenter = () => {
                           <div className="flex items-start justify-between">
                             <div className="flex-1 min-w-0 pr-2">
                               <p className={`text-sm font-medium break-words ${
-                                !notification.isRead ? 'text-gray-900' : 'text-gray-700'
+                                !notification.isRead ? 'text-gray-900 dark:text-dark-text' : 'text-gray-700 dark:text-gray-300'
                               }`}>
                                 {notification.title}
                               </p>
-                              <p className="text-sm text-gray-600 mt-1 line-clamp-2 break-words">
+                              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2 break-words">
                                 {notification.message}
                               </p>
                               <div className="flex items-center justify-between mt-2">
-                                <p className="text-xs text-gray-400">
+                                <p className="text-xs text-gray-400 dark:text-gray-500">
                                   {formatTime(notification.timestamp)}
                                 </p>
                                 {!notification.isRead && (
-                                  <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                                  <div className="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full flex-shrink-0"></div>
                                 )}
                               </div>
                             </div>
                             <button
                               onClick={(e) => handleRemoveNotification(e, notification.id, activeTab === 'messages')}
-                              className="ml-1 p-1 opacity-0 group-hover:opacity-100 hover:bg-gray-200 rounded-full transition-all flex-shrink-0"
+                              className="ml-1 p-1 opacity-0 group-hover:opacity-100 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-all flex-shrink-0"
                             >
-                              <Trash2 className="h-3 w-3 text-gray-400" />
+                              <Trash2 className="h-3 w-3 text-gray-400 dark:text-gray-500" />
                             </button>
                           </div>
                         </div>

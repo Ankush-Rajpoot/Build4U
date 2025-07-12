@@ -22,6 +22,7 @@ export const SocketProvider = ({ children }) => {
       // console.log('Connecting to socket with user:', user.name, 'role:', userRole);
       
       const newSocket = io('https://serviceconnectalpha.onrender.com', {
+      // const newSocket = io('http://localhost:5000', {
         auth: {
           token
         },

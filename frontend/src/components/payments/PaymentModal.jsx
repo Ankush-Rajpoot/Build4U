@@ -146,25 +146,25 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
         >
           {/* Front: Payment Request Form (Workers) or Payment Requests to Approve (Clients) */}
           <div className="absolute inset-0 w-full h-full backface-hidden">
-            <div className="bg-white rounded-xl shadow-2xl border border-gray-200 h-full overflow-hidden">
-              <div className="flex justify-between items-center p-6 border-b border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 h-full overflow-hidden">
+              <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                     {userType === 'Worker' ? 'Request Payment' : 'Payment Requests'}
                   </h2>
-                  <p className="text-sm text-gray-600 mt-1">{serviceRequest.title}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{serviceRequest.title}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setIsFlipped(true)}
-                    className="text-blue-600 hover:text-blue-700 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                     title="View Payment History"
                   >
                     <History className="h-5 w-5" />
                   </button>
                   <button
                     onClick={handleClose}
-                    className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -175,19 +175,19 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                 {userType === 'Worker' ? (
                   /* Worker: Payment Request Form */
                   <div>
-                    <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                      <h3 className="font-medium text-blue-900">{serviceRequest.title}</h3>
-                      <p className="text-sm text-blue-700">
+                    <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+                      <h3 className="font-medium text-blue-900 dark:text-blue-100">{serviceRequest.title}</h3>
+                      <p className="text-sm text-blue-700 dark:text-blue-300">
                         Total Budget: {paymentService.formatCurrency(serviceRequest.budget)}
                       </p>
-                      <div className="mt-2 text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded inline-block">
+                      <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-800/50 px-2 py-1 rounded inline-block">
                         🧪 TEST MODE - No real payments will be processed
                       </div>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Amount (₹) <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -198,16 +198,16 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                           max={serviceRequest.budget}
                           step="1"
                           required
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                           placeholder="Enter amount"
                         />
                         {amount && (
-                          <div className="mt-2 text-sm text-gray-600 bg-gray-50 p-3 rounded border">
+                          <div className="mt-2 text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-3 rounded border border-gray-200 dark:border-gray-600">
                             <div className="flex justify-between">
                               <span>Platform Fee (5%):</span>
-                              <span className="text-red-600">-{paymentService.formatCurrency(paymentService.calculatePlatformFee(parseFloat(amount) || 0))}</span>
+                              <span className="text-red-600 dark:text-red-400">-{paymentService.formatCurrency(paymentService.calculatePlatformFee(parseFloat(amount) || 0))}</span>
                             </div>
-                            <div className="flex justify-between font-medium text-green-600 mt-1 pt-1 border-t border-gray-200">
+                            <div className="flex justify-between font-medium text-green-600 dark:text-green-400 mt-1 pt-1 border-t border-gray-200 dark:border-gray-600">
                               <span>You'll receive:</span>
                               <span>{paymentService.formatCurrency(paymentService.calculateWorkerAmount(parseFloat(amount) || 0))}</span>
                             </div>
@@ -216,7 +216,7 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Description <span className="text-red-500">*</span>
                         </label>
                         <textarea
@@ -226,26 +226,26 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                           rows={4}
                           minLength={5}
                           maxLength={200}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                           placeholder="Brief description of work completed (e.g., 'Completed initial design phase')"
                         />
-                        <div className="mt-1 text-xs text-gray-500">
+                        <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                           {description.length}/200 characters (minimum 5)
                         </div>
                       </div>
 
                       {error && (
-                        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                          <p className="text-sm text-red-600">{error}</p>
+                        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg">
+                          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
                           {error.includes('not authorized') && userType === 'Worker' && (
                             <div className="mt-3">
-                              <p className="text-sm text-gray-600 mb-2">
+                              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                                 This usually means you're not assigned to this service request yet.
                               </p>
                               <button
                                 onClick={handleAssignWorker}
                                 disabled={loading}
-                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white px-3 py-2 rounded-lg text-sm transition-colors"
+                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm transition-colors"
                               >
                                 {loading ? (
                                   <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
@@ -263,7 +263,7 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                         <button
                           type="button"
                           onClick={handleClose}
-                          className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                          className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors font-medium"
                           disabled={loading}
                         >
                           Cancel
@@ -271,7 +271,7 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                         <button
                           type="submit"
                           disabled={loading || !isValidAmount || !isValidDescription}
-                          className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-lg transition-colors font-medium"
+                          className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-3 rounded-lg transition-colors font-medium"
                         >
                           {loading ? (
                             <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
@@ -303,23 +303,23 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
 
           {/* Back: Payment History */}
           <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
-            <div className="bg-white rounded-xl shadow-2xl border border-gray-200 h-full overflow-hidden">
-              <div className="flex justify-between items-center p-6 border-b border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 h-full overflow-hidden">
+              <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Payment History</h2>
-                  <p className="text-sm text-gray-600 mt-1">{serviceRequest.title}</p>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Payment History</h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{serviceRequest.title}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setIsFlipped(false)}
-                    className="text-blue-600 hover:text-blue-700 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                     title="Back to Payment Request"
                   >
                     <ArrowLeft className="h-5 w-5" />
                   </button>
                   <button
                     onClick={handleClose}
-                    className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -335,45 +335,45 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                   <div className="space-y-6">
                     {/* Budget Overview */}
                     {paymentData.summary && (
-                      <div className="bg-gradient-to-r from-blue-50 to-green-50 p-6 rounded-lg border border-blue-200">
+                      <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-700">
                         <div className="flex items-center gap-2 mb-4">
-                          <TrendingUp className="h-5 w-5 text-blue-500" />
-                          <h3 className="text-lg font-semibold text-gray-900">Budget Overview</h3>
+                          <TrendingUp className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Budget Overview</h3>
                         </div>
                         
                         <div className="grid grid-cols-2 gap-4 mb-4">
-                          <div className="bg-white p-3 rounded-lg border border-blue-100">
-                            <p className="text-sm text-blue-600 font-medium">Total Budget</p>
-                            <p className="text-xl font-bold text-blue-900">
+                          <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-blue-100 dark:border-blue-700">
+                            <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">Total Budget</p>
+                            <p className="text-xl font-bold text-blue-900 dark:text-blue-100">
                               {paymentService.formatCurrency(paymentData.summary.totalBudget)}
                             </p>
                           </div>
-                          <div className="bg-white p-3 rounded-lg border border-green-100">
-                            <p className="text-sm text-green-600 font-medium">Amount Paid</p>
-                            <p className="text-xl font-bold text-green-900">
+                          <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-green-100 dark:border-green-700">
+                            <p className="text-sm text-green-600 dark:text-green-400 font-medium">Amount Paid</p>
+                            <p className="text-xl font-bold text-green-900 dark:text-green-100">
                               {paymentService.formatCurrency(paymentData.summary.amountPaid)}
                             </p>
                           </div>
-                          <div className="bg-white p-3 rounded-lg border border-yellow-100">
-                            <p className="text-sm text-yellow-600 font-medium">Pending</p>
-                            <p className="text-xl font-bold text-yellow-900">
+                          <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-yellow-100 dark:border-yellow-700">
+                            <p className="text-sm text-yellow-600 dark:text-yellow-400 font-medium">Pending</p>
+                            <p className="text-xl font-bold text-yellow-900 dark:text-yellow-100">
                               {paymentService.formatCurrency(paymentData.summary.amountPending)}
                             </p>
                           </div>
-                          <div className="bg-white p-3 rounded-lg border border-gray-100">
-                            <p className="text-sm text-gray-600 font-medium">Remaining</p>
-                            <p className="text-xl font-bold text-gray-900">
+                          <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Remaining</p>
+                            <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                               {paymentService.formatCurrency(paymentData.summary.remainingBudget)}
                             </p>
                           </div>
                         </div>
 
-                        <div className="bg-white p-3 rounded-lg border border-gray-100">
-                          <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+                        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
+                          <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
                             <span>Budget Utilization</span>
                             <span>{paymentData.summary.utilizationPercentage}%</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                             <div
                               className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-300"
                               style={{ width: `${paymentData.summary.utilizationPercentage}%` }}
@@ -385,7 +385,7 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
 
                     {/* Payment Requests */}
                     <div>
-                      <h4 className="text-lg font-medium text-gray-900 mb-4">Payment Requests</h4>
+                      <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Payment Requests</h4>
                       {paymentData.paymentRequests && paymentData.paymentRequests.length > 0 ? (
                         <div className="space-y-3">
                           {paymentData.paymentRequests.map((request) => (
@@ -399,8 +399,8 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                           ))}
                         </div>
                       ) : (
-                        <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-                          <History className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                        <div className="text-center py-8 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-600">
+                          <History className="h-12 w-12 mx-auto mb-3 text-gray-300 dark:text-gray-500" />
                           <p>No payment requests yet</p>
                           <p className="text-sm mt-1">Create your first payment request using the form</p>
                         </div>
@@ -410,7 +410,7 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                     {/* Transactions */}
                     {paymentData.transactions && paymentData.transactions.length > 0 && (
                       <div>
-                        <h4 className="text-lg font-medium text-gray-900 mb-4">Transaction History</h4>
+                        <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Transaction History</h4>
                         <div className="space-y-3">
                           {paymentData.transactions.map((transaction) => (
                             <TransactionCard
@@ -424,7 +424,7 @@ const PaymentModal = ({ open, onClose, serviceRequest, onPaymentRequested }) => 
                     )}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                     <p>No payment data available</p>
                   </div>
                 )}
@@ -476,24 +476,24 @@ const ClientPaymentRequests = ({ serviceRequest, onApprove, onDecline, getStatus
   return (
     <div className="space-y-6">
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-600">{error}</p>
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg">
+          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
         </div>
       )}
 
       <div className="text-center">
-        <div className="bg-blue-50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-          <DollarSign className="h-8 w-8 text-blue-600" />
+        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+          <DollarSign className="h-8 w-8 text-blue-600 dark:text-blue-400" />
         </div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">Payment Requests</h3>
-        <p className="text-gray-600">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Payment Requests</h3>
+        <p className="text-gray-600 dark:text-gray-400">
           Review and approve payment requests from your worker
         </p>
       </div>
 
       {pendingRequests.length > 0 ? (
         <div className="space-y-4">
-          <h4 className="text-lg font-medium text-gray-900">Pending Approval ({pendingRequests.length})</h4>
+          <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100">Pending Approval ({pendingRequests.length})</h4>
           {pendingRequests.map((request) => (
             <PaymentRequestCard
               key={request._id}
@@ -506,8 +506,8 @@ const ClientPaymentRequests = ({ serviceRequest, onApprove, onDecline, getStatus
           ))}
         </div>
       ) : (
-        <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-          <Clock className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+        <div className="text-center py-8 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-600">
+          <Clock className="h-12 w-12 mx-auto mb-3 text-gray-300 dark:text-gray-500" />
           <p className="font-medium">No pending payment requests</p>
           <p className="text-sm mt-1">Payment requests from workers will appear here</p>
         </div>
@@ -515,30 +515,30 @@ const ClientPaymentRequests = ({ serviceRequest, onApprove, onDecline, getStatus
 
       {/* Budget Summary */}
       {paymentData?.summary && (
-        <div className="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg border border-blue-200">
-          <h4 className="text-sm font-medium text-blue-800 mb-3">Budget Summary</h4>
+        <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+          <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-3">Budget Summary</h4>
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div>
-              <span className="text-blue-600">Total Budget:</span>
-              <span className="ml-2 font-semibold text-blue-900">
+              <span className="text-blue-600 dark:text-blue-400">Total Budget:</span>
+              <span className="ml-2 font-semibold text-blue-900 dark:text-blue-100">
                 {paymentService.formatCurrency(paymentData.summary.totalBudget)}
               </span>
             </div>
             <div>
-              <span className="text-green-600">Amount Paid:</span>
-              <span className="ml-2 font-semibold text-green-900">
+              <span className="text-green-600 dark:text-green-400">Amount Paid:</span>
+              <span className="ml-2 font-semibold text-green-900 dark:text-green-100">
                 {paymentService.formatCurrency(paymentData.summary.amountPaid)}
               </span>
             </div>
             <div>
-              <span className="text-yellow-600">Pending:</span>
-              <span className="ml-2 font-semibold text-yellow-900">
+              <span className="text-yellow-600 dark:text-yellow-400">Pending:</span>
+              <span className="ml-2 font-semibold text-yellow-900 dark:text-yellow-100">
                 {paymentService.formatCurrency(paymentData.summary.amountPending)}
               </span>
             </div>
             <div>
-              <span className="text-gray-600">Remaining:</span>
-              <span className="ml-2 font-semibold text-gray-900">
+              <span className="text-gray-600 dark:text-gray-400">Remaining:</span>
+              <span className="ml-2 font-semibold text-gray-900 dark:text-gray-100">
                 {paymentService.formatCurrency(paymentData.summary.remainingBudget)}
               </span>
             </div>
@@ -546,8 +546,8 @@ const ClientPaymentRequests = ({ serviceRequest, onApprove, onDecline, getStatus
         </div>
       )}
 
-      <div className="pt-4 border-t border-gray-200">
-        <p className="text-sm text-gray-500 text-center">
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
+        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
           💡 Tip: Approving payments will trigger automatic payouts to the worker's bank account
         </p>
       </div>
@@ -568,15 +568,15 @@ const PaymentRequestCard = ({ request, onApprove, onDecline, getStatusIcon, show
 
   return (
     <>
-      <div className="bg-white p-4 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             {getStatusIcon(request.status)}
             <div>
-              <h4 className="font-medium text-gray-900">
+              <h4 className="font-medium text-gray-900 dark:text-gray-100">
                 {paymentService.formatCurrency(request.amount)}
               </h4>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Requested on {new Date(request.requestedAt).toLocaleDateString()}
               </p>
             </div>
@@ -586,7 +586,7 @@ const PaymentRequestCard = ({ request, onApprove, onDecline, getStatusIcon, show
           </span>
         </div>
 
-        <p className="text-gray-700 mb-3">{request.description}</p>
+        <p className="text-gray-700 dark:text-gray-300 mb-3">{request.description}</p>
 
         {request.status === 'pending' && showActions && (
           <div className="flex gap-2">
@@ -608,8 +608,8 @@ const PaymentRequestCard = ({ request, onApprove, onDecline, getStatusIcon, show
         )}
 
         {request.status === 'declined' && request.declineReason && (
-          <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-600">
+          <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg">
+            <p className="text-sm text-red-600 dark:text-red-400">
               <strong>Decline Reason:</strong> {request.declineReason}
             </p>
           </div>
@@ -619,8 +619,8 @@ const PaymentRequestCard = ({ request, onApprove, onDecline, getStatusIcon, show
       {/* Decline Modal */}
       {showDeclineModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
               Decline Payment Request
             </h3>
             <textarea
@@ -628,12 +628,12 @@ const PaymentRequestCard = ({ request, onApprove, onDecline, getStatusIcon, show
               onChange={(e) => setDeclineReason(e.target.value)}
               placeholder="Reason for declining (optional)"
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
             <div className="flex gap-3 mt-4">
               <button
                 onClick={() => setShowDeclineModal(false)}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600"
               >
                 Cancel
               </button>
@@ -654,15 +654,15 @@ const PaymentRequestCard = ({ request, onApprove, onDecline, getStatusIcon, show
 // Transaction Card Component
 const TransactionCard = ({ transaction, getStatusIcon }) => {
   return (
-    <div className="bg-white p-4 rounded-lg border border-gray-200">
+    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           {getStatusIcon(transaction.status)}
           <div>
-            <h4 className="font-medium text-gray-900">
+            <h4 className="font-medium text-gray-900 dark:text-gray-100">
               {paymentService.formatCurrency(transaction.amount)}
             </h4>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Transaction ID: {transaction.transactionId}
             </p>
           </div>
@@ -673,24 +673,24 @@ const TransactionCard = ({ transaction, getStatusIcon }) => {
       </div>
 
       {transaction.description && (
-        <p className="text-gray-700 mb-3">{transaction.description}</p>
+        <p className="text-gray-700 dark:text-gray-300 mb-3">{transaction.description}</p>
       )}
 
       <div className="grid grid-cols-2 gap-4 text-sm">
         <div>
-          <span className="text-gray-600">Platform Fee:</span>
+          <span className="text-gray-600 dark:text-gray-400">Platform Fee:</span>
           <span className="ml-2 font-medium">
             {paymentService.formatCurrency(transaction.platformFee)}
           </span>
         </div>
         <div>
-          <span className="text-gray-600">Worker Amount:</span>
-          <span className="ml-2 font-medium text-green-600">
+          <span className="text-gray-600 dark:text-gray-400">Worker Amount:</span>
+          <span className="ml-2 font-medium text-green-600 dark:text-green-400">
             {paymentService.formatCurrency(transaction.workerAmount)}
           </span>
         </div>
         <div className="col-span-2">
-          <span className="text-gray-600">Processed:</span>
+          <span className="text-gray-600 dark:text-gray-400">Processed:</span>
           <span className="ml-2 font-medium">
             {new Date(transaction.createdAt).toLocaleString()}
           </span>

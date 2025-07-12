@@ -42,7 +42,7 @@ const Avatar = ({ person, size = 'lg' }) => {
       <img
         src={person.profileImage || person.profilePicture}
         alt={person.name || 'User'}
-        className={`${sizeClasses} rounded-full object-cover border border-gray-200 flex-shrink-0`}
+        className={`${sizeClasses} rounded-full object-cover border border-gray-200 dark:border-gray-700 flex-shrink-0`}
       />
     );
   }
@@ -51,7 +51,7 @@ const Avatar = ({ person, size = 'lg' }) => {
   const colorClass = getAvatarColor(person.name);
   
   return (
-    <div className={`${sizeClasses} rounded-full ${colorClass} flex items-center justify-center border border-gray-200 flex-shrink-0`}>
+    <div className={`${sizeClasses} rounded-full ${colorClass} flex items-center justify-center border border-gray-200 dark:border-gray-700 flex-shrink-0`}>
       <span className="text-white font-semibold">{initials}</span>
     </div>
   );
@@ -70,11 +70,11 @@ const renderStars = (value) => (
     {[1, 2, 3, 4, 5].map((star) => (
       <Star
         key={star}
-        className={`h-4 w-4 ${star <= value ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
+        className={`h-4 w-4 ${star <= value ? 'text-yellow-400 fill-current' : 'text-gray-200 dark:text-gray-600'}`}
       />
     ))}
     {typeof value === 'number' && value > 0 && (
-      <span className="ml-1 text-xs text-gray-700">{value}/5</span>
+      <span className="ml-1 text-xs text-gray-700 dark:text-gray-300">{value}/5</span>
     )}
   </span>
 );
@@ -151,27 +151,27 @@ const RequestDetailsClient = ({ request, onClose }) => {
   const renderWorkerInfo = () => {
     if (!request.worker) return null;
     return (
-      <div className="mb-4 bg-blue-50 rounded-lg p-4 flex items-center gap-4">
+      <div className="mb-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 flex items-center gap-4">
         <Avatar person={request.worker} size="lg" />
         <div>
-          <div className="font-bold text-blue-900">{request.worker.name}</div>
+          <div className="font-bold text-blue-900 dark:text-blue-100">{request.worker.name}</div>
           {request.worker.email && (
-            <div className="text-xs text-blue-700 mb-1">
+            <div className="text-xs text-blue-700 dark:text-blue-300 mb-1">
               Email: {request.worker.email}
             </div>
           )}
           {request.worker.phone && (
-            <div className="text-xs text-blue-700 mb-1">
+            <div className="text-xs text-blue-700 dark:text-blue-300 mb-1">
               Phone: {request.worker.phone}
             </div>
           )}
           {request.worker.skills && (
-            <div className="text-xs text-blue-700 mb-1">
+            <div className="text-xs text-blue-700 dark:text-blue-300 mb-1">
               Skills: {Array.isArray(request.worker.skills) ? request.worker.skills.join(', ') : request.worker.skills}
             </div>
           )}
           {request.worker.rating?.average && (
-            <div className="flex items-center text-xs text-yellow-600">
+            <div className="flex items-center text-xs text-yellow-600 dark:text-yellow-400">
               <Star className="h-4 w-4 mr-1" />
               {request.worker.rating.average} ({request.worker.rating.count} reviews)
             </div>
@@ -184,23 +184,23 @@ const RequestDetailsClient = ({ request, onClose }) => {
   return (
     <div className="relative p-3 sm:p-4 max-h-[80vh] overflow-y-auto">
       <button
-        className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-gray-100 text-gray-500"
+        className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"
         onClick={onClose}
         title="Close"
       >
         <X className="h-4 w-4" />
       </button>
       
-      <h2 className="text-lg sm:text-xl font-bold mb-2 break-words pr-8">{request.title}</h2>
+      <h2 className="text-lg sm:text-xl font-bold mb-2 break-words pr-8 text-gray-900 dark:text-gray-100">{request.title}</h2>
       
       {/* Tab Navigation */}
-      <div className="flex space-x-1 mb-4 bg-gray-100 rounded-lg p-1">
+      <div className="flex space-x-1 mb-4 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
         <button
           onClick={() => setActiveTab('details')}
           className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'details'
-              ? 'bg-white text-blue-600 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm'
+              : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
           }`}
         >
           <ClipboardList className="h-4 w-4 inline mr-2" />
@@ -211,8 +211,8 @@ const RequestDetailsClient = ({ request, onClose }) => {
             onClick={() => setActiveTab('payments')}
             className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'payments'
-                ? 'bg-white text-blue-600 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
             }`}
           >
             <CreditCard className="h-4 w-4 inline mr-2" />
@@ -227,50 +227,50 @@ const RequestDetailsClient = ({ request, onClose }) => {
           {renderTimeline()}
           {renderWorkerInfo()}
           <div className="flex items-center flex-wrap gap-1.5 mb-3">
-            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium border bg-gray-100 text-gray-800 border-gray-200">
+            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium border bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600">
               {request.status?.charAt(0).toUpperCase() + request.status?.slice(1)}
             </span>
-            <span className="inline-block px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md text-xs font-medium">
+            <span className="inline-block px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md text-xs font-medium">
               {request.category}
             </span>
             {request.review?.rating && (
               <span className="flex items-center space-x-1">
                 <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                <span className="text-xs font-medium text-gray-600">{request.review.rating}</span>
+                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{request.review.rating}</span>
               </span>
             )}
           </div>
-          <p className="text-gray-700 mb-3 text-sm">{request.description}</p>
+          <p className="text-gray-700 dark:text-gray-300 mb-3 text-sm">{request.description}</p>
           <div className="space-y-1.5 mb-3 text-xs sm:text-sm">
-            <div className="flex items-center text-sm text-gray-600">
-              <IndianRupee className="h-4 w-4 mr-2 text-green-600" />
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+              <IndianRupee className="h-4 w-4 mr-2 text-green-600 dark:text-green-400" />
               <span className="font-medium">Budget: ₹{request.budget?.toLocaleString()}</span>
             </div>
-            <div className="flex items-center text-sm text-gray-600">
-              <Calendar className="h-4 w-4 mr-2 text-blue-600" />
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+              <Calendar className="h-4 w-4 mr-2 text-blue-600 dark:text-blue-400" />
               <span>Posted: {formatDateTime(request.createdAt)}</span>
             </div>
             {request.scheduledDate && (
-              <div className="flex items-center text-sm text-gray-600">
-                <Calendar className="h-4 w-4 mr-2 text-indigo-600" />
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                <Calendar className="h-4 w-4 mr-2 text-indigo-600 dark:text-indigo-400" />
                 <span>Scheduled Start: {formatDateTime(request.scheduledDate)}</span>
               </div>
             )}
             {request.status === 'accepted' && request.updatedAt && (
-              <div className="flex items-center text-sm text-gray-600">
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                 <Calendar className="h-4 w-4 mr-2 text-blue-400" />
                 <span>Accepted At: {formatDateTime(request.updatedAt)}</span>
               </div>
             )}
             {request.completedDate && (
-              <div className="flex items-center text-sm text-gray-600">
-                <Calendar className="h-4 w-4 mr-2 text-green-600" />
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                <Calendar className="h-4 w-4 mr-2 text-green-600 dark:text-green-400" />
                 <span>Completed At: {formatDateTime(request.completedDate)}</span>
               </div>
             )}
             {(request.location?.city || request.location?.address) && (
-              <div className="flex items-center text-sm text-gray-600">
-                <MapPin className="h-4 w-4 mr-2 text-red-600" />
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                <MapPin className="h-4 w-4 mr-2 text-red-600 dark:text-red-400" />
                 <span>
                   {request.location.address || `${request.location.city}, ${request.location.state} ${request.location.zipCode || ''}`}
                 </span>
@@ -278,7 +278,7 @@ const RequestDetailsClient = ({ request, onClose }) => {
             )}
           </div>
           <div className="mb-4">
-            <div className="flex items-center text-sm text-gray-600 mb-1">
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 mb-1">
               <Avatar person={request.client} size="sm" />
               <span className="ml-2">Client: {request.client?.name || '-'}</span>
             </div>
@@ -287,7 +287,7 @@ const RequestDetailsClient = ({ request, onClose }) => {
             <div className="mb-4">
               <div className="flex items-center mb-2">
                 <ImageIcon className="h-5 w-5 mr-2 text-blue-400" />
-                <span className="font-medium text-gray-700">Images:</span>
+                <span className="font-medium text-gray-700 dark:text-gray-300">Images:</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {request.images.map((img, idx) => (
@@ -295,7 +295,7 @@ const RequestDetailsClient = ({ request, onClose }) => {
                     key={idx}
                     src={img}
                     alt={`request-img-${idx}`}
-                    className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded border border-gray-200"
+                    className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded border border-gray-200 dark:border-gray-700"
                   />
                 ))}
               </div>
@@ -304,10 +304,10 @@ const RequestDetailsClient = ({ request, onClose }) => {
           {request.requirements && request.requirements.length > 0 && (
             <div className="mb-4">
               <div className="flex items-center mb-2">
-                <ClipboardList className="h-5 w-5 mr-2 text-gray-500" />
-                <span className="font-medium text-gray-700">Requirements:</span>
+                <ClipboardList className="h-5 w-5 mr-2 text-gray-500 dark:text-gray-400" />
+                <span className="font-medium text-gray-700 dark:text-gray-300">Requirements:</span>
               </div>
-              <ul className="list-disc list-inside text-gray-600 text-sm">
+              <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 text-sm">
                 {request.requirements.map((req, idx) => (
                   <li key={idx}>{req}</li>
                 ))}
@@ -319,12 +319,12 @@ const RequestDetailsClient = ({ request, onClose }) => {
             <div className="mb-4">
               <div className="flex items-center mb-3">
                 <Star className="h-5 w-5 mr-2 text-yellow-400" />
-                <span className="font-medium text-gray-700">Client Review</span>
+                <span className="font-medium text-gray-700 dark:text-gray-300">Client Review</span>
               </div>
               {/* Overall Rating */}
               <div className="mb-3">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-1 sm:space-y-0">
-                  <span className="text-sm font-semibold text-gray-700">Overall Rating:</span>
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Overall Rating:</span>
                   <div className="flex items-center space-x-2">
                     {renderStars(review.rating)}
                   </div>
@@ -335,26 +335,26 @@ const RequestDetailsClient = ({ request, onClose }) => {
                (typeof review.communication === 'number' && review.communication >= 1) ||
                (typeof review.timeliness === 'number' && review.timeliness >= 1) ||
                (typeof review.professionalism === 'number' && review.professionalism >= 1) ? (
-                <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-3">
-                  <h4 className="text-sm font-semibold text-gray-700 mb-2 sm:mb-3">Detailed Ratings</h4>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 sm:p-4 mb-3">
+                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">Detailed Ratings</h4>
                   <div className="space-y-2 sm:space-y-3">
                     {/* First Row: Work Quality and Communication */}
                     <div className="grid grid-cols-2 gap-2 sm:gap-3">
                       {typeof review.workQuality === 'number' && review.workQuality >= 1 && (
                         <div className="flex flex-col space-y-1">
                           <div className="flex items-center">
-                            <Award className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-blue-600 flex-shrink-0" />
-                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Work Quality:</span>
+                            <Award className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                            <span className="text-xs font-medium text-gray-700 dark:text-gray-300 leading-tight whitespace-nowrap">Work Quality:</span>
                           </div>
                           <div className="flex justify-start">
                             <span className="flex items-center space-x-0.5">
                               {[1, 2, 3, 4, 5].map((star) => (
                                 <Star
                                   key={star}
-                                  className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.workQuality ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
+                                  className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.workQuality ? 'text-yellow-400 fill-current' : 'text-gray-200 dark:text-gray-600'}`}
                                 />
                               ))}
-                              <span className="ml-1 text-xs text-gray-700">{review.workQuality}/5</span>
+                              <span className="ml-1 text-xs text-gray-700 dark:text-gray-300">{review.workQuality}/5</span>
                             </span>
                           </div>
                         </div>
@@ -362,8 +362,8 @@ const RequestDetailsClient = ({ request, onClose }) => {
                       {typeof review.communication === 'number' && review.communication >= 1 && (
                         <div className="flex flex-col space-y-1">
                           <div className="flex items-center">
-                            <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-green-600 flex-shrink-0" />
-                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Communication:</span>
+                            <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-green-600 dark:text-green-400 flex-shrink-0" />
+                            <span className="text-xs font-medium text-gray-700 dark:text-gray-300 leading-tight whitespace-nowrap">Communication:</span>
                           </div>
                           <div className="flex justify-start">
                             <span className="flex items-center space-x-0.5">

@@ -312,7 +312,7 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
   // Show user-friendly error if no serviceRequest._id
   if (!serviceRequest._id) {
     return (
-      <div className="fixed bottom-4 right-4 z-50 bg-white p-6 rounded shadow text-red-600">
+      <div className="fixed bottom-4 right-4 z-50 bg-white dark:bg-gray-800 p-6 rounded shadow text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800">
         Unable to open chat: Service request ID is missing.
       </div>
     );
@@ -445,12 +445,12 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
     <div className={`fixed bottom-4 right-4 z-50 transition-all duration-300 ease-in-out ${
       isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
     }`}>
-      <div className={`bg-white rounded-lg shadow-2xl border border-gray-200 transition-all duration-300 ${
+      <div className={`bg-white dark:bg-dark-surface rounded-lg shadow-2xl border border-gray-200 dark:border-dark-border transition-all duration-300 ${
         isMinimized ? 'w-80 h-16' : 'w-80 sm:w-96 h-[500px]'
       }`}>
         
         {/* Header */}
-        <div className={`flex items-center justify-between p-3 border-b border-gray-200 bg-gradient-to-r ${colorScheme.headerBg} text-white rounded-t-lg`}>
+        <div className={`flex items-center justify-between p-3 border-b border-gray-200 dark:border-dark-border bg-gradient-to-r ${colorScheme.headerBg} text-white rounded-t-lg`}>
           <div className="flex items-center space-x-2">
             <div className="w-7 h-7 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
               <MessageCircle className="h-3.5 w-3.5" />
@@ -500,7 +500,7 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
                   {Object.entries(messageGroups).map(([date, dateMessages]) => (
                     <div key={date}>
                       <div className="flex justify-center mb-2">
-                        <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                        <span className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs px-2 py-0.5 rounded-full">
                           {date}
                         </span>
                       </div>
@@ -515,7 +515,7 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
                               className={`max-w-sm px-3 py-2 rounded-2xl text-sm ${
                                 isOwn
                                   ? `${colorScheme.messageBg} text-white rounded-br-md`
-                                  : 'bg-gray-100 text-gray-900 rounded-bl-md'
+                                  : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-md'
                               }`}
                             >
                               {message.message && <p className="break-words">{message.message}</p>}
@@ -533,7 +533,7 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
                               
                               <p
                                 className={`text-xs mt-1 ${
-                                  isOwn ? colorScheme.messageText : 'text-gray-500'
+                                  isOwn ? colorScheme.messageText : 'text-gray-500 dark:text-gray-400'
                                 }`}
                               >
                                 {formatTime(message.createdAt)}
@@ -548,7 +548,7 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
                   {/* Typing indicator */}
                   {typingUsers.size > 0 && (
                     <div className="flex justify-start">
-                      <div className="bg-gray-100 text-gray-600 px-3 py-2 rounded-2xl rounded-bl-md">
+                      <div className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-3 py-2 rounded-2xl rounded-bl-md">
                         <div className="flex items-center space-x-1">
                           <div className="flex space-x-1">
                             <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
@@ -569,13 +569,13 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
             </div>
 
             {/* Message Input */}
-            <div className="border-t border-gray-200 p-2">
+            <div className="border-t border-gray-200 dark:border-dark-border p-2">
               {/* Selected files preview */}
               {selectedFiles.length > 0 && (
                 <div className="mb-2 max-h-32 overflow-y-auto">
                   <div className="space-y-2">
                     {selectedFiles.map((file, index) => (
-                      <div key={index} className="bg-gray-50 rounded-lg p-2 flex items-center space-x-2">
+                      <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2 flex items-center space-x-2">
                         {isImageFile(file.type) ? (
                           <div className="relative">
                             <img 
@@ -586,13 +586,13 @@ const MessageCenter = ({ serviceRequest, onClose }) => {
                             />
                           </div>
                         ) : (
-                          <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
+                          <div className="w-12 h-12 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center">
                             {getFileIcon(file.type)}
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{file.name}</p>
-                          <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
+                          <p className="text-sm font-medium truncate dark:text-gray-200">{file.name}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">{formatFileSize(file.size)}</p>
                         </div>
                         <button
                           type="button"

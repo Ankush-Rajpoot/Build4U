@@ -135,13 +135,13 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
       
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-2 sm:p-4">
-        <div className="relative w-full max-w-3xl bg-white rounded-xl shadow-2xl transform transition-all">
+        <div className="relative w-full max-w-3xl bg-white dark:bg-dark-surface rounded-xl shadow-2xl transform transition-all">
           {/* Header */}
-          <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 rounded-t-xl">
+          <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 dark:from-dark-primary dark:to-blue-700 px-4 py-3 rounded-t-xl">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-bold text-white">Create New Service Request</h2>
-                <p className="text-blue-100 mt-0.5 text-xs">Tell us about your project and find the perfect professional</p>
+                <p className="text-blue-100 dark:text-blue-200 mt-0.5 text-xs">Tell us about your project and find the perfect professional</p>
               </div>
               <button 
                 onClick={handleClose}
@@ -155,8 +155,8 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
           {/* Content */}
           <div className="p-6 max-h-[70vh] overflow-y-auto">
             {error && (
-              <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded-lg flex items-center text-sm">
-                <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+              <div className="mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-400 px-3 py-2 rounded-lg flex items-center text-sm">
+                <div className="w-3 h-3 bg-red-500 dark:bg-red-400 rounded-full mr-2"></div>
                 {error}
               </div>
             )}
@@ -165,15 +165,15 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
               {/* Basic Information */}
               <div className="space-y-4">
                 <div className="flex items-center mb-3">
-                  <div className="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center mr-2">
-                    <Tag className="h-3.5 w-3.5 text-blue-600" />
+                  <div className="w-7 h-7 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mr-2">
+                    <Tag className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h3 className="text-base font-semibold text-gray-900">Basic Information</h3>
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-dark-text">Basic Information</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
-                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-1">
                       Project Title *
                     </label>
                     <input
@@ -182,14 +182,14 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                       name="title"
                       value={formData.title}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-dark-primary focus:border-transparent bg-white dark:bg-dark-surface-secondary text-gray-900 dark:text-dark-text transition-colors text-sm"
                       placeholder="e.g., Kitchen Renovation, Bathroom Repair, Garden Landscaping"
                       required
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-1">
                       Category *
                     </label>
                     <select
@@ -197,7 +197,7 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                       name="category"
                       value={formData.category}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-dark-primary focus:border-transparent bg-white dark:bg-dark-surface-secondary text-gray-900 dark:text-dark-text transition-colors text-sm"
                       required
                     >
                       <option value="">Select a category</option>
@@ -277,7 +277,7 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                   <div className="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center mr-2">
                     <MapPin className="h-3.5 w-3.5 text-green-600" />
                   </div>
-                  <h3 className="text-base font-semibold text-gray-900">Location & Schedule</h3>
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-dark-text">Location & Schedule</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -324,7 +324,7 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                   <div className="w-7 h-7 bg-purple-100 rounded-full flex items-center justify-center mr-2">
                     <FileText className="h-3.5 w-3.5 text-purple-600" />
                   </div>
-                  <h3 className="text-base font-semibold text-gray-900">Additional Details</h3>
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-dark-text">Additional Details</h3>
                 </div>
 
                 <div>

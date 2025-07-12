@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Thin scrollbar utility for contractor/worker lists */
+/* Base styles for theme transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Light theme scrollbar styles */
 .thin-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #a0aec0 #f7fafc;
@@ -16,6 +21,17 @@
 }
 .thin-scrollbar::-webkit-scrollbar-track {
   background: #f7fafc;
+}
+
+/* Dark theme scrollbar styles */
+.dark .thin-scrollbar {
+  scrollbar-color: #64748b #1e293b;
+}
+.dark .thin-scrollbar::-webkit-scrollbar-thumb {
+  background: #64748b;
+}
+.dark .thin-scrollbar::-webkit-scrollbar-track {
+  background: #1e293b;
 }
 
 /* Blue scrollbar utility for contractor/worker lists */
@@ -32,6 +48,17 @@
 }
 .blue-scrollbar::-webkit-scrollbar-track {
   background: #e0e7ef;
+}
+
+/* Dark theme blue scrollbar */
+.dark .blue-scrollbar {
+  scrollbar-color: #3b82f6 #334155;
+}
+.dark .blue-scrollbar::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+}
+.dark .blue-scrollbar::-webkit-scrollbar-track {
+  background: #334155;
 }
 
 @keyframes flipIn {

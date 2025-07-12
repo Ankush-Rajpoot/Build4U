@@ -170,7 +170,7 @@ const WorkerDashboard = () => {
   const jobCounts = getJobCounts();
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col">
+    <div className="h-screen bg-gray-50 dark:bg-dark-background flex flex-col">
       <WorkerHeader 
         onMenuToggle={toggleMobileMenu} 
         isMobileMenuOpen={isMobileMenuOpen} 
@@ -198,9 +198,9 @@ const WorkerDashboard = () => {
               <div className="px-1.5 sm:px-2 md:px-3 py-1.5 flex-shrink-0">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h1 className="text-base sm:text-lg font-bold text-gray-800">
+                    <h1 className="text-base sm:text-lg font-bold text-gray-800 dark:text-dark-text">
                       {getTabTitle()}
-                      <span className="ml-2 text-xs font-normal text-gray-500">
+                      <span className="ml-2 text-xs font-normal text-gray-500 dark:text-dark-text-secondary">
                         ({requests.length})
                       </span>
                     </h1>
@@ -210,27 +210,27 @@ const WorkerDashboard = () => {
                     </p> */}
                   </div>
                   {activeTab === 'all-jobs' && jobCounts.total > 0 && (
-                    <div className="hidden sm:block bg-white p-2.5 rounded-lg shadow-sm border border-gray-200 w-auto">
-                      <h3 className="text-xs font-medium text-gray-700 mb-1.5">Job Breakdown</h3>
+                    <div className="hidden sm:block bg-white dark:bg-dark-surface p-2.5 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border w-auto">
+                      <h3 className="text-xs font-medium text-gray-700 dark:text-dark-text mb-1.5">Job Breakdown</h3>
                       <div className="space-y-1 text-xs">
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Active:</span>
-                          <span className="font-medium text-blue-600">{jobCounts.active}</span>
+                          <span className="text-gray-600 dark:text-dark-text-secondary">Active:</span>
+                          <span className="font-medium text-blue-600 dark:text-dark-primary">{jobCounts.active}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Completed:</span>
-                          <span className="font-medium text-green-600">{jobCounts.completed}</span>
+                          <span className="text-gray-600 dark:text-dark-text-secondary">Completed:</span>
+                          <span className="font-medium text-green-600 dark:text-green-400">{jobCounts.completed}</span>
                         </div>
-                        <div className="flex justify-between border-t pt-1">
-                          <span className="text-gray-700 font-medium">Total:</span>
-                          <span className="font-semibold">{jobCounts.total}</span>
+                        <div className="flex justify-between border-t dark:border-dark-border pt-1">
+                          <span className="text-gray-700 dark:text-dark-text font-medium">Total:</span>
+                          <span className="font-semibold dark:text-dark-text">{jobCounts.total}</span>
                         </div>
                       </div>
                     </div>
                   )}
                 </div>
                 {error && (
-                  <div className="mt-2 bg-red-50 border border-red-200 text-red-700 px-2.5 py-1.5 rounded-md text-xs">
+                  <div className="mt-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-400 px-2.5 py-1.5 rounded-md text-xs">
                     {error}
                   </div>
                 )}
@@ -256,7 +256,7 @@ const WorkerDashboard = () => {
           >
             <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-2 sm:p-4">
               <Dialog.Panel
-                className="bg-white rounded-xl shadow-2xl border border-gray-200 p-3 sm:p-4 md:p-6 w-full max-w-3xl mx-auto relative overflow-hidden"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6 w-full max-w-3xl mx-auto relative overflow-hidden"
                 style={{
                   maxHeight: '92vh',
                   overflowY: 'auto',

@@ -43,7 +43,7 @@ const Avatar = ({ person, size = 'lg' }) => {
       <img
         src={person.profileImage || person.profilePicture}
         alt={person.name || 'User'}
-        className={`${sizeClasses} rounded-full object-cover border border-gray-200 flex-shrink-0`}
+        className={`${sizeClasses} rounded-full object-cover border border-gray-200 dark:border-gray-700 flex-shrink-0`}
       />
     );
   }
@@ -52,7 +52,7 @@ const Avatar = ({ person, size = 'lg' }) => {
   const colorClass = getAvatarColor(person.name);
   
   return (
-    <div className={`${sizeClasses} rounded-full ${colorClass} flex items-center justify-center border border-gray-200 flex-shrink-0`}>
+    <div className={`${sizeClasses} rounded-full ${colorClass} flex items-center justify-center border border-gray-200 dark:border-gray-700 flex-shrink-0`}>
       <span className="text-white font-semibold">{initials}</span>
     </div>
   );
@@ -71,11 +71,11 @@ const renderStars = (value) => (
     {[1, 2, 3, 4, 5].map((star) => (
       <Star
         key={star}
-        className={`h-4 w-4 ${star <= value ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
+        className={`h-4 w-4 ${star <= value ? 'text-yellow-400 fill-current' : 'text-gray-200 dark:text-gray-600'}`}
       />
     ))}
     {typeof value === 'number' && value > 0 && (
-      <span className="ml-1 text-xs text-gray-700">{value}/5</span>
+      <span className="ml-1 text-xs text-gray-700 dark:text-gray-300">{value}/5</span>
     )}
   </span>
 );
@@ -120,8 +120,8 @@ const RequestDetailsWorker = ({ request, onClose }) => {
   // Timeline for worker (blue for accepted/in-progress/completed, gray for pending)
   const renderTimeline = () => (
     <div className="mb-4">
-      <div className="flex items-center justify-between text-xs text-gray-500">
-        <div className={`flex-1 text-center ${request.createdAt ? 'font-bold text-green-700' : ''}`}>
+      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div className={`flex-1 text-center ${request.createdAt ? 'font-bold text-green-700 dark:text-green-400' : ''}`}>
           Requested<br/>{formatDateTime(request.createdAt)}
         </div>
         <div className="flex-1 text-center">
@@ -142,9 +142,9 @@ const RequestDetailsWorker = ({ request, onClose }) => {
       </div>
       <div className="flex items-center justify-between mt-1">
         <div className="flex-1 h-1 bg-green-300 rounded-l" />
-        <div className={`flex-1 h-1 ${request.status !== 'pending' ? 'bg-green-500' : 'bg-gray-200'}`} />
-        <div className={`flex-1 h-1 ${request.status === 'in-progress' || request.status === 'completed' ? 'bg-green-500' : 'bg-gray-200'}`} />
-        <div className={`flex-1 h-1 ${request.status === 'completed' ? 'bg-green-500' : 'bg-gray-200'} rounded-r`} />
+        <div className={`flex-1 h-1 ${request.status !== 'pending' ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'}`} />
+        <div className={`flex-1 h-1 ${request.status === 'in-progress' || request.status === 'completed' ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'}`} />
+        <div className={`flex-1 h-1 ${request.status === 'completed' ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'} rounded-r`} />
       </div>
     </div>
   );
@@ -153,22 +153,22 @@ const RequestDetailsWorker = ({ request, onClose }) => {
   const renderClientInfo = () => {
     if (!request.client) return null;
     return (
-      <div className="mb-4 bg-green-50 rounded-lg p-4 flex items-center gap-4">
+      <div className="mb-4 bg-green-50 dark:bg-green-900/20 rounded-lg p-4 flex items-center gap-4">
         <Avatar person={request.client} size="lg" />
         <div>
-          <div className="font-bold text-green-900">{request.client.name}</div>
+          <div className="font-bold text-green-900 dark:text-green-100">{request.client.name}</div>
           {request.client.email && (
-            <div className="text-xs text-green-700 mb-1">
+            <div className="text-xs text-green-700 dark:text-green-300 mb-1">
               Email: {request.client.email}
             </div>
           )}
           {request.client.phone && (
-            <div className="text-xs text-green-700 mb-1">
+            <div className="text-xs text-green-700 dark:text-green-300 mb-1">
               Phone: {request.client.phone}
             </div>
           )}
           {request.client.location && (
-            <div className="text-xs text-green-700 mb-1">
+            <div className="text-xs text-green-700 dark:text-green-300 mb-1">
               Location: {request.client.location}
             </div>
           )}
@@ -180,23 +180,23 @@ const RequestDetailsWorker = ({ request, onClose }) => {
   return (
     <div className="relative p-3 sm:p-4 max-h-[80vh] overflow-y-auto">
       <button
-        className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-gray-100 text-gray-500"
+        className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"
         onClick={onClose}
         title="Close"
       >
         <X className="h-4 w-4" />
       </button>
       
-      <h2 className="text-lg sm:text-xl font-bold mb-2 break-words pr-8">{request.title}</h2>
+      <h2 className="text-lg sm:text-xl font-bold mb-2 break-words pr-8 text-gray-900 dark:text-gray-100">{request.title}</h2>
       
       {/* Tab Navigation */}
-      <div className="flex space-x-1 mb-4 bg-gray-100 rounded-lg p-1">
+      <div className="flex space-x-1 mb-4 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
         <button
           onClick={() => setActiveTab('details')}
-          className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+          className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors border ${
             activeTab === 'details'
-              ? 'bg-white text-green-600 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-white dark:bg-gray-700 text-green-600 dark:text-green-400 shadow-sm border-green-200 dark:border-green-600'
+              : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 border-transparent'
           }`}
         >
           <ClipboardList className="h-4 w-4 inline mr-2" />
@@ -205,10 +205,10 @@ const RequestDetailsWorker = ({ request, onClose }) => {
         {(request.status === 'in-progress' || request.status === 'completed') && (
           <button
             onClick={() => setActiveTab('payments')}
-            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors border ${
               activeTab === 'payments'
-                ? 'bg-white text-green-600 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-white dark:bg-gray-700 text-green-600 dark:text-green-400 shadow-sm border-green-200 dark:border-green-600'
+                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 border-transparent'
             }`}
           >
             <CreditCard className="h-4 w-4 inline mr-2" />
@@ -218,36 +218,37 @@ const RequestDetailsWorker = ({ request, onClose }) => {
       </div>
 
       {/* Tab Content */}
-      {activeTab === 'details' ? (
-        <>
-          {renderTimeline()}
-          {renderClientInfo()}
-          <div className="flex items-center flex-wrap gap-1.5 mb-3">
-            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium border bg-gray-100 text-gray-800 border-gray-200">
-              {request.status?.charAt(0).toUpperCase() + request.status?.slice(1)}
-            </span>
-            <span className="inline-block px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md text-xs font-medium">
-              {request.category}
-            </span>
-            {request.review?.rating && (
-              <span className="flex items-center space-x-1">
-                <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                <span className="text-xs font-medium text-gray-600">{request.review.rating}</span>
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 p-4">
+        {activeTab === 'details' ? (
+          <div className="space-y-4">
+            {renderTimeline()}
+            {renderClientInfo()}
+            <div className="flex items-center flex-wrap gap-1.5 mb-3">
+              <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium border bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600">
+                {request.status?.charAt(0).toUpperCase() + request.status?.slice(1)}
               </span>
-            )}
-          </div>
-          <p className="text-gray-700 mb-3 text-sm">{request.description}</p>
+              <span className="inline-block px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md text-xs font-medium">
+                {request.category}
+              </span>
+              {request.review?.rating && (
+                <span className="flex items-center space-x-1">
+                  <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                  <span className="text-xs font-medium text-gray-600 dark:text-gray-300">{request.review.rating}</span>
+                </span>
+              )}
+            </div>
+          <p className="text-gray-700 dark:text-gray-300 mb-3 text-sm">{request.description}</p>
           <div className="space-y-1.5 mb-3">
-            <div className="flex items-center text-sm text-gray-600">
-              <IndianRupee className="h-4 w-4 mr-2 text-green-600" />
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+              <IndianRupee className="h-4 w-4 mr-2 text-green-600 dark:text-green-400" />
               <span className="font-medium">Budget: ₹{request.budget?.toLocaleString()}</span>
             </div>
-            <div className="flex items-center text-sm text-gray-600">
-              <Calendar className="h-4 w-4 mr-2 text-blue-600" />
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+              <Calendar className="h-4 w-4 mr-2 text-blue-600 dark:text-blue-400" />
               <span>Posted: {formatDateTime(request.createdAt)}</span>
             </div>
             {request.scheduledDate && (
-              <div className="flex items-center text-sm text-gray-600">
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                 <Calendar className="h-4 w-4 mr-2 text-indigo-600" />
                 <span>Scheduled Start: {formatDateTime(request.scheduledDate)}</span>
               </div>
@@ -321,12 +322,12 @@ const RequestDetailsWorker = ({ request, onClose }) => {
             <div className="mb-4">
               <div className="flex items-center mb-3">
                 <Star className="h-5 w-5 mr-2 text-yellow-400" />
-                <span className="font-medium text-gray-700">Client Review</span>
+                <span className="font-medium text-gray-700 dark:text-gray-300">Client Review</span>
               </div>
               {/* Overall Rating */}
               <div className="mb-3">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-1 sm:space-y-0">
-                  <span className="text-sm font-semibold text-gray-700">Overall Rating:</span>
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Overall Rating:</span>
                   <div className="flex items-center space-x-2">
                     {renderStars(review.rating)}
                   </div>
@@ -337,8 +338,8 @@ const RequestDetailsWorker = ({ request, onClose }) => {
                (typeof review.communication === 'number' && review.communication >= 1) ||
                (typeof review.timeliness === 'number' && review.timeliness >= 1) ||
                (typeof review.professionalism === 'number' && review.professionalism >= 1) ? (
-                <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-3">
-                  <h4 className="text-sm font-semibold text-gray-700 mb-2 sm:mb-3">Detailed Ratings</h4>
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 sm:p-4 mb-3 border border-gray-200 dark:border-gray-700">
+                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">Detailed Ratings</h4>
                   <div className="space-y-2 sm:space-y-3">
                     {/* First Row: Work Quality and Communication */}
                     <div className="grid grid-cols-2 gap-2 sm:gap-3">
@@ -346,7 +347,7 @@ const RequestDetailsWorker = ({ request, onClose }) => {
                         <div className="flex flex-col space-y-1">
                           <div className="flex items-center">
                             <Award className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-blue-600 flex-shrink-0" />
-                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Work Quality:</span>
+                            <span className="text-xs font-medium text-gray-700 dark:text-gray-300 leading-tight whitespace-nowrap">Work Quality:</span>
                           </div>
                           <div className="flex justify-start">
                             <span className="flex items-center space-x-0.5">
@@ -356,7 +357,7 @@ const RequestDetailsWorker = ({ request, onClose }) => {
                                   className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.workQuality ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
                                 />
                               ))}
-                              <span className="ml-1 text-xs text-gray-700">{review.workQuality}/5</span>
+                              <span className="ml-1 text-xs text-gray-700 dark:text-gray-300">{review.workQuality}/5</span>
                             </span>
                           </div>
                         </div>
@@ -365,7 +366,7 @@ const RequestDetailsWorker = ({ request, onClose }) => {
                         <div className="flex flex-col space-y-1">
                           <div className="flex items-center">
                             <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-green-600 flex-shrink-0" />
-                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Communication:</span>
+                            <span className="text-xs font-medium text-gray-700 dark:text-gray-300 leading-tight whitespace-nowrap">Communication:</span>
                           </div>
                           <div className="flex justify-start">
                             <span className="flex items-center space-x-0.5">
@@ -375,7 +376,7 @@ const RequestDetailsWorker = ({ request, onClose }) => {
                                   className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.communication ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
                                 />
                               ))}
-                              <span className="ml-1 text-xs text-gray-700">{review.communication}/5</span>
+                              <span className="ml-1 text-xs text-gray-700 dark:text-gray-300">{review.communication}/5</span>
                             </span>
                           </div>
                         </div>
@@ -387,7 +388,7 @@ const RequestDetailsWorker = ({ request, onClose }) => {
                         <div className="flex flex-col space-y-1">
                           <div className="flex items-center">
                             <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-600 flex-shrink-0" />
-                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Timeliness:</span>
+                            <span className="text-xs font-medium text-gray-700 dark:text-gray-300 leading-tight whitespace-nowrap">Timeliness:</span>
                           </div>
                           <div className="flex justify-start">
                             <span className="flex items-center space-x-0.5">
@@ -397,7 +398,7 @@ const RequestDetailsWorker = ({ request, onClose }) => {
                                   className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.timeliness ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
                                 />
                               ))}
-                              <span className="ml-1 text-xs text-gray-700">{review.timeliness}/5</span>
+                              <span className="ml-1 text-xs text-gray-700 dark:text-gray-300">{review.timeliness}/5</span>
                             </span>
                           </div>
                         </div>
@@ -406,7 +407,7 @@ const RequestDetailsWorker = ({ request, onClose }) => {
                         <div className="flex flex-col space-y-1">
                           <div className="flex items-center">
                             <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-orange-600 flex-shrink-0" />
-                            <span className="text-xs font-medium text-gray-700 leading-tight whitespace-nowrap">Professionalism:</span>
+                            <span className="text-xs font-medium text-gray-700 dark:text-gray-300 leading-tight whitespace-nowrap">Professionalism:</span>
                           </div>
                           <div className="flex justify-start">
                             <span className="flex items-center space-x-0.5">
@@ -416,7 +417,7 @@ const RequestDetailsWorker = ({ request, onClose }) => {
                                   className={`h-3 w-3 sm:h-4 sm:w-4 ${star <= review.professionalism ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
                                 />
                               ))}
-                              <span className="ml-1 text-xs text-gray-700">{review.professionalism}/5</span>
+                              <span className="ml-1 text-xs text-gray-700 dark:text-gray-300">{review.professionalism}/5</span>
                             </span>
                           </div>
                         </div>
@@ -428,8 +429,8 @@ const RequestDetailsWorker = ({ request, onClose }) => {
               {/* Written Review */}
               {review.comment && (
                 <div className="mb-3">
-                  <span className="text-sm font-semibold text-gray-700">Review Comment:</span>
-                  <p className="text-sm text-gray-600 mt-1 bg-gray-50 p-3 rounded-lg italic">
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Review Comment:</span>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg italic border border-gray-200 dark:border-gray-600">
                     "{review.comment}"
                   </p>
                 </div>
@@ -454,7 +455,7 @@ const RequestDetailsWorker = ({ request, onClose }) => {
               )}
               {/* Review Date */}
               {(review.reviewedAt || review.createdAt) && (
-                <div className="text-xs text-gray-500 border-t pt-2">
+                <div className="text-xs text-gray-500 dark:text-gray-400 border-t pt-2">
                   Reviewed on: {formatDateTime(review.reviewedAt || review.createdAt)}
                 </div>
               )}
@@ -464,31 +465,34 @@ const RequestDetailsWorker = ({ request, onClose }) => {
           ) : (
             <div className="mb-4 text-gray-400 italic">Loading review...</div>
           )}
-        </>
-      ) : (
-        <div className="h-96">
-          {/* Request Payment Button - Only for workers */}
-          {(request.status === 'in-progress' || request.status === 'completed') && (
-            <div className="mb-4">
-              <button
-                onClick={() => setShowPaymentRequest(true)}
-                className="w-full bg-emerald-600 text-white py-3 px-4 rounded-lg hover:bg-emerald-700 transition-colors font-medium inline-flex items-center justify-center"
-              >
-                <Plus className="h-5 w-5 mr-2" />
-                Request Payment
-              </button>
+          </div>
+        ) : (
+          <div className="h-96">
+            {/* Request Payment Button - Only for workers */}
+            {(request.status === 'in-progress' || request.status === 'completed') && (
+              <div className="mb-4">
+                <button
+                  onClick={() => setShowPaymentRequest(true)}
+                  className="w-full bg-emerald-600 text-white py-3 px-4 rounded-lg hover:bg-emerald-700 transition-colors font-medium inline-flex items-center justify-center"
+                >
+                  <Plus className="h-5 w-5 mr-2" />
+                  Request Payment
+                </button>
+              </div>
+            )}
+            
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700 [&_.payment-card]:bg-white [&_.payment-card]:dark:bg-gray-800">
+              <PaymentCenterModal
+                serviceRequestId={request._id}
+                userType="Worker"
+                request={request}
+                onClose={() => {}} // Don't close the main modal
+                embedded={true}
+              />
             </div>
-          )}
-          
-          <PaymentCenterModal
-            serviceRequestId={request._id}
-            userType="Worker"
-            request={request}
-            onClose={() => {}} // Don't close the main modal
-            embedded={true}
-          />
-        </div>
-      )}
+          </div>
+        )}
+      </div>
 
       {/* Payment Request Modal */}
       {showPaymentRequest && (

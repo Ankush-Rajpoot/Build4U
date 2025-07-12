@@ -4,24 +4,24 @@ import RequestCard from './RequestCard';
 const RequestList = ({ requests, userRole, loading, onUpdate, onEdit, onView, onReview }) => {
   if (loading) {
     return (
-      <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
-        <p className="text-gray-500">Loading requests...</p>
+      <div className="bg-white dark:bg-dark-surface p-8 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-dark-primary mx-auto mb-4"></div>
+        <p className="text-gray-500 dark:text-dark-text-secondary">Loading requests...</p>
       </div>
     );
   }
 
   if (requests.length === 0) {
     return (
-      <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center">
-        <p className="text-gray-500">No service requests found.</p>
+      <div className="bg-white dark:bg-dark-surface p-8 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border text-center">
+        <p className="text-gray-500 dark:text-dark-text-secondary">No service requests found.</p>
         {userRole === 'client' && (
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-sm text-gray-400 dark:text-gray-500">
             Create a new request to get started.
           </p>
         )}
         {userRole === 'worker' && (
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-sm text-gray-400 dark:text-gray-500">
             Check back later for new job opportunities.
           </p>
         )}

@@ -130,7 +130,7 @@ const ClientDashboard = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col">
+    <div className="h-screen bg-gray-50 dark:bg-dark-background flex flex-col">
       <ClientHeader 
         onMenuToggle={toggleMobileMenu} 
         isMobileMenuOpen={isMobileMenuOpen} 
@@ -149,7 +149,7 @@ const ClientDashboard = () => {
             <>
               <div className="mb-2.5 flex justify-between items-center">
                 <div>
-                  <h1 className="text-base sm:text-lg font-bold text-gray-800">
+                  <h1 className="text-base sm:text-lg font-bold text-gray-800 dark:text-dark-text">
                     {getTabTitle()}
                   </h1>
                   {/* Commented out job status descriptions for cleaner UI */}
@@ -163,7 +163,7 @@ const ClientDashboard = () => {
                 </div>
                 <button
                   onClick={() => setShowNewRequestModal(true)}
-                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-2.5 py-1.5 rounded-lg transition-all duration-200 flex items-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95"
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 dark:from-dark-primary dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 text-white px-2.5 py-1.5 rounded-lg transition-all duration-200 flex items-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95"
                 >
                   <span className="mr-1">New Request</span>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -173,7 +173,7 @@ const ClientDashboard = () => {
                 </button>
               </div>
               {error && (
-                <div className="mb-2.5 bg-red-50 border border-red-200 text-red-700 px-2.5 py-1.5 rounded-md text-xs">
+                <div className="mb-2.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-400 px-2.5 py-1.5 rounded-md text-xs">
                   {error}
                 </div>
               )}
@@ -199,7 +199,7 @@ const ClientDashboard = () => {
           >
             <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-2">
               <Dialog.Panel
-                className="bg-white rounded-xl shadow-2xl border border-gray-200 p-3 sm:p-4 w-full max-w-2xl mx-auto relative overflow-hidden"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-3 sm:p-4 w-full max-w-2xl mx-auto relative overflow-hidden"
                 style={{
                   maxHeight: '90vh',
                   overflowY: 'auto',
