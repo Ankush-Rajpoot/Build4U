@@ -107,12 +107,6 @@ const WorkerStats = () => {
     }
   }, [user]);
 
-  // ...existing code...
-
-  if (loading) {
-    return <WorkerStatsSkeleton />;
-  }
-
   useEffect(() => {
     const updateArrowPosition = () => {
       // Additional safety checks to prevent runtime errors
@@ -154,6 +148,11 @@ const WorkerStats = () => {
       return () => window.removeEventListener('resize', updateArrowPosition);
     }
   }, [loading]);
+
+  // All hooks must be declared before any early returns
+  if (loading) {
+    return <WorkerStatsSkeleton />;
+  }
 
   const formatRating = (rating) => {
     if (typeof rating !== 'number' || isNaN(rating)) return 'N/A';
