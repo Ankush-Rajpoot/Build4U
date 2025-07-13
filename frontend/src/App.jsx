@@ -1,19 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { UserProvider, useUser } from './context/UserContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { SocketProvider } from './context/SocketContext';
 import { ChatProvider } from './context/ChatContext';
 import { NotificationProvider } from './context/NotificationContext';
+import { SplashProvider, useSplash } from './context/SplashContext';
 import Landing from './components/Landing';
 import ClientDashboard from './components/client/ClientDashboard';
 import WorkerDashboard from './components/worker/WorkerDashboard';
 import GlobalMessageCenter from './components/messaging/GlobalMessageCenter';
 import VerifyEmail from './components/auth/VerifyEmail';
+import SplashScreen from './components/shared/SplashScreen';
 import { LoadingScreenSkeleton } from './components/shared/skeletons';
 
 const ProtectedRoute = ({ element, requiredRole }) => {
   const { userRole, loading } = useUser();
+  const { triggerSplash } = useSplash();
+  const [initialLoad, setInitialLoad] = useState(true);
+  
+  useEffect(() => {
+    if (!loading && userRole === requiredRole && initialLoad) {
+      // Show splash screen only if user was auto-logged in (returning user)
+      const isReturningUser = localStorage.getItem('token') && 
+                              localStorage.getItem('userRole') === requiredRole;
+      if (isReturningUser) {
+        triggerSplash({ duration: 3000 });
+      }
+      setInitialLoad(false);
+    }
+  }, [loading, userRole, requiredRole, initialLoad, triggerSplash]);
   
   if (loading) {
     return (
@@ -30,32 +46,51 @@ const ProtectedRoute = ({ element, requiredRole }) => {
   return <>{element}</>;
 };
 
+const AppContent = () => {
+  const { showSplash, splashConfig, hideSplash } = useSplash();
+
+  return (
+    <>
+      {showSplash && (
+        <SplashScreen 
+          onComplete={hideSplash}
+          duration={splashConfig.duration}
+        />
+      )}
+      
+      <Router>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route 
+            path="/client-dashboard" 
+            element={<ProtectedRoute element={<ClientDashboard />} requiredRole="client" />} 
+          />
+          <Route 
+            path="/worker-dashboard" 
+            element={<ProtectedRoute element={<WorkerDashboard />} requiredRole="worker" />} 
+          />
+          <Route path="/verify" element={<VerifyEmail />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        <GlobalMessageCenter />
+      </Router>
+    </>
+  );
+};
+
 function App() {
   return (
     <ThemeProvider>
       <UserProvider>
-        <SocketProvider>
-          <ChatProvider>
-            <NotificationProvider>
-              <Router>
-                <Routes>
-                  <Route path="/" element={<Landing />} />
-                  <Route 
-                    path="/client-dashboard" 
-                    element={<ProtectedRoute element={<ClientDashboard />} requiredRole="client" />} 
-                  />
-                  <Route 
-                    path="/worker-dashboard" 
-                    element={<ProtectedRoute element={<WorkerDashboard />} requiredRole="worker" />} 
-                  />
-                  <Route path="/verify" element={<VerifyEmail />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-                <GlobalMessageCenter />
-              </Router>
-            </NotificationProvider>
-          </ChatProvider>
-        </SocketProvider>
+        <SplashProvider>
+          <SocketProvider>
+            <ChatProvider>
+              <NotificationProvider>
+                <AppContent />
+              </NotificationProvider>
+            </ChatProvider>
+          </SocketProvider>
+        </SplashProvider>
       </UserProvider>
     </ThemeProvider>
   );

@@ -19,7 +19,7 @@ export default {
           'text-secondary': '#6b7280',
           border: '#e5e7eb',
         },
-        // Dark theme colors
+        // Dark theme colors - Ultra dark palette
         dark: {
           primary: '#3b82f6',
           secondary: '#94a3b8',
@@ -27,12 +27,17 @@ export default {
           success: '#34d399',
           warning: '#fbbf24',
           error: '#f87171',
-          background: '#0f172a',
-          surface: '#1e293b',
-          'surface-secondary': '#334155',
-          text: '#f1f5f9',
-          'text-secondary': '#cbd5e1',
-          border: '#475569',
+          background: '#000000',        // Pure black background
+          surface: '#0A0A0A',          // Very dark surface
+          'surface-secondary': '#171717', // Dark secondary surface
+          'surface-tertiary': '#262626',   // Medium dark surface
+          'surface-hover': '#404040',      // Hover state surface
+          text: '#A3A3A3',             // Light gray text
+          'text-primary': '#f1f5f9',   // Primary text (kept bright for readability)
+          'text-secondary': '#737373', // Secondary text
+          'text-muted': '#525252',     // Muted text
+          border: '#262626',           // Dark border
+          'border-light': '#404040',   // Lighter border for subtle divisions
         }
       }
     },

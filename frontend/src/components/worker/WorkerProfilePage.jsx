@@ -299,22 +299,22 @@ const WorkerProfilePage = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-br from-green-50/60 to-white/80">
+    <div className="h-full flex flex-col bg-gradient-to-br from-green-50/60 to-white/80 dark:from-dark-background dark:to-dark-surface">
       <div className="flex-1 overflow-y-auto thin-scrollbar">
         <div className="max-w-6xl mx-auto space-y-4 p-2 sm:p-4 pb-8">
         {/* Header Card */}
-        <div className="bg-white/60 backdrop-blur-sm border border-green-200/40 shadow-xl rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-flipIn">
+        <div className="bg-white/60 dark:bg-dark-surface/80 backdrop-blur-sm border border-green-200/40 dark:border-green-700/40 shadow-xl rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-flipIn">
           <div className="flex items-center gap-3">
             {activeSection !== 'overview' && (
               <button
                 onClick={goBackToOverview}
-                className="p-2 rounded-full bg-green-100 hover:bg-green-200 text-green-600 transition-colors"
+                className="p-2 rounded-full bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-800/50 text-green-600 dark:text-green-400 transition-colors"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
             )}
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-green-900">
+              <h1 className="text-xl sm:text-2xl font-bold text-green-900 dark:text-green-400">
                 {activeSection === 'overview' && 'My Profile'}
                 {activeSection === 'portfolio' && 'Portfolio'}
                 {activeSection === 'details' && 'Basic Details'}
@@ -322,7 +322,7 @@ const WorkerProfilePage = () => {
                 {activeSection === 'payments' && 'Payments'}
                 {activeSection === 'contact' && 'Contact Info'}
               </h1>
-              <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
+              <p className="text-gray-500 dark:text-dark-text-secondary text-xs sm:text-sm mt-0.5">
                 {activeSection === 'overview' && 'Manage your worker profile and showcase your skills'}
                 {activeSection === 'portfolio' && 'View and manage your portfolio'}
                 {activeSection === 'details' && 'Edit your basic information'}
@@ -336,7 +336,7 @@ const WorkerProfilePage = () => {
             {activeSection === 'overview' && (
               <button
                 onClick={handleOpenPortfolioDialog}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-md shadow-sm transition-all flex items-center gap-2 min-w-[140px]"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 text-sm rounded-md shadow-sm transition-all flex items-center gap-2 min-w-[140px]"
               >
                 <PlusCircle className="h-4 w-4" />
                 <span>Add Portfolio</span>
@@ -345,7 +345,7 @@ const WorkerProfilePage = () => {
             {activeSection === 'portfolio' && (
               <button
                 onClick={handleOpenPortfolioDialog}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-md shadow-sm transition-all flex items-center gap-2 min-w-[140px]"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 text-sm rounded-md shadow-sm transition-all flex items-center gap-2 min-w-[140px]"
               >
                 <PlusCircle className="h-4 w-4" />
                 <span>Add Portfolio</span>
@@ -366,93 +366,93 @@ const WorkerProfilePage = () => {
         {activeSection === 'overview' && (
           <div className="max-w-xl mx-auto">
             {/* Navigation Sections */}
-            <div className="bg-white/60 backdrop-blur-sm border border-green-200/40 shadow-xl rounded-2xl p-5 animate-flipIn">
-              <h2 className="text-base font-semibold text-green-900 mb-5">Profile Sections</h2>
+            <div className="bg-white/60 dark:bg-dark-surface/80 backdrop-blur-sm border border-green-200/40 dark:border-green-700/40 shadow-xl rounded-2xl p-5 animate-flipIn">
+              <h2 className="text-base font-semibold text-green-900 dark:text-green-400 mb-5">Profile Sections</h2>
               <div className="space-y-2">
                 
                 {/* Visit Portfolio + Add Portfolio */}
                 <button
                   onClick={() => navigateToSection('portfolio')}
-                  className="w-full group bg-white hover:bg-green-50 border border-gray-200 hover:border-green-300 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
+                  className="w-full group bg-white dark:bg-dark-surface-secondary hover:bg-green-50 dark:hover:bg-green-900/20 border border-gray-200 dark:border-dark-border hover:border-green-300 dark:hover:border-green-600 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-1.5 bg-green-500 rounded-lg group-hover:bg-green-600 transition-colors">
+                    <div className="p-1.5 bg-green-500 dark:bg-green-600 rounded-lg group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors">
                       <Eye className="h-3.5 w-3.5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-900 text-sm">Visit Portfolio + Add Portfolio</h3>
-                      <p className="text-xs text-gray-600">{portfolio.length} projects</p>
+                      <h3 className="font-medium text-gray-900 dark:text-dark-text-primary text-sm">Visit Portfolio + Add Portfolio</h3>
+                      <p className="text-xs text-gray-600 dark:text-dark-text-secondary">{portfolio.length} projects</p>
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-green-600 transition-colors" />
+                  <ChevronRight className="h-4 w-4 text-gray-400 dark:text-dark-text-secondary group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors" />
                 </button>
 
                 {/* Basic Details */}
                 <button
                   onClick={() => navigateToSection('details')}
-                  className="w-full group bg-white hover:bg-green-50 border border-gray-200 hover:border-green-300 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
+                  className="w-full group bg-white dark:bg-dark-surface-secondary hover:bg-green-50 dark:hover:bg-green-900/20 border border-gray-200 dark:border-dark-border hover:border-green-300 dark:hover:border-green-600 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-1.5 bg-green-500 rounded-lg group-hover:bg-green-600 transition-colors">
+                    <div className="p-1.5 bg-green-500 dark:bg-green-600 rounded-lg group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors">
                       <Users className="h-3.5 w-3.5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-900 text-sm">Basic Details</h3>
-                      <p className="text-xs text-gray-600">Personal information</p>
+                      <h3 className="font-medium text-gray-900 dark:text-dark-text-primary text-sm">Basic Details</h3>
+                      <p className="text-xs text-gray-600 dark:text-dark-text-secondary">Personal information</p>
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-green-600 transition-colors" />
+                  <ChevronRight className="h-4 w-4 text-gray-400 dark:text-dark-text-secondary group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors" />
                 </button>
 
                 {/* Job Statistics */}
                 <button
                   onClick={() => navigateToSection('statistics')}
-                  className="w-full group bg-white hover:bg-green-50 border border-gray-200 hover:border-green-300 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
+                  className="w-full group bg-white dark:bg-dark-surface-secondary hover:bg-green-50 dark:hover:bg-green-900/20 border border-gray-200 dark:border-dark-border hover:border-green-300 dark:hover:border-green-600 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-1.5 bg-green-500 rounded-lg group-hover:bg-green-600 transition-colors">
+                    <div className="p-1.5 bg-green-500 dark:bg-green-600 rounded-lg group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors">
                       <TrendingUp className="h-3.5 w-3.5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-900 text-sm">Job Statistics</h3>
-                      <p className="text-xs text-gray-600">{stats.totalJobs} total jobs</p>
+                      <h3 className="font-medium text-gray-900 dark:text-dark-text-primary text-sm">Job Statistics</h3>
+                      <p className="text-xs text-gray-600 dark:text-dark-text-secondary">{stats.totalJobs} total jobs</p>
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-green-600 transition-colors" />
+                  <ChevronRight className="h-4 w-4 text-gray-400 dark:text-dark-text-secondary group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors" />
                 </button>
 
                 {/* Payments */}
                 <button
                   onClick={() => navigateToSection('payments')}
-                  className="w-full group bg-white hover:bg-green-50 border border-gray-200 hover:border-green-300 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
+                  className="w-full group bg-white dark:bg-dark-surface-secondary hover:bg-green-50 dark:hover:bg-green-900/20 border border-gray-200 dark:border-dark-border hover:border-green-300 dark:hover:border-green-600 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-1.5 bg-green-500 rounded-lg group-hover:bg-green-600 transition-colors">
+                    <div className="p-1.5 bg-green-500 dark:bg-green-600 rounded-lg group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors">
                       <DollarSign className="h-3.5 w-3.5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-900 text-sm">Payments</h3>
-                      <p className="text-xs text-gray-600">₹{stats.totalEarned?.toLocaleString() || '0'} earned</p>
+                      <h3 className="font-medium text-gray-900 dark:text-dark-text-primary text-sm">Payments</h3>
+                      <p className="text-xs text-gray-600 dark:text-dark-text-secondary">₹{stats.totalEarned?.toLocaleString() || '0'} earned</p>
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-green-600 transition-colors" />
+                  <ChevronRight className="h-4 w-4 text-gray-400 dark:text-dark-text-secondary group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors" />
                 </button>
 
                 {/* Contact Info */}
                 <button
                   onClick={() => navigateToSection('contact')}
-                  className="w-full group bg-white hover:bg-green-50 border border-gray-200 hover:border-green-300 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
+                  className="w-full group bg-white dark:bg-dark-surface-secondary hover:bg-green-50 dark:hover:bg-green-900/20 border border-gray-200 dark:border-dark-border hover:border-green-300 dark:hover:border-green-600 rounded-lg p-3 transition-all duration-200 text-left flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-1.5 bg-green-500 rounded-lg group-hover:bg-green-600 transition-colors">
+                    <div className="p-1.5 bg-green-500 dark:bg-green-600 rounded-lg group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors">
                       <Mail className="h-3.5 w-3.5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-900 text-sm">Contact Info</h3>
-                      <p className="text-xs text-gray-600">Email, phone, location</p>
+                      <h3 className="font-medium text-gray-900 dark:text-dark-text-primary text-sm">Contact Info</h3>
+                      <p className="text-xs text-gray-600 dark:text-dark-text-secondary">Email, phone, location</p>
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-green-600 transition-colors" />
+                  <ChevronRight className="h-4 w-4 text-gray-400 dark:text-dark-text-secondary group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors" />
                 </button>
               </div>
             </div>
@@ -461,11 +461,11 @@ const WorkerProfilePage = () => {
 
         {/* Portfolio Section */}
         {activeSection === 'portfolio' && (
-          <div className="bg-white/60 backdrop-blur-sm border border-green-200/40 shadow-xl rounded-2xl p-4 animate-flipIn">
+          <div className="bg-white/60 dark:bg-dark-surface/80 backdrop-blur-sm border border-green-200/40 dark:border-green-700/40 shadow-xl rounded-2xl p-4 animate-flipIn">
             {portfolio.length > 0 ? (
               <>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-green-900">Portfolio ({portfolio.length})</h2>
+                  <h2 className="text-lg font-semibold text-green-900 dark:text-green-400">Portfolio ({portfolio.length})</h2>
                   {portfolio.length > 1 && (
                     <div className="flex items-center gap-2">
                       <button

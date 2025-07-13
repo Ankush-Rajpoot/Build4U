@@ -135,7 +135,7 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
       
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-2 sm:p-4">
-        <div className="relative w-full max-w-3xl bg-white dark:bg-dark-surface rounded-xl shadow-2xl transform transition-all">
+        <div className="relative w-full max-w-3xl bg-white dark:bg-[#0A0A0A] rounded-xl shadow-2xl transform transition-all border dark:border-[#404040]">
           {/* Header */}
           <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 dark:from-dark-primary dark:to-blue-700 px-4 py-3 rounded-t-xl">
             <div className="flex items-center justify-between">
@@ -153,7 +153,7 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
           </div>
 
           {/* Content */}
-          <div className="p-6 max-h-[70vh] overflow-y-auto">
+          <div className="p-6 max-h-[70vh] overflow-y-auto dark:bg-[#171717]">
             {error && (
               <div className="mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-400 px-3 py-2 rounded-lg flex items-center text-sm">
                 <div className="w-3 h-3 bg-red-500 dark:bg-red-400 rounded-full mr-2"></div>
@@ -168,12 +168,12 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                   <div className="w-7 h-7 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mr-2">
                     <Tag className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-dark-text">Basic Information</h3>
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-[#A3A3A3]">Basic Information</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
-                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-1">
+                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                       Project Title *
                     </label>
                     <input
@@ -182,14 +182,14 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                       name="title"
                       value={formData.title}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-dark-primary focus:border-transparent bg-white dark:bg-dark-surface-secondary text-gray-900 dark:text-dark-text transition-colors text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#404040] rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] transition-colors text-sm"
                       placeholder="e.g., Kitchen Renovation, Bathroom Repair, Garden Landscaping"
                       required
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-1">
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                       Category *
                     </label>
                     <select
@@ -197,7 +197,7 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                       name="category"
                       value={formData.category}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-dark-primary focus:border-transparent bg-white dark:bg-dark-surface-secondary text-gray-900 dark:text-dark-text transition-colors text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#404040] rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] transition-colors text-sm"
                       required
                     >
                       <option value="">Select a category</option>
@@ -208,11 +208,11 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                   </div>
 
                   <div>
-                    <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="budget" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                       Budget (USD) *
                     </label>
                     <div className="relative">
-                      <DollarSign className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <DollarSign className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#737373]" />
                       <input
                         type="number"
                         id="budget"
@@ -221,7 +221,7 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                         onChange={handleChange}
                         min="1"
                         step="0.01"
-                        className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm"
+                        className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-[#404040] rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] transition-colors text-sm"
                         placeholder="Your estimated budget"
                         required
                       />
@@ -230,7 +230,7 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                 </div>
 
                 <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                     Project Description *
                   </label>
                   <textarea
@@ -239,7 +239,7 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                     value={formData.description}
                     onChange={handleChange}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#404040] rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] transition-colors resize-none text-sm"
                     placeholder="Describe your project in detail. Include what needs to be done, any specific requirements, materials needed, etc."
                     required
                   />
@@ -247,11 +247,11 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
 
                 {/* Required Skills */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                     Required Skills * 
-                    <span className="text-xs text-gray-500 font-normal ml-1">(This enables smart worker matching)</span>
+                    <span className="text-xs text-gray-500 dark:text-[#737373] font-normal ml-1">(This enables smart worker matching)</span>
                   </label>
-                  <p className="text-xs text-gray-500 mb-2">
+                  <p className="text-xs text-gray-500 dark:text-[#737373] mb-2">
                     Select specific skills required for this job. This helps workers understand if they're qualified and enables our matching system.
                   </p>
                   <SkillSelector
@@ -274,44 +274,44 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
               {/* Location & Schedule */}
               <div className="space-y-4">
                 <div className="flex items-center mb-3">
-                  <div className="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center mr-2">
-                    <MapPin className="h-3.5 w-3.5 text-green-600" />
+                  <div className="w-7 h-7 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mr-2">
+                    <MapPin className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
                   </div>
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-dark-text">Location & Schedule</h3>
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-[#A3A3A3]">Location & Schedule</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                       Location
                     </label>
                     <div className="relative">
-                      <MapPin className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <MapPin className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#737373]" />
                       <input
                         type="text"
                         id="location"
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
-                        className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm"
+                        className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-[#404040] rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] transition-colors text-sm"
                         placeholder="City, State or full address"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="scheduledDate" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="scheduledDate" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                       Preferred Start Date
                     </label>
                     <div className="relative">
-                      <Calendar className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Calendar className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#737373]" />
                       <input
                         type="date"
                         id="scheduledDate"
                         name="scheduledDate"
                         value={formData.scheduledDate}
                         onChange={handleChange}
-                        className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm"
+                        className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-[#404040] rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] transition-colors text-sm"
                       />
                     </div>
                   </div>
@@ -321,14 +321,14 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
               {/* Requirements & Attachments */}
               <div className="space-y-4">
                 <div className="flex items-center mb-3">
-                  <div className="w-7 h-7 bg-purple-100 rounded-full flex items-center justify-center mr-2">
-                    <FileText className="h-3.5 w-3.5 text-purple-600" />
+                  <div className="w-7 h-7 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mr-2">
+                    <FileText className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-dark-text">Additional Details</h3>
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-[#A3A3A3]">Additional Details</h3>
                 </div>
 
                 <div>
-                  <label htmlFor="requirements" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="requirements" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                     Special Requirements
                   </label>
                   <textarea
@@ -337,17 +337,17 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                     value={formData.requirements}
                     onChange={handleChange}
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#404040] rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] transition-colors resize-none text-sm"
                     placeholder="Any special requirements, materials, tools, or notes (one per line)"
                   />
                 </div>
 
                 {/* File Upload */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                     Attachments
                   </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-400 transition-colors">
+                  <div className="border-2 border-dashed border-gray-300 dark:border-[#404040] rounded-lg p-4 text-center hover:border-blue-400 dark:hover:border-blue-400 transition-colors bg-white dark:bg-[#262626]">
                     <input
                       type="file"
                       multiple
@@ -361,10 +361,10 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                         <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-2">
                           <Upload className="h-5 w-5 text-blue-600" />
                         </div>
-                        <p className="text-sm font-medium text-gray-900 mb-0.5">
+                        <p className="text-sm font-medium text-gray-900 dark:text-[#A3A3A3] mb-0.5">
                           Click to upload files
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-[#737373]">
                           Images, PDFs, or documents (Max 10MB each)
                         </p>
                       </div>
@@ -374,10 +374,10 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                   {/* Attachment Preview */}
                   {attachments.length > 0 && (
                     <div className="mt-3 space-y-2">
-                      <h4 className="text-sm font-medium text-gray-700">Uploaded Files ({attachments.length})</h4>
+                      <h4 className="text-sm font-medium text-gray-700 dark:text-[#A3A3A3]">Uploaded Files ({attachments.length})</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {attachments.map((attachment) => (
-                          <div key={attachment.id} className="flex items-center p-2 bg-gray-50 rounded-lg border">
+                          <div key={attachment.id} className="flex items-center p-2 bg-gray-50 dark:bg-[#262626] rounded-lg border border-gray-200 dark:border-[#404040]">
                             {attachment.preview ? (
                               <img 
                                 src={attachment.preview} 
@@ -385,15 +385,15 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
                                 className="w-8 h-8 object-cover rounded mr-2"
                               />
                             ) : (
-                              <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center mr-2">
+                              <div className="w-8 h-8 bg-gray-200 dark:bg-[#404040] rounded flex items-center justify-center mr-2">
                                 {getFileIcon(attachment.type)}
                               </div>
                             )}
                             <div className="flex-1 min-w-0">
-                              <p className="text-xs font-medium text-gray-900 truncate">
+                              <p className="text-xs font-medium text-gray-900 dark:text-[#A3A3A3] truncate">
                                 {attachment.name}
                               </p>
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-gray-500 dark:text-[#737373]">
                                 {formatFileSize(attachment.size)}
                               </p>
                             </div>
@@ -413,18 +413,18 @@ const NewRequestModal = ({ isOpen, onClose, onSuccess }) => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+              <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-[#404040]">
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors text-sm"
+                  className="px-4 py-2 border border-gray-300 dark:border-[#404040] text-gray-700 dark:text-[#A3A3A3] bg-white dark:bg-[#262626] rounded-lg hover:bg-gray-50 dark:hover:bg-[#404040] font-medium transition-colors text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm"
+                  className="px-6 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm"
                 >
                   {loading ? (
                     <>

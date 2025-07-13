@@ -82,7 +82,7 @@ const PaymentRequestModal = ({ isOpen, onClose, serviceRequest, onPaymentRequest
       <div className="flex min-h-full items-center justify-center p-4">
         <div className="relative w-full max-w-md">
           {/* Payment Request Form */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-white dark:bg-[#0A0A0A] rounded-xl shadow-2xl border border-gray-200 dark:border-[#404040] overflow-hidden">
             {/* Header */}
             <div className="bg-gradient-to-r from-emerald-600 to-teal-700 px-4 py-3">
               <div className="flex items-center justify-between">
@@ -105,14 +105,14 @@ const PaymentRequestModal = ({ isOpen, onClose, serviceRequest, onPaymentRequest
             </div>
 
             {/* Service Request Info */}
-            <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
-              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">{serviceRequest.title}</h4>
-              <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
-                <span className="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-2 py-1 rounded">{serviceRequest.category}</span>
+            <div className="p-4 bg-gray-50 dark:bg-[#171717] border-b border-gray-200 dark:border-[#404040]">
+              <h4 className="font-semibold text-gray-900 dark:text-[#A3A3A3] mb-1">{serviceRequest.title}</h4>
+              <div className="flex items-center justify-between text-sm text-gray-600 dark:text-[#737373]">
+                <span className="bg-gray-200 dark:bg-[#262626] text-gray-700 dark:text-[#A3A3A3] px-2 py-1 rounded">{serviceRequest.category}</span>
                 <span>Budget: {formatCurrency(serviceRequest.budget)}</span>
               </div>
               {serviceRequest.client && (
-                <div className="flex items-center mt-2 text-sm text-gray-600 dark:text-gray-300">
+                <div className="flex items-center mt-2 text-sm text-gray-600 dark:text-[#737373]">
                   <User className="h-4 w-4 mr-1" />
                   <span>Client: {serviceRequest.client.name}</span>
                 </div>
@@ -121,10 +121,10 @@ const PaymentRequestModal = ({ isOpen, onClose, serviceRequest, onPaymentRequest
 
             {/* Test Mode Indicator */}
             {(process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost') && (
-              <div className="mx-4 mt-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-3">
+              <div className="mx-4 mt-4 bg-yellow-50 dark:bg-[#171717] border border-yellow-200 dark:border-[#404040] rounded-lg p-3">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-yellow-800 dark:text-yellow-300">
+                  <span className="text-sm font-medium text-yellow-800 dark:text-[#A3A3A3]">
                     Test Mode - Payment requests will be created but no real charges will occur
                   </span>
                 </div>
@@ -134,18 +134,18 @@ const PaymentRequestModal = ({ isOpen, onClose, serviceRequest, onPaymentRequest
             {/* Form */}
             <div className="p-4">
               {formError && (
-                <div className="mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 px-3 py-2 rounded-lg text-sm">
+                <div className="mb-4 bg-red-50 dark:bg-[#171717] border border-red-200 dark:border-[#404040] text-red-700 dark:text-red-400 px-3 py-2 rounded-lg text-sm">
                   {formError}
                 </div>
               )}
 
               <form onSubmit={handleCreatePaymentRequest} className="space-y-4">
                 <div>
-                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                     Amount (USD) *
                   </label>
                   <div className="relative">
-                    <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
+                    <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#737373]" />
                     <input
                       type="number"
                       id="amount"
@@ -154,18 +154,18 @@ const PaymentRequestModal = ({ isOpen, onClose, serviceRequest, onPaymentRequest
                       min="0.01"
                       step="0.01"
                       max={serviceRequest.budget}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-[#404040] bg-white dark:bg-[#171717] text-gray-900 dark:text-[#A3A3A3] rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                       placeholder="0.00"
                       required
                     />
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-[#525252] mt-1">
                     Maximum: {formatCurrency(serviceRequest.budget)}
                   </p>
                 </div>
 
                 <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                     Description *
                   </label>
                   <textarea
@@ -173,7 +173,7 @@ const PaymentRequestModal = ({ isOpen, onClose, serviceRequest, onPaymentRequest
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent resize-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#404040] bg-white dark:bg-[#171717] text-gray-900 dark:text-[#A3A3A3] rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent resize-none"
                     placeholder="Describe the work completed or milestone reached..."
                     required
                   />
@@ -183,7 +183,7 @@ const PaymentRequestModal = ({ isOpen, onClose, serviceRequest, onPaymentRequest
                   <button
                     type="button"
                     onClick={handleClose}
-                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-[#404040] text-gray-700 dark:text-[#A3A3A3] bg-white dark:bg-[#171717] rounded-lg hover:bg-gray-50 dark:hover:bg-[#262626] transition-colors"
                   >
                     Cancel
                   </button>

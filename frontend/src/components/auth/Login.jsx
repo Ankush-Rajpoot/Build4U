@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useUser } from '../../context/UserContext';
+import { useSplash } from '../../context/SplashContext';
 import { authService } from '../../services/authService';
 import { Mail, Lock } from 'lucide-react';
 import InputField from './InputField';
@@ -9,6 +10,7 @@ import InputField from './InputField';
 const Login = ({ role, theme, onToggleMode, setError, setLoading, loading }) => {
   const navigate = useNavigate();
   const { login } = useUser();
+  const { triggerSplash } = useSplash();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -41,15 +43,22 @@ const Login = ({ role, theme, onToggleMode, setError, setLoading, loading }) => 
         login(response.data.worker, response.data.token, 'worker');
       }
       
-      // Navigate to appropriate dashboard
-      navigate(role === 'client' ? '/client-dashboard' : '/worker-dashboard');
+      // Show splash screen after successful login
+      setLoading(false);
+      triggerSplash({ 
+        duration: 3000,
+        onComplete: () => {
+          // Navigate to appropriate dashboard after splash screen
+          navigate(role === 'client' ? '/client-dashboard' : '/worker-dashboard');
+        }
+      });
+      
     } catch (error) {
       if (error.response?.data?.message?.includes('verify your email')) {
         setError('Please verify your email before logging in.');
       } else {
         setError(error.response?.data?.message || error.message || 'An error occurred');
       }
-    } finally {
       setLoading(false);
     }
   };

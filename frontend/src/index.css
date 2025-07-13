@@ -23,15 +23,15 @@
   background: #f7fafc;
 }
 
-/* Dark theme scrollbar styles */
+/* Dark theme scrollbar styles - Ultra dark */
 .dark .thin-scrollbar {
-  scrollbar-color: #64748b #1e293b;
+  scrollbar-color: #525252 #0A0A0A;
 }
 .dark .thin-scrollbar::-webkit-scrollbar-thumb {
-  background: #64748b;
+  background: #525252;
 }
 .dark .thin-scrollbar::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: #0A0A0A;
 }
 
 /* Blue scrollbar utility for contractor/worker lists */
@@ -50,15 +50,15 @@
   background: #e0e7ef;
 }
 
-/* Dark theme blue scrollbar */
+/* Dark theme blue scrollbar - Ultra dark */
 .dark .blue-scrollbar {
-  scrollbar-color: #3b82f6 #334155;
+  scrollbar-color: #3b82f6 #171717;
 }
 .dark .blue-scrollbar::-webkit-scrollbar-thumb {
   background: #3b82f6;
 }
 .dark .blue-scrollbar::-webkit-scrollbar-track {
-  background: #334155;
+  background: #171717;
 }
 
 @keyframes flipIn {

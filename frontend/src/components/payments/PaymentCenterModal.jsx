@@ -204,7 +204,7 @@ const PaymentCenterModal = ({ isOpen = true, onClose, serviceRequestId, userType
             {/* Payment Requests */}
             {paymentRequests && paymentRequests.length > 0 && (
               <div>
-                <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center">
+                <h3 className="text-lg font-bold text-slate-800 dark:text-[#A3A3A3] mb-4 flex items-center">
                   <div className="w-2 h-6 bg-emerald-500 rounded-full mr-3"></div>
                   Payment Requests
                 </h3>
@@ -212,14 +212,14 @@ const PaymentCenterModal = ({ isOpen = true, onClose, serviceRequestId, userType
                   {paymentRequests.map((request, index) => (
                     <div
                       key={request._id || index}
-                      className="bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-gray-700 hover:border-slate-300 dark:hover:border-gray-600 transition-all duration-200 shadow-sm hover:shadow-md"
+                      className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#404040] rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-[#171717] hover:border-slate-300 dark:hover:border-[#525252] transition-all duration-200 shadow-sm hover:shadow-md payment-card"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           {getStatusIcon(request.status)}
                           <div className="ml-3">
-                            <p className="font-medium text-gray-900 dark:text-gray-100">{formatCurrency(request.amount)}</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">{formatDate(request.createdAt)}</p>
+                            <p className="font-medium text-gray-900 dark:text-[#A3A3A3]">{formatCurrency(request.amount)}</p>
+                            <p className="text-sm text-gray-500 dark:text-[#737373]">{formatDate(request.createdAt)}</p>
                           </div>
                         </div>
                         <div className="text-right">
@@ -273,7 +273,7 @@ const PaymentCenterModal = ({ isOpen = true, onClose, serviceRequestId, userType
             {/* Transactions */}
             {transactions && transactions.length > 0 && (
               <div>
-                <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center">
+                <h3 className="text-lg font-bold text-slate-800 dark:text-[#A3A3A3] mb-4 flex items-center">
                   <div className="w-2 h-6 bg-blue-500 rounded-full mr-3"></div>
                   Transactions
                 </h3>
@@ -281,14 +281,14 @@ const PaymentCenterModal = ({ isOpen = true, onClose, serviceRequestId, userType
                   {transactions.map((transaction, index) => (
                     <div
                       key={transaction._id || index}
-                      className="bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-gray-700 hover:border-slate-300 dark:hover:border-gray-600 transition-all duration-200 shadow-sm hover:shadow-md"
+                      className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#404040] rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-[#171717] hover:border-slate-300 dark:hover:border-[#525252] transition-all duration-200 shadow-sm hover:shadow-md payment-card"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           {getStatusIcon(transaction.status)}
                           <div className="ml-3">
-                            <p className="font-medium text-gray-900 dark:text-gray-100">{formatCurrency(transaction.amount)}</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">{formatDate(transaction.createdAt)}</p>
+                            <p className="font-medium text-gray-900 dark:text-[#A3A3A3]">{formatCurrency(transaction.amount)}</p>
+                            <p className="text-sm text-gray-500 dark:text-[#737373]">{formatDate(transaction.createdAt)}</p>
                           </div>
                         </div>
                         <div className="text-right">
@@ -337,7 +337,7 @@ const PaymentCenterModal = ({ isOpen = true, onClose, serviceRequestId, userType
       <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity" onClick={onClose} />
       
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative w-full max-w-4xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="relative w-full max-w-4xl bg-white dark:bg-[#0A0A0A] rounded-xl shadow-2xl border border-gray-200 dark:border-[#404040] overflow-hidden">
           {/* Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-purple-700 px-6 py-4">
             <div className="flex items-center justify-between">

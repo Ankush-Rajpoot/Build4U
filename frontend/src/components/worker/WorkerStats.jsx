@@ -198,32 +198,32 @@ const WorkerStats = () => {
       {/* Mobile compact layout - 2x2 grid - Professional design with fixed height */}
       <div className="grid grid-cols-2 gap-2 sm:hidden relative z-10 mb-3 h-24">
         {/* Rating Card - Compact */}
-        <div className="bg-gradient-to-br from-white to-gray-50 p-2.5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 h-full flex items-center">
+        <div className="bg-gradient-to-br from-white to-gray-50 dark:bg-gradient-to-br dark:from-dark-surface dark:to-gray-900/10 p-2.5 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md dark:hover:shadow-lg transition-all duration-200 h-full flex items-center">
           <div className="flex items-center justify-between w-full">
-            <div className={`p-1.5 rounded-lg ${getRatingBgColor(stats.rating.average)} flex-shrink-0`}>
-              <Star className={`h-3 w-3 ${getRatingColor(stats.rating.average)} fill-current`} />
+            <div className={`p-1.5 rounded-lg ${getRatingBgColor(stats.rating.average)} dark:bg-yellow-900/30 flex-shrink-0`}>
+              <Star className={`h-3 w-3 ${getRatingColor(stats.rating.average)} dark:text-yellow-400 fill-current`} />
             </div>
             <div className="text-right flex-1 ml-2 min-w-0">
-              <p className="text-xs text-gray-600 font-medium leading-none">Rating</p>
-              <p className={`text-base font-bold leading-tight ${getRatingColor(stats.rating.average)}`}>
+              <p className="text-xs text-gray-600 dark:text-dark-text-secondary font-medium leading-none">Rating</p>
+              <p className={`text-base font-bold leading-tight ${getRatingColor(stats.rating.average)} dark:text-yellow-400`}>
                 {formatRating(stats.rating.average)}
               </p>
               {stats.rating.count > 0 && (
-                <p className="text-xs text-gray-500 leading-none">({stats.rating.count})</p>
+                <p className="text-xs text-gray-500 dark:text-dark-text-muted leading-none">({stats.rating.count})</p>
               )}
             </div>
           </div>
         </div>
 
         {/* Earnings Card - Compact */}
-        <div className="bg-gradient-to-br from-white to-green-50 p-2.5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 h-full flex items-center">
+        <div className="bg-gradient-to-br from-white to-green-50 dark:bg-gradient-to-br dark:from-dark-surface dark:to-green-900/10 p-2.5 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md dark:hover:shadow-lg transition-all duration-200 h-full flex items-center">
           <div className="flex items-center justify-between w-full">
-            <div className="p-1.5 rounded-lg bg-green-100 flex-shrink-0">
-              <IndianRupee className="h-3 w-3 text-green-600" />
+            <div className="p-1.5 rounded-lg bg-green-100 dark:bg-green-900/30 flex-shrink-0">
+              <IndianRupee className="h-3 w-3 text-green-600 dark:text-green-400" />
             </div>
             <div className="text-right flex-1 ml-2 min-w-0">
-              <p className="text-xs text-gray-600 font-medium leading-none">Total</p>
-              <p className="text-base font-bold text-green-700 truncate leading-tight">
+              <p className="text-xs text-gray-600 dark:text-dark-text-secondary font-medium leading-none">Total</p>
+              <p className="text-base font-bold text-green-700 dark:text-green-400 truncate leading-tight">
                 ₹{stats.earnings.total > 999 
                   ? `${Math.floor(stats.earnings.total / 1000)}k` 
                   : stats.earnings.total?.toLocaleString() || '0'}
@@ -233,21 +233,21 @@ const WorkerStats = () => {
         </div>
 
         {/* Active Jobs Card - Compact */}
-        <div className="bg-gradient-to-br from-white to-yellow-50 p-2.5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 h-full flex flex-col justify-center">
+        <div className="bg-gradient-to-br from-white to-yellow-50 dark:bg-gradient-to-br dark:from-dark-surface dark:to-yellow-900/10 p-2.5 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md dark:hover:shadow-lg transition-all duration-200 h-full flex flex-col justify-center">
           <div className="flex items-center justify-between w-full">
-            <div className="p-1.5 rounded-lg bg-yellow-100 flex-shrink-0">
-              <Clock className="h-3 w-3 text-yellow-600" />
+            <div className="p-1.5 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 flex-shrink-0">
+              <Clock className="h-3 w-3 text-yellow-600 dark:text-yellow-400" />
             </div>
             <div className="text-right flex-1 ml-2 min-w-0">
-              <p className="text-xs text-gray-600 font-medium leading-none">Active</p>
-              <p className="text-base font-bold text-yellow-700 leading-tight">{stats.activeJobs}</p>
+              <p className="text-xs text-gray-600 dark:text-dark-text-secondary font-medium leading-none">Active</p>
+              <p className="text-base font-bold text-yellow-700 dark:text-yellow-400 leading-tight">{stats.activeJobs}</p>
             </div>
           </div>
-          <div className="w-full h-1 bg-gray-200 rounded-full mt-1.5">
+          <div className="w-full h-1 bg-gray-200 dark:bg-dark-border rounded-full mt-1.5">
             <div
               className={`h-1 rounded-full transition-all duration-300 ${
-                stats.activeJobs === 0 ? 'bg-green-400' : 
-                stats.activeJobs <= 2 ? 'bg-yellow-400' : 'bg-orange-400'
+                stats.activeJobs === 0 ? 'bg-green-400 dark:bg-green-500' : 
+                stats.activeJobs <= 2 ? 'bg-yellow-400 dark:bg-yellow-500' : 'bg-orange-400 dark:bg-orange-500'
               }`}
               style={{ width: `${Math.min((stats.activeJobs / 5) * 100, 100)}%` }}
             ></div>
@@ -255,19 +255,19 @@ const WorkerStats = () => {
         </div>
 
         {/* Completed Jobs Card - Compact */}
-        <div className="bg-gradient-to-br from-white to-blue-50 p-2.5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 h-full flex flex-col justify-center">
+        <div className="bg-gradient-to-br from-white to-blue-50 dark:bg-gradient-to-br dark:from-dark-surface dark:to-blue-900/10 p-2.5 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md dark:hover:shadow-lg transition-all duration-200 h-full flex flex-col justify-center">
           <div className="flex items-center justify-between w-full">
-            <div className="p-1.5 rounded-lg bg-blue-100 flex-shrink-0">
-              <CheckCircle className="h-3 w-3 text-blue-600" />
+            <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex-shrink-0">
+              <CheckCircle className="h-3 w-3 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="text-right flex-1 ml-2 min-w-0">
-              <p className="text-xs text-gray-600 font-medium leading-none">Done</p>
-              <p className="text-base font-bold text-blue-700 leading-tight">{stats.completedJobs}</p>
+              <p className="text-xs text-gray-600 dark:text-dark-text-secondary font-medium leading-none">Done</p>
+              <p className="text-base font-bold text-blue-700 dark:text-blue-400 leading-tight">{stats.completedJobs}</p>
             </div>
           </div>
           {stats.completedJobs > 0 && (
-            <div className="w-full h-1 bg-gray-200 rounded-full mt-1.5">
-              <div className="h-1 bg-blue-400 rounded-full transition-all duration-300" style={{ width: '100%' }}></div>
+            <div className="w-full h-1 bg-gray-200 dark:bg-dark-border rounded-full mt-1.5">
+              <div className="h-1 bg-blue-400 dark:bg-blue-500 rounded-full transition-all duration-300" style={{ width: '100%' }}></div>
             </div>
           )}
         </div>
@@ -275,13 +275,13 @@ const WorkerStats = () => {
 
       {/* Tablet and Desktop layout */}
       <div className="hidden sm:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 relative z-10 mb-2">
-        <div ref={ratingCardRef} className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div ref={ratingCardRef} className="bg-white dark:bg-dark-surface p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md dark:hover:shadow-lg transition-shadow">
           <div className="flex items-center">
             <div className={`p-2 sm:p-3 rounded-full ${getRatingBgColor(stats.rating.average)} mr-3 sm:mr-4`}>
               <Star className={`h-5 w-5 sm:h-6 sm:w-6 ${getRatingColor(stats.rating.average)} fill-current`} />
             </div>
             <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500">Overall Rating</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-dark-text-secondary">Overall Rating</p>
               <div className="flex items-center space-x-2">
                 <p className={`text-xl sm:text-2xl font-semibold ${getRatingColor(stats.rating.average)}`}>
                   {formatRating(stats.rating.average)}
@@ -294,7 +294,7 @@ const WorkerStats = () => {
                         className={`h-3 w-3 sm:h-4 sm:w-4 ${
                           star <= Math.round(stats.rating.average)
                             ? 'text-yellow-400 fill-current'
-                            : 'text-gray-300'
+                            : 'text-gray-300 dark:text-dark-border'
                         }`}
                       />
                     ))}
@@ -304,23 +304,23 @@ const WorkerStats = () => {
             </div>
           </div>
           <div className="mt-3 sm:mt-4">
-            <div className="h-1 w-full bg-gray-200 rounded-full">
+            <div className="h-1 w-full bg-gray-200 dark:bg-dark-border rounded-full">
               <div
                 className={`h-1 rounded-full transition-all duration-500 ${
                   stats.rating.average >= 4.5
-                    ? 'bg-green-500'
+                    ? 'bg-green-500 dark:bg-green-400'
                     : stats.rating.average >= 4.0
-                    ? 'bg-blue-500'
+                    ? 'bg-blue-500 dark:bg-blue-400'
                     : stats.rating.average >= 3.5
-                    ? 'bg-yellow-500'
+                    ? 'bg-yellow-500 dark:bg-yellow-400'
                     : stats.rating.average >= 3.0
-                    ? 'bg-orange-500'
-                    : 'bg-red-500'
+                    ? 'bg-orange-500 dark:bg-orange-400'
+                    : 'bg-red-500 dark:bg-red-400'
                 }`}
                 style={{ width: `${(stats.rating.average / 5) * 100}%` }}
               ></div>
             </div>
-            <p className="mt-2 text-xs text-gray-500">
+            <p className="mt-2 text-xs text-gray-500 dark:text-dark-text-muted">
               {stats.rating.count > 0
                 ? `Based on ${stats.rating.count} review${stats.rating.count !== 1 ? 's' : ''}`
                 : 'No reviews yet'}
@@ -328,51 +328,51 @@ const WorkerStats = () => {
           </div>
         </div>
 
-        <div className="bg-white p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white dark:bg-dark-surface p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md dark:hover:shadow-lg transition-shadow">
           <div className="flex items-center">
-            <div className="p-2 sm:p-3 rounded-full bg-green-100 mr-3 sm:mr-4">
-              <IndianRupee className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+            <div className="p-2 sm:p-3 rounded-full bg-green-100 dark:bg-green-900/30 mr-3 sm:mr-4">
+              <IndianRupee className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 dark:text-green-400" />
             </div>
             <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500">Total Earnings</p>
-              <p className="text-xl sm:text-2xl font-semibold text-gray-900">
+              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-dark-text-secondary">Total Earnings</p>
+              <p className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-dark-text-primary">
                 ₹{stats.earnings.total?.toLocaleString() || '0'}
               </p>
             </div>
           </div>
           <div className="mt-3 sm:mt-4">
-            <div className="h-1 w-full bg-gray-200 rounded-full">
-              <div className="h-1 bg-green-500 rounded-full" style={{ width: '70%' }}></div>
+            <div className="h-1 w-full bg-gray-200 dark:bg-dark-border rounded-full">
+              <div className="h-1 bg-green-500 dark:bg-green-400 rounded-full" style={{ width: '70%' }}></div>
             </div>
-            <p className="mt-2 text-xs text-gray-500">This Month: ₹{stats.earnings.thisMonth?.toLocaleString() || '0'}</p>
+            <p className="mt-2 text-xs text-gray-500 dark:text-dark-text-muted">This Month: ₹{stats.earnings.thisMonth?.toLocaleString() || '0'}</p>
           </div>
         </div>
 
-        <div className="bg-white p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white dark:bg-dark-surface p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md dark:hover:shadow-lg transition-shadow">
           <div className="flex items-center">
-            <div className="p-2 sm:p-3 rounded-full bg-yellow-100 mr-3 sm:mr-4">
-              <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
+            <div className="p-2 sm:p-3 rounded-full bg-yellow-100 dark:bg-yellow-900/30 mr-3 sm:mr-4">
+              <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600 dark:text-yellow-400" />
             </div>
             <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500">Active Jobs</p>
-              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.activeJobs}</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-dark-text-secondary">Active Jobs</p>
+              <p className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-dark-text-primary">{stats.activeJobs}</p>
             </div>
           </div>
           <div className="mt-3 sm:mt-4">
-            <div className="flex justify-between text-xs text-gray-500">
+            <div className="flex justify-between text-xs text-gray-500 dark:text-dark-text-muted">
               <span>Current workload</span>
               <span>{stats.activeJobs > 0 ? 'In progress' : 'Available'}</span>
             </div>
-            <div className="mt-1 h-1 w-full bg-gray-200 rounded-full">
+            <div className="mt-1 h-1 w-full bg-gray-200 dark:bg-dark-border rounded-full">
               <div
                 className={`h-1 rounded-full ${
                   stats.activeJobs === 0
-                    ? 'bg-green-500'
+                    ? 'bg-green-500 dark:bg-green-400'
                     : stats.activeJobs <= 2
-                    ? 'bg-yellow-500'
+                    ? 'bg-yellow-500 dark:bg-yellow-400'
                     : stats.activeJobs <= 4
-                    ? 'bg-orange-500'
-                    : 'bg-red-500'
+                    ? 'bg-orange-500 dark:bg-orange-400'
+                    : 'bg-red-500 dark:bg-red-400'
                 }`}
                 style={{ width: `${Math.min((stats.activeJobs / 5) * 100, 100)}%` }}
               ></div>
@@ -380,21 +380,21 @@ const WorkerStats = () => {
           </div>
         </div>
 
-        <div className="bg-white p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white dark:bg-dark-surface p-3 sm:p-6 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md dark:hover:shadow-lg transition-shadow">
           <div className="flex items-center">
-            <div className="p-2 sm:p-3 rounded-full bg-purple-100 mr-3 sm:mr-4">
-              <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
+            <div className="p-2 sm:p-3 rounded-full bg-purple-100 dark:bg-purple-900/30 mr-3 sm:mr-4">
+              <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500">Completed Jobs</p>
-              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.completedJobs}</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-dark-text-secondary">Completed Jobs</p>
+              <p className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-dark-text-primary">{stats.completedJobs}</p>
             </div>
           </div>
           <div className="mt-3 sm:mt-4">
-            <div className="h-1 w-full bg-gray-200 rounded-full">
-              <div className="h-1 bg-purple-500 rounded-full" style={{ width: '100%' }}></div>
+            <div className="h-1 w-full bg-gray-200 dark:bg-dark-border rounded-full">
+              <div className="h-1 bg-purple-500 dark:bg-purple-400 rounded-full" style={{ width: '100%' }}></div>
             </div>
-            <p className="mt-2 text-xs text-gray-500">
+            <p className="mt-2 text-xs text-gray-500 dark:text-dark-text-muted">
               {stats.completedJobs > 0
                 ? `${stats.completedJobs} job${stats.completedJobs !== 1 ? 's' : ''} completed successfully`
                 : 'No completed jobs yet'}
@@ -407,30 +407,30 @@ const WorkerStats = () => {
       <div className="w-full justify-center mt-2 hidden sm:flex">
         <div
           ref={detailedRatingRef}
-          className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-wrap items-center justify-center px-4 py-2"
+          className="bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-lg shadow-sm flex flex-wrap items-center justify-center px-4 py-2"
           style={{ minHeight: '44px', maxWidth: '600px', width: '100%' }}
         >
-          <span className="text-xs font-semibold text-gray-700 mr-4">Detailed Ratings:</span>
+          <span className="text-xs font-semibold text-gray-700 dark:text-dark-text mr-4">Detailed Ratings:</span>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             <div className="flex items-center space-x-1">
-              <Award className="h-4 w-4 text-gray-500" />
-              <span className="text-xs text-gray-700">Quality</span>
-              <span className="font-semibold text-gray-900 ml-1">{formatRating(reviewStats.averageWorkQuality)}</span>
+              <Award className="h-4 w-4 text-gray-500 dark:text-dark-text-secondary" />
+              <span className="text-xs text-gray-700 dark:text-dark-text">Quality</span>
+              <span className="font-semibold text-gray-900 dark:text-dark-text-primary ml-1">{formatRating(reviewStats.averageWorkQuality)}</span>
             </div>
             <div className="flex items-center space-x-1">
-              <MessageSquare className="h-4 w-4 text-gray-500" />
-              <span className="text-xs text-gray-700">Comm.</span>
-              <span className="font-semibold text-gray-900 ml-1">{formatRating(reviewStats.averageCommunication)}</span>
+              <MessageSquare className="h-4 w-4 text-gray-500 dark:text-dark-text-secondary" />
+              <span className="text-xs text-gray-700 dark:text-dark-text">Comm.</span>
+              <span className="font-semibold text-gray-900 dark:text-dark-text-primary ml-1">{formatRating(reviewStats.averageCommunication)}</span>
             </div>
             <div className="flex items-center space-x-1">
-              <Clock className="h-4 w-4 text-gray-500" />
-              <span className="text-xs text-gray-700">Time</span>
-              <span className="font-semibold text-gray-900 ml-1">{formatRating(reviewStats.averageTimeliness)}</span>
+              <Clock className="h-4 w-4 text-gray-500 dark:text-dark-text-secondary" />
+              <span className="text-xs text-gray-700 dark:text-dark-text">Time</span>
+              <span className="font-semibold text-gray-900 dark:text-dark-text-primary ml-1">{formatRating(reviewStats.averageTimeliness)}</span>
             </div>
             <div className="flex items-center space-x-1">
-              <Users className="h-4 w-4 text-gray-500" />
-              <span className="text-xs text-gray-700">Prof.</span>
-              <span className="font-semibold text-gray-900 ml-1">{formatRating(reviewStats.averageProfessionalism)}</span>
+              <Users className="h-4 w-4 text-gray-500 dark:text-dark-text-secondary" />
+              <span className="text-xs text-gray-700 dark:text-dark-text">Prof.</span>
+              <span className="font-semibold text-gray-900 dark:text-dark-text-primary ml-1">{formatRating(reviewStats.averageProfessionalism)}</span>
             </div>
           </div>
         </div>

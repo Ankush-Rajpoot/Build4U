@@ -91,8 +91,8 @@ const WorkerSidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, onMenuClose 
             <LayoutDashboard className="h-4 w-4 text-green-600 dark:text-green-400" />
           </div>
           <div className="ml-2">
-            <h2 className="text-sm font-semibold text-gray-900 dark:text-dark-text">Worker Portal</h2>
-            <p className="text-xs text-gray-500 dark:text-dark-text-secondary">Manage jobs</p>
+            <h2 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary">Worker Portal</h2>
+            <p className="text-xs text-gray-500 dark:text-dark-text-muted">Manage jobs</p>
           </div>
         </div>
 
@@ -103,16 +103,16 @@ const WorkerSidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, onMenuClose 
               className={`w-full flex items-center px-3 py-2.5 md:px-2 md:py-1.5 text-sm md:text-xs font-medium rounded-lg transition-all duration-200 group ${
                 activeTab === item.id
                   ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700 shadow-sm'
-                  : 'text-gray-600 dark:text-dark-text-secondary hover:bg-gray-50 dark:hover:bg-dark-surface-secondary hover:text-gray-900 dark:hover:text-dark-text border border-transparent'
+                  : 'text-gray-600 dark:text-dark-text-secondary hover:bg-gray-50 dark:hover:bg-dark-surface-hover hover:text-gray-900 dark:hover:text-dark-text border border-transparent'
               }`}
               onClick={() => handleTabClick(item.id)}
             >
-              <span className={`mr-3 md:mr-2 ${activeTab === item.id ? 'text-green-600 dark:text-green-400' : item.color}`}>
+              <span className={`mr-3 md:mr-2 ${activeTab === item.id ? 'text-green-600 dark:text-green-400' : item.color + ' dark:text-dark-text-secondary'}`}>
                 {React.cloneElement(item.icon, { className: 'h-5 w-5 md:h-4 md:w-4' })}
               </span>
               <div className="flex-1 text-left">
                 <div className="font-medium text-sm md:text-xs">{item.label}</div>
-                <div className="text-xs text-gray-500 dark:text-dark-text-secondary md:hidden">{item.description}</div>
+                <div className="text-xs text-gray-500 dark:text-dark-text-muted md:hidden">{item.description}</div>
               </div>
               {activeTab === item.id && (
                 <div className="w-1.5 h-1.5 bg-green-500 dark:bg-green-400 rounded-full"></div>
@@ -126,11 +126,11 @@ const WorkerSidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, onMenuClose 
             className={`w-full flex items-center px-3 py-2.5 md:px-2 md:py-1.5 text-sm md:text-xs font-medium rounded-lg transition-all duration-200 group ${
               activeTab === 'profile'
                 ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700 shadow-sm'
-                : 'text-gray-600 dark:text-dark-text-secondary hover:bg-gray-50 dark:hover:bg-dark-surface-secondary hover:text-gray-900 dark:hover:text-dark-text border border-transparent'
+                : 'text-gray-600 dark:text-dark-text-secondary hover:bg-gray-50 dark:hover:bg-dark-surface-hover hover:text-gray-900 dark:hover:text-dark-text border border-transparent'
             }`}
             onClick={() => handleTabClick('profile')}
           >
-            <span className={`mr-3 md:mr-2 ${activeTab === 'profile' ? 'text-green-600 dark:text-green-400' : 'text-purple-600'}`}>
+            <span className={`mr-3 md:mr-2 ${activeTab === 'profile' ? 'text-green-600 dark:text-green-400' : 'text-purple-600 dark:text-dark-text-secondary'}`}>
               <User className="h-5 w-5 md:h-4 md:w-4" />
             </span>
             <div className="flex-1 text-left">
@@ -141,13 +141,13 @@ const WorkerSidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, onMenuClose 
             )}
           </button>
           <button 
-            className="w-full flex items-center px-3 py-2.5 md:px-2 md:py-1.5 text-sm md:text-xs font-medium rounded-md text-gray-600 dark:text-dark-text-secondary hover:bg-gray-50 dark:hover:bg-dark-surface-secondary hover:text-gray-900 dark:hover:text-dark-text transition-colors duration-200"
+            className="w-full flex items-center px-3 py-2.5 md:px-2 md:py-1.5 text-sm md:text-xs font-medium rounded-md text-gray-600 dark:text-dark-text-secondary hover:bg-gray-50 dark:hover:bg-dark-surface-hover hover:text-gray-900 dark:hover:text-dark-text transition-colors duration-200"
             onClick={() => setShowSettingsModal(true)}
           >
             <Settings className="mr-3 md:mr-2 h-5 w-5 md:h-4 md:w-4" />
             <span className="text-sm md:text-xs">Settings</span>
           </button>
-          <button className="w-full flex items-center px-3 py-2.5 md:px-2 md:py-1.5 text-sm md:text-xs font-medium rounded-md text-gray-600 dark:text-dark-text-secondary hover:bg-gray-50 dark:hover:bg-dark-surface-secondary hover:text-gray-900 dark:hover:text-dark-text transition-colors duration-200">
+          <button className="w-full flex items-center px-3 py-2.5 md:px-2 md:py-1.5 text-sm md:text-xs font-medium rounded-md text-gray-600 dark:text-dark-text-secondary hover:bg-gray-50 dark:hover:bg-dark-surface-hover hover:text-gray-900 dark:hover:text-dark-text transition-colors duration-200">
             <HelpCircle className="mr-3 md:mr-2 h-5 w-5 md:h-4 md:w-4" />
             <span className="text-sm md:text-xs">Help Center</span>
           </button>

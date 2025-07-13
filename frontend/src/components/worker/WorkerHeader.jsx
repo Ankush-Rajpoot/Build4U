@@ -25,7 +25,7 @@ const WorkerHeader = ({ onMenuToggle, isMobileMenuOpen }) => {
             {/* Mobile menu button */}
             <button
               onClick={onMenuToggle}
-              className="md:hidden p-2 rounded-md text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-surface-secondary transition-colors duration-200 mr-2"
+              className="md:hidden p-2 rounded-md text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-surface-hover transition-colors duration-200 mr-2"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
@@ -50,7 +50,7 @@ const WorkerHeader = ({ onMenuToggle, isMobileMenuOpen }) => {
             <NotificationCenter />
             
             <div className="relative">
-              <button className="flex items-center space-x-1.5 border border-gray-300 dark:border-dark-border rounded-full px-2 sm:px-2.5 py-1 hover:bg-gray-50 dark:hover:bg-dark-surface-secondary transition-colors duration-200">
+              <button className="flex items-center space-x-1.5 border border-gray-300 dark:border-dark-border rounded-full px-2 sm:px-2.5 py-1 hover:bg-gray-50 dark:hover:bg-dark-surface-hover transition-colors duration-200">
                 <User className="h-4 w-4 text-gray-500 dark:text-dark-text-secondary" />
                 <span className="text-xs font-medium text-gray-700 dark:text-dark-text hidden sm:inline">
                   {user?.name || 'User'}
@@ -60,7 +60,7 @@ const WorkerHeader = ({ onMenuToggle, isMobileMenuOpen }) => {
             
             <button 
               onClick={handleLogout}
-              className="ml-1 sm:ml-2 px-2 sm:px-3 py-1.5 border border-gray-300 dark:border-dark-border text-xs sm:text-sm font-medium rounded-md text-gray-700 dark:text-dark-text bg-white dark:bg-dark-surface hover:bg-gray-50 dark:hover:bg-dark-surface-secondary transition-colors duration-200"
+              className="ml-1 sm:ml-2 px-2 sm:px-3 py-1.5 border border-gray-300 dark:border-dark-border text-xs sm:text-sm font-medium rounded-md text-gray-700 dark:text-dark-text bg-white dark:bg-dark-surface-secondary hover:bg-gray-50 dark:hover:bg-dark-surface-hover transition-colors duration-200"
             >
               Logout
             </button>

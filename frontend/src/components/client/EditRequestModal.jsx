@@ -168,7 +168,7 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
       
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative w-full max-w-4xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl transform transition-all">
+        <div className="relative w-full max-w-4xl bg-white dark:bg-[#0A0A0A] rounded-2xl shadow-2xl transform transition-all border dark:border-[#404040]">
           {/* Header */}
           <div className="relative bg-gradient-to-r from-orange-600 to-orange-700 dark:from-orange-500 dark:to-orange-600 px-6 py-4 rounded-t-2xl">
             <div className="flex items-center justify-between">
@@ -191,7 +191,7 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
           </div>
 
           {/* Content */}
-          <div className="p-6 max-h-[70vh] overflow-y-auto">
+          <div className="p-6 max-h-[70vh] overflow-y-auto dark:bg-[#171717]">
             {/* Status Warning */}
             {!canEdit && (
               <div className="mb-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 text-amber-800 dark:text-amber-200 px-3 py-2 rounded-lg flex items-center text-sm">
@@ -217,12 +217,12 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                   <div className="w-7 h-7 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mr-2">
                     <Tag className="h-3.5 w-3.5 text-orange-600 dark:text-orange-400" />
                   </div>
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Basic Information</h3>
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-[#A3A3A3]">Basic Information</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
-                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                       Project Title *
                     </label>
                     <input
@@ -232,8 +232,8 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                       value={formData.title}
                       onChange={handleChange}
                       disabled={!canEdit}
-                      className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors text-sm ${
-                        !canEdit ? 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed' : ''
+                      className={`w-full px-3 py-2 border border-gray-300 dark:border-[#404040] bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors text-sm ${
+                        !canEdit ? 'bg-gray-50 dark:bg-[#171717] text-gray-500 dark:text-[#737373] cursor-not-allowed' : ''
                       }`}
                       placeholder="e.g., Kitchen Renovation, Bathroom Repair, Garden Landscaping"
                       required
@@ -241,7 +241,7 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                   </div>
 
                   <div>
-                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-1">
                       Category *
                     </label>
                     <select
@@ -250,8 +250,8 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                       value={formData.category}
                       onChange={handleChange}
                       disabled={!canEdit}
-                      className={`w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-                        !canEdit ? 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed' : ''
+                      className={`w-full px-4 py-3 border border-gray-300 dark:border-[#404040] bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
+                        !canEdit ? 'bg-gray-50 dark:bg-[#171717] text-gray-500 dark:text-[#737373] cursor-not-allowed' : ''
                       }`}
                       required
                     >
@@ -263,11 +263,11 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                   </div>
 
                   <div>
-                    <label htmlFor="budget" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label htmlFor="budget" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-2">
                       Budget (USD) *
                     </label>
                     <div className="relative">
-                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-[#737373]" />
                       <input
                         type="number"
                         id="budget"
@@ -277,8 +277,8 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                         disabled={!canEdit}
                         min="1"
                         step="0.01"
-                        className={`w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-                          !canEdit ? 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed' : ''
+                        className={`w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-[#404040] bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
+                          !canEdit ? 'bg-gray-50 dark:bg-[#171717] text-gray-500 dark:text-[#737373] cursor-not-allowed' : ''
                         }`}
                         placeholder="Your estimated budget"
                         required
@@ -288,7 +288,7 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                 </div>
 
                 <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-2">
                     Project Description *
                   </label>
                   <textarea
@@ -298,8 +298,8 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                     onChange={handleChange}
                     disabled={!canEdit}
                     rows={4}
-                    className={`w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors resize-none ${
-                      !canEdit ? 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed' : ''
+                    className={`w-full px-4 py-3 border border-gray-300 dark:border-[#404040] bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors resize-none ${
+                      !canEdit ? 'bg-gray-50 dark:bg-[#171717] text-gray-500 dark:text-[#737373] cursor-not-allowed' : ''
                     }`}
                     placeholder="Describe your project in detail. Include what needs to be done, any specific requirements, materials needed, etc."
                     required
@@ -313,16 +313,16 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                   <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mr-3">
                     <MapPin className="h-4 w-4 text-green-600 dark:text-green-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Location & Schedule</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-[#A3A3A3]">Location & Schedule</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-2">
                       Location
                     </label>
                     <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-[#737373]" />
                       <input
                         type="text"
                         id="location"
@@ -330,8 +330,8 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                         value={formData.location}
                         onChange={handleChange}
                         disabled={!canEdit}
-                        className={`w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-                          !canEdit ? 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed' : ''
+                        className={`w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-[#404040] bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
+                          !canEdit ? 'bg-gray-50 dark:bg-[#171717] text-gray-500 dark:text-[#737373] cursor-not-allowed' : ''
                         }`}
                         placeholder="City, State or full address"
                       />
@@ -339,11 +339,11 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                   </div>
 
                   <div>
-                    <label htmlFor="scheduledDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label htmlFor="scheduledDate" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-2">
                       Preferred Start Date
                     </label>
                     <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                      <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-[#737373]" />
                       <input
                         type="date"
                         id="scheduledDate"
@@ -351,8 +351,8 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                         value={formData.scheduledDate}
                         onChange={handleChange}
                         disabled={!canEdit}
-                        className={`w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
-                          !canEdit ? 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed' : ''
+                        className={`w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-[#404040] bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors ${
+                          !canEdit ? 'bg-gray-50 dark:bg-[#171717] text-gray-500 dark:text-[#737373] cursor-not-allowed' : ''
                         }`}
                       />
                     </div>
@@ -366,11 +366,11 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                   <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mr-3">
                     <FileText className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Additional Details</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-[#A3A3A3]">Additional Details</h3>
                 </div>
 
                 <div>
-                  <label htmlFor="requirements" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label htmlFor="requirements" className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-2">
                     Special Requirements
                   </label>
                   <textarea
@@ -380,8 +380,8 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                     onChange={handleChange}
                     disabled={!canEdit}
                     rows={3}
-                    className={`w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors resize-none ${
-                      !canEdit ? 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed' : ''
+                    className={`w-full px-4 py-3 border border-gray-300 dark:border-[#404040] bg-white dark:bg-[#262626] text-gray-900 dark:text-[#A3A3A3] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors resize-none ${
+                      !canEdit ? 'bg-gray-50 dark:bg-[#171717] text-gray-500 dark:text-[#737373] cursor-not-allowed' : ''
                     }`}
                     placeholder="Any special requirements, materials, tools, or notes (one per line)"
                   />
@@ -390,10 +390,10 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                 {/* File Upload - Only show if can edit */}
                 {canEdit && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-[#A3A3A3] mb-2">
                       Attachments
                     </label>
-                    <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-orange-400 dark:hover:border-orange-500 transition-colors">
+                    <div className="border-2 border-dashed border-gray-300 dark:border-[#404040] rounded-lg p-6 text-center hover:border-orange-400 dark:hover:border-orange-500 transition-colors bg-white dark:bg-[#262626]">
                       <input
                         type="file"
                         multiple
@@ -407,10 +407,10 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                           <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mb-3">
                             <Upload className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                           </div>
-                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
+                          <p className="text-sm font-medium text-gray-900 dark:text-[#A3A3A3] mb-1">
                             Click to upload files
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                          <p className="text-xs text-gray-500 dark:text-[#737373]">
                             Images, PDFs, or documents (Max 10MB each)
                           </p>
                         </div>
@@ -420,10 +420,10 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                     {/* Attachment Preview */}
                     {attachments.length > 0 && (
                       <div className="mt-4 space-y-3">
-                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Uploaded Files ({attachments.length})</h4>
+                        <h4 className="text-sm font-medium text-gray-700 dark:text-[#A3A3A3]">Uploaded Files ({attachments.length})</h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {attachments.map((attachment) => (
-                            <div key={attachment.id} className="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                            <div key={attachment.id} className="flex items-center p-3 bg-gray-50 dark:bg-[#262626] rounded-lg border border-gray-200 dark:border-[#404040]">
                               {attachment.preview ? (
                                 <img 
                                   src={attachment.preview} 
@@ -431,15 +431,15 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
                                   className="w-10 h-10 object-cover rounded mr-3"
                                 />
                               ) : (
-                                <div className="w-10 h-10 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center mr-3">
+                                <div className="w-10 h-10 bg-gray-200 dark:bg-[#404040] rounded flex items-center justify-center mr-3">
                                   {getFileIcon(attachment.type)}
                                 </div>
                               )}
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                                <p className="text-sm font-medium text-gray-900 dark:text-[#A3A3A3] truncate">
                                   {attachment.name}
                                 </p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                <p className="text-xs text-gray-500 dark:text-[#737373]">
                                   {formatFileSize(attachment.size)}
                                 </p>
                               </div>
@@ -460,11 +460,11 @@ const EditRequestModal = ({ isOpen, onClose, onSuccess, request }) => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-600">
+              <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-[#404040]">
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 font-medium transition-colors"
+                  className="px-6 py-3 border border-gray-300 dark:border-[#404040] text-gray-700 dark:text-[#A3A3A3] bg-white dark:bg-[#262626] rounded-lg hover:bg-gray-50 dark:hover:bg-[#404040] font-medium transition-colors"
                 >
                   {canEdit ? 'Cancel' : 'Close'}
                 </button>

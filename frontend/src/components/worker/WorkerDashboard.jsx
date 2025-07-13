@@ -183,23 +183,23 @@ const WorkerDashboard = () => {
           isMobileMenuOpen={isMobileMenuOpen}
           onMenuClose={closeMobileMenu}
         />
-        <main className="flex-1 flex flex-col overflow-hidden">
+        <main className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-dark-surface">
           {activeTab === 'profile' ? (
-            <div className="p-1.5 sm:p-2 md:p-3 flex-1 overflow-y-auto">
+            <div className="p-1.5 sm:p-2 md:p-3 flex-1 overflow-y-auto bg-gray-50 dark:bg-dark-background">
               <WorkerProfilePage />
             </div>
           ) : (
             <>
               {/* Stats section - compact on mobile */}
-              <div className="p-1.5 sm:p-2 md:p-3 pb-0 flex-shrink-0">
+              <div className="p-1.5 sm:p-2 md:p-3 pb-0 flex-shrink-0 bg-gray-50 dark:bg-dark-background">
                 <WorkerStats />
               </div>
               
               {/* Header section - compact on mobile */}
-              <div className="px-1.5 sm:px-2 md:px-3 py-1.5 flex-shrink-0">
+              <div className="px-1.5 sm:px-2 md:px-3 py-1.5 flex-shrink-0 bg-white dark:bg-dark-surface border-b border-gray-200 dark:border-dark-border">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h1 className="text-base sm:text-lg font-bold text-gray-800 dark:text-dark-text">
+                    <h1 className="text-base sm:text-lg font-bold text-gray-800 dark:text-dark-text-primary">
                       {getTabTitle()}
                       <span className="ml-2 text-xs font-normal text-gray-500 dark:text-dark-text-secondary">
                         ({requests.length})
@@ -211,7 +211,7 @@ const WorkerDashboard = () => {
                     </p> */}
                   </div>
                   {activeTab === 'all-jobs' && jobCounts.total > 0 && (
-                    <div className="hidden sm:block bg-white dark:bg-dark-surface p-2.5 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border w-auto">
+                    <div className="hidden sm:block bg-white dark:bg-dark-surface-secondary p-2.5 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border w-auto">
                       <h3 className="text-xs font-medium text-gray-700 dark:text-dark-text mb-1.5">Job Breakdown</h3>
                       <div className="space-y-1 text-xs">
                         <div className="flex justify-between">
@@ -224,7 +224,7 @@ const WorkerDashboard = () => {
                         </div>
                         <div className="flex justify-between border-t dark:border-dark-border pt-1">
                           <span className="text-gray-700 dark:text-dark-text font-medium">Total:</span>
-                          <span className="font-semibold dark:text-dark-text">{jobCounts.total}</span>
+                          <span className="font-semibold dark:text-dark-text-primary">{jobCounts.total}</span>
                         </div>
                       </div>
                     </div>
@@ -238,7 +238,7 @@ const WorkerDashboard = () => {
               </div>
               
               {/* Scrollable request list - takes remaining height */}
-              <div className="flex-1 overflow-y-auto px-1.5 sm:px-2 md:px-3 pb-1.5 sm:pb-2 md:pb-3">
+              <div className="flex-1 overflow-y-auto px-1.5 sm:px-2 md:px-3 pb-1.5 sm:pb-2 md:pb-3 bg-gray-50 dark:bg-dark-background">
                 <RequestList 
                   requests={requests} 
                   userRole="worker"
@@ -255,9 +255,9 @@ const WorkerDashboard = () => {
             open={!!selectedRequest}
             onClose={() => setSelectedRequest(null)}
           >
-            <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-2 sm:p-4">
+            <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 dark:bg-black/80 p-2 sm:p-4">
               <Dialog.Panel
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6 w-full max-w-3xl mx-auto relative overflow-hidden"
+                className="bg-white dark:bg-[#0A0A0A] rounded-xl shadow-2xl border border-gray-200 dark:border-[#404040] p-3 sm:p-4 md:p-6 w-full max-w-3xl mx-auto relative overflow-hidden"
                 style={{
                   maxHeight: '92vh',
                   overflowY: 'auto',
@@ -277,6 +277,12 @@ const WorkerDashboard = () => {
                     }
                     .worker-details-modal::-webkit-scrollbar-track {
                       background: #e5e7eb;
+                    }
+                    .dark .worker-details-modal::-webkit-scrollbar-thumb {
+                      background: #34d399;
+                    }
+                    .dark .worker-details-modal::-webkit-scrollbar-track {
+                      background: #171717;
                     }
                   `}
                 </style>

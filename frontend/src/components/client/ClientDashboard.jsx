@@ -200,7 +200,7 @@ const ClientDashboard = () => {
           >
             <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-2">
               <Dialog.Panel
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-3 sm:p-4 w-full max-w-2xl mx-auto relative overflow-hidden"
+                className="bg-white dark:bg-[#0A0A0A] rounded-xl shadow-2xl border border-gray-200 dark:border-[#404040] p-3 sm:p-4 w-full max-w-2xl mx-auto relative overflow-hidden"
                 style={{
                   maxHeight: '90vh',
                   overflowY: 'auto',
