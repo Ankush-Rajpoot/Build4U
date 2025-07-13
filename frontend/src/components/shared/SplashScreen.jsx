@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import splashGif from '../../assets/splashscreen.gif';
+import splashGif from '../../assets/finalcube1.gif';
 
 const SplashScreen = ({ onComplete, duration = 3000 }) => {
   const [isVisible, setIsVisible] = useState(true);
