@@ -11,6 +11,13 @@ import serviceRequestRoutes from './routes/serviceRequestRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+<<<<<<< Updated upstream
+=======
+import paymentRoutes from './routes/paymentRoutes.js';
+import invoiceRoutes from './routes/invoiceRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import financialAnalyticsRoutes from './routes/financialAnalyticsRoutes.js';
+>>>>>>> Stashed changes
 import { errorHandler } from './middleware/errorHandler.js';
 import Client from './models/Client.js';
 import Worker from './models/Worker.js';
@@ -273,6 +280,10 @@ app.use('/api/service-requests', serviceRequestRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/invoices', invoiceRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/analytics', financialAnalyticsRoutes);
 
 
 

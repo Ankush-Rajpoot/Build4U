@@ -10,7 +10,10 @@ import {
   User,
   Search,
   Play,
-  Archive
+  Archive,
+  DollarSign,
+  Receipt,
+  TrendingUp
 } from 'lucide-react';
 
 const WorkerSidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, onMenuClose }) => {
@@ -42,6 +45,27 @@ const WorkerSidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, onMenuClose 
       icon: <Archive className="h-5 w-5" />,
       description: 'Complete job history',
       color: 'text-gray-600'
+    },
+    { 
+      id: 'invoices', 
+      label: 'Invoices', 
+      icon: <DollarSign className="h-5 w-5" />,
+      description: 'Manage invoices',
+      color: 'text-green-600'
+    },
+    { 
+      id: 'expenses', 
+      label: 'Expenses', 
+      icon: <Receipt className="h-5 w-5" />,
+      description: 'Track expenses',
+      color: 'text-red-600'
+    },
+    { 
+      id: 'financial-dashboard', 
+      label: 'Financial Dashboard', 
+      icon: <TrendingUp className="h-5 w-5" />,
+      description: 'Financial insights',
+      color: 'text-purple-600'
     },
   ];
 

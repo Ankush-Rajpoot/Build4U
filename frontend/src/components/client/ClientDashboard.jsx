@@ -10,6 +10,9 @@ import RequestDetailsClient from '../shared/RequestDetailsClient';
 import NewRequestModal from './NewRequestModal';
 import EditRequestModal from './EditRequestModal';
 import ReviewModal from '../reviews/ReviewModal';
+import FinancialDashboard from '../financial/FinancialDashboard';
+import InvoiceManagement from '../financial/InvoiceManagement';
+import { DashboardSkeleton } from '../shared/skeletons';
 
 const ClientDashboard = () => {
   const { userRole } = useUser();
@@ -124,6 +127,10 @@ const ClientDashboard = () => {
         return 'Cancelled Requests';
       case 'profile':
         return 'My Profile';
+      case 'invoices':
+        return 'Invoices';
+      case 'financial-dashboard':
+        return 'Financial Dashboard';
       default:
         return 'All Service Requests';
     }
@@ -145,6 +152,10 @@ const ClientDashboard = () => {
         <main className="flex-1 p-1.5 sm:p-2 md:p-3 flex flex-col overflow-hidden">
           {activeTab === 'profile' ? (
             <ClientProfilePage />
+          ) : activeTab === 'financial-dashboard' ? (
+            <FinancialDashboard userRole="client" />
+          ) : activeTab === 'invoices' ? (
+            <InvoiceManagement userRole="client" />
           ) : (
             <>
               <div className="mb-2.5 flex justify-between items-center">

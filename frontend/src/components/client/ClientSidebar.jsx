@@ -10,7 +10,9 @@ import {
   HelpCircle,
   User,
   XCircle,
-  Play
+  Play,
+  DollarSign,
+  TrendingUp
 } from 'lucide-react';
 
 const ClientSidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, onMenuClose }) => {
@@ -44,6 +46,18 @@ const ClientSidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, onMenuClose 
       label: 'Cancelled', 
       icon: <XCircle className="h-5 w-5" />,
       description: 'Cancelled requests'
+    },
+    { 
+      id: 'invoices', 
+      label: 'Invoices', 
+      icon: <DollarSign className="h-5 w-5" />,
+      description: 'View & manage invoices'
+    },
+    { 
+      id: 'financial-dashboard', 
+      label: 'Financial Dashboard', 
+      icon: <TrendingUp className="h-5 w-5" />,
+      description: 'Financial insights'
     },
   ];
 

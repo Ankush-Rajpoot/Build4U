@@ -8,6 +8,10 @@ import WorkerProfilePage from './WorkerProfilePage';
 import WorkerStats from './WorkerStats';
 import RequestList from '../shared/RequestList';
 import RequestDetailsWorker from '../shared/RequestDetailsWorker';
+import FinancialDashboard from '../financial/FinancialDashboard';
+import InvoiceManagement from '../financial/InvoiceManagement';
+import ExpenseManagement from '../financial/ExpenseManagement';
+import { DashboardSkeleton } from '../shared/skeletons';
 
 const WorkerDashboard = () => {
   const { userRole } = useUser();
@@ -130,6 +134,12 @@ const WorkerDashboard = () => {
         return 'All My Jobs';
       case 'profile':
         return 'My Profile';
+      case 'invoices':
+        return 'Invoices';
+      case 'expenses':
+        return 'Expenses';
+      case 'financial-dashboard':
+        return 'Financial Dashboard';
       default:
         return 'Jobs';
     }
@@ -186,6 +196,18 @@ const WorkerDashboard = () => {
           {activeTab === 'profile' ? (
             <div className="p-1.5 sm:p-2 md:p-3 flex-1 overflow-y-auto">
               <WorkerProfilePage />
+            </div>
+          ) : activeTab === 'financial-dashboard' ? (
+            <div className="p-1.5 sm:p-2 md:p-3 flex-1 overflow-y-auto bg-gray-50 dark:bg-dark-background">
+              <FinancialDashboard userRole="worker" />
+            </div>
+          ) : activeTab === 'invoices' ? (
+            <div className="p-1.5 sm:p-2 md:p-3 flex-1 overflow-y-auto bg-gray-50 dark:bg-dark-background">
+              <InvoiceManagement userRole="worker" />
+            </div>
+          ) : activeTab === 'expenses' ? (
+            <div className="p-1.5 sm:p-2 md:p-3 flex-1 overflow-y-auto bg-gray-50 dark:bg-dark-background">
+              <ExpenseManagement />
             </div>
           ) : (
             <>

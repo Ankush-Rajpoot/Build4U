@@ -63,3 +63,6 @@ export const restrictTo = (...roles) => {
     next();
   };
 };
+
+// Alias for compatibility
+export const authenticate = protect;
