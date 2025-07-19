@@ -36,7 +36,7 @@ const WorkerHeader = ({ onMenuToggle, isMobileMenuOpen }) => {
             </button>
             
             <div className="flex-shrink-0 flex items-center">
-              <span className="text-green-600 dark:text-green-400 font-bold text-lg sm:text-xl">ServiceConnect</span>
+              <span className="text-green-600 dark:text-green-400 font-bold text-lg sm:text-xl">Build4U</span>
               {isConnected && (
                 <div className="ml-2 flex items-center">
                   <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
