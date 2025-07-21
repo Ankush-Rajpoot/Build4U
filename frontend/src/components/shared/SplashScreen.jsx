@@ -28,7 +28,7 @@ const SplashScreen = ({ onComplete, duration = 3000 }) => {
         <motion.img
           src={splashGif}
           alt="BuildForYou Loading"
-          className="max-w-md w-full h-auto"
+          className="max-w-xs w-32 h-auto"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ 
