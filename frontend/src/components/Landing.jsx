@@ -66,6 +66,38 @@ const TypewriterText = ({
   );
 };
 
+/** Mobile Arrow component for up/down arrows */
+const MobileArrow = ({ color, direction }) => {
+  // direction: 'down' or 'up'
+  const rotate = direction === 'down' ? 'rotate-90' : '-rotate-90';
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      className={rotate}
+      style={{ minWidth: "32px" }}
+    >
+      <defs>
+        <filter id="mobileGlow">
+          <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      <path
+        d="M8 16 L24 16 M17 9 L24 16 L17 23"
+        stroke={color}
+        strokeWidth="2.5"
+        fill="none"
+        filter="url(#mobileGlow)"
+      />
+    </svg>
+  );
+};
+
 const Landing = () => {
   const navigate = useNavigate();
   const { userRole, loading } = useUser();
@@ -140,12 +172,33 @@ const Landing = () => {
               background-position: 200% center;
             }
           }
+          /* Mobile-specific styles */
+          @media (max-width: 640px) {
+            .landing-mobile-hide {
+              display: none !important;
+            }
+            .landing-mobile-flex-col {
+              flex-direction: column !important;
+              gap: 1.5rem !important;
+            }
+            .landing-mobile-arrow-row {
+              flex-direction: row !important;
+              align-items: center !important;
+              justify-content: center !important;
+              gap: 0.5rem !important;
+              margin: 0.5rem 0 !important;
+            }
+            .landing-mobile-dot {
+              margin: 0 0.5rem !important;
+            }
+          }
         `}
       </style>
 
+      {/* Top section: GIF and typewriter, hide GIF on mobile */}
       <div className="text-center mb-12 md:mb-16">
         <div className="flex flex-col items-center justify-center">
-          <div className="relative mb-4 w-20 h-20 md:w-24 md:h-24 flex items-center justify-center">
+          <div className="relative mb-4 w-20 h-20 md:w-24 md:h-24 flex items-center justify-center landing-mobile-hide">
             <div className="hidden sm:block w-full h-full shadow-lg gif-shimmer-border" style={{ background: '#0A0A0A', borderRadius: '0.75rem' }}>
               <img
                 src={finalcube1}
@@ -191,7 +244,8 @@ const Landing = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-8">
+      {/* Cards and arrows section: responsive for mobile */}
+      <div className="flex flex-col md:flex-row items-center gap-8 landing-mobile-flex-col">
         <RoleCard
           title="I'm a Client"
           description="Looking to hire talented professionals for your next project."
@@ -199,7 +253,17 @@ const Landing = () => {
           onClick={() => setSelectedRole("client")}
         />
 
-        <ArrowsAnimation />
+        {/* Desktop arrows animation, hidden on mobile */}
+        <div className="landing-mobile-hide">
+          <ArrowsAnimation />
+        </div>
+
+        {/* Mobile arrows animation: blue arrow down, dot, green arrow up, only on mobile */}
+        <div className="flex landing-mobile-arrow-row sm:hidden">
+          <MobileArrow color="#3B82F6" direction="down" />
+          <span className="w-2 h-2 bg-gradient-to-r from-[#3B82F6] to-[#10B981] rounded-full landing-mobile-dot" style={{ boxShadow: "0 0 10px #3B82F6, 0 0 20px #10B981" }} />
+          <MobileArrow color="#10B981" direction="up" />
+        </div>
 
         <RoleCard
           title="I'm a Contractor"
@@ -219,7 +283,7 @@ const Landing = () => {
 /** Role Card */
 const RoleCard = ({ title, description, points, onClick }) => (
   <div
-    className="bg-[#0A0A0A] card-border p-4 rounded-lg w-96 cursor-pointer hover:scale-105 transition-transform"
+    className="bg-[#0A0A0A] card-border p-4 rounded-lg w-96 sm:w-96 w-[72vw] max-w-xs cursor-pointer hover:scale-105 transition-transform"
     onClick={onClick}
   >
     <h2 className="text-2xl font-semibold text-gray-100 text-center">{title}</h2>
