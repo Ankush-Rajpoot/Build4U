@@ -200,10 +200,10 @@ const SignUp = ({ role, theme, onToggleMode, setError, setInfo, setLoading, load
     <div className="space-y-4">
       <div className="space-y-3">
         <div>
-          <label className="block text-sm font-medium text-black tracking-wide mb-1.5">
+          <label className="block text-sm font-medium text-[#737373] tracking-wide mb-1.5">
             Professional Skills <span className="text-red-400">*</span>
           </label>
-          <p className="text-xs text-gray-900 mb-3">
+          <p className="text-xs text-[#737373] mb-3">
             Select skills that match your expertise. This helps clients find you for relevant projects.
           </p>
           <div className="relative z-50">
