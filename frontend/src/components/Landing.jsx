@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext';
-import AuthForm from './auth/AuthForm.jsx';
-import LottieBackground from './shared/LottieBackground';
-import { LoadingScreenSkeleton } from './shared/skeletons';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
+import finalcube1 from "../assets/finalcube1.gif";
+import { useUser } from "../context/UserContext";
+import AuthForm from "./auth/AuthForm.jsx";
+import { LoadingScreenSkeleton } from "./shared/skeletons";
 
+/** Typewriter text animation */
 const TypewriterText = ({
   text,
   speed = 50,
@@ -20,11 +22,8 @@ const TypewriterText = ({
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    const startTyping = setTimeout(() => {
-      setIsTyping(true);
-    }, delay);
-
-    return () => clearTimeout(startTyping);
+    const start = setTimeout(() => setIsTyping(true), delay);
+    return () => clearTimeout(start);
   }, [delay]);
 
   useEffect(() => {
@@ -51,21 +50,11 @@ const TypewriterText = ({
         setCurrentIndex((prev) => prev - 1);
       }, speed / 2);
     } else if (isDeleting && currentIndex === 0) {
-      timeout = setTimeout(() => {
-        setIsDeleting(false);
-      }, 500);
+      timeout = setTimeout(() => setIsDeleting(false), 500);
     }
 
     return () => clearTimeout(timeout);
-  }, [
-    currentIndex,
-    text,
-    speed,
-    isTyping,
-    isDeleting,
-    isPaused,
-    pauseDuration,
-  ]);
+  }, [currentIndex, text, speed, isTyping, isDeleting, isPaused, pauseDuration]);
 
   return (
     <span className={className}>
@@ -77,145 +66,247 @@ const TypewriterText = ({
   );
 };
 
-// Add blink animation style
-
 const Landing = () => {
   const navigate = useNavigate();
   const { userRole, loading } = useUser();
   const [selectedRole, setSelectedRole] = useState(null);
 
-  // Redirect if user is already logged in
   useEffect(() => {
     if (!loading && userRole) {
-      navigate(
-        userRole === "client" ? "/client-dashboard" : "/worker-dashboard"
-      );
+      navigate(userRole === "client" ? "/client-dashboard" : "/worker-dashboard");
     }
   }, [userRole, loading, navigate]);
 
-  const handleRoleSelect = (role) => {
-    setSelectedRole(role);
-  };
-
   if (loading) {
     return (
-      <div className="fixed inset-0 w-screen h-screen overflow-hidden" style={{ margin: 0, padding: 0 }}>
-        <LottieBackground />
-        
-        {/* Loading Content */}
-        <div className="relative z-20 flex items-center justify-center h-full">
-          <LoadingScreenSkeleton />
-        </div>
+      <div className="relative z-20 flex items-center justify-center h-full">
+        <LoadingScreenSkeleton />
       </div>
     );
   }
 
   if (selectedRole) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-200 via-blue-100 to-green-200 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
         <AuthForm role={selectedRole} onBack={() => setSelectedRole(null)} />
       </div>
     );
   }
 
   return (
-    <div className="fixed inset-0 w-screen h-screen overflow-hidden" style={{ margin: 0, padding: 0 }}>
-      <LottieBackground />
-      
-      {/* Content */}
-      <div className="relative z-20 min-h-screen overflow-y-auto">
-        <style>
+    <div className="fixed inset-0 w-screen h-screen bg-[#000000] text-gray-300 flex flex-col items-center justify-center px-4">
+      <style>
         {`
-          @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+          .card-border {
+            border: 1px solid #374151;
           }
-          .animate-blink {
-            animation: blink 1s steps(1) infinite;
+          .arrow-glow {
+            animation: arrow-pulse 2s infinite ease-in-out;
           }
-          
-          /* Ensure no body margins/padding interfere */
-          html, body {
-            margin: 0 !important;
-            padding: 0 !important;
-            overflow-x: hidden;
-            width: 100vw;
-            height: 100vh;
+          @keyframes arrow-pulse {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
           }
-          
-          * {
-            box-sizing: border-box;
+
+          .gif-shimmer-border {
+            position: relative;
+            z-index: 1;
           }
-          
-          #root {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
+          .gif-shimmer-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 0.75rem;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(
+              to right,
+              #fff 20%, #fff 40%, #ECD08C 50%, #ECD08C 55%, #fff 70%, #fff 100%
+            );
+            background-size: 200% auto;
+            animation: gif-shine 2.5s linear infinite;
+            border: 1px solid transparent;
+            -webkit-mask:
+              linear-gradient(#fff 0 0) content-box,
+              linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+          }
+          @keyframes gif-shine {
+            to {
+              background-position: 200% center;
+            }
           }
         `}
-        </style>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-        <div className="text-center mb-12 md:mb-16">
+      </style>
+
+      <div className="text-center mb-12 md:mb-16">
+        <div className="flex flex-col items-center justify-center">
+          <div className="relative mb-4 w-20 h-20 md:w-24 md:h-24 flex items-center justify-center">
+            <div className="hidden sm:block w-full h-full shadow-lg gif-shimmer-border" style={{ background: '#0A0A0A', borderRadius: '0.75rem' }}>
+              <img
+                src={finalcube1}
+                alt="Animated Cube"
+                className="w-20 h-20 md:w-24 md:h-24 object-contain rounded"
+                style={{ display: "inline-block" }}
+              />
+              {/* Vertical gradient arrow from GIF to dot */}
+              <svg
+                className="absolute left-1/2 transform -translate-x-1/2"
+                width="18"
+                height="300"
+                viewBox="0 0 18 150"
+                fill="none"
+                style={{ top: '100%' }}
+              >
+                <defs>
+                  <linearGradient id="arrowGradient" x1="9" y1="0" x2="9" y2="150" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#000" />
+                    <stop id="shineStop" offset="0%" stopColor="#fff">
+                      <animate attributeName="offset" values="0;1" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="stop-color" values="#fff;#60A5FA;#fff" dur="1.5s" repeatCount="indefinite" />
+                    </stop>
+                    <stop offset="100%" stopColor="#fff" />
+                  </linearGradient>
+                </defs>
+                <line x1="9" y1="0" x2="9" y2="130" stroke="url(#arrowGradient)" strokeWidth="3" />
+                {/* Arrowhead at the tip, positioned at y=130 */}
+                <polygon points="4,123 14,123 9,135" fill="#fff" />
+              </svg>
+            </div>
+          </div>
+
           <div className="h-16 sm:h-12 flex items-center justify-center">
             <TypewriterText
               text="Connecting skilled professionals with clients seeking quality services"
               speed={40}
               delay={500}
               pauseDuration={3000}
-              className="text-lg sm:text-xl md:text-2xl text-gray-900 max-w-3xl mx-auto leading-relaxed font-medium px-4"
+              className="text-lg sm:text-xl md:text-2xl text-gray-100 max-w-3xl mx-auto leading-relaxed font-medium px-4"
             />
           </div>
         </div>
-
-        <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 max-w-5xl mx-auto">
-          <div 
-            className="w-full md:w-1/2 max-w-sm md:max-w-md group"
-            onClick={() => handleRoleSelect('client')}
-          >
-            <div className="relative rounded-xl shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-3xl cursor-pointer">
-              <div className="bg-gradient-to-br from-white/85 to-blue-50/75 p-6 md:p-8 rounded-xl border border-blue-100 backdrop-blur-sm">
-                <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3 md:mb-4 text-center">I'm a Client</h2>
-                <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 text-center leading-relaxed">
-                  I'm looking for skilled professionals to help with my projects and services.
-                </p>
-                <div className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2 md:py-3 px-4 md:px-6 rounded-full font-medium transition-all duration-300 group-hover:shadow-lg text-center transform group-hover:-translate-y-1 text-sm md:text-base">
-                  Find Services
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div 
-            className="w-full md:w-1/2 max-w-sm md:max-w-md group"
-            onClick={() => handleRoleSelect('worker')}
-          >
-            <div className="relative rounded-xl shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-3xl cursor-pointer">
-              <div className="bg-gradient-to-br from-white/85 to-green-50/75 p-6 md:p-8 rounded-xl border border-green-100 backdrop-blur-sm">
-                <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3 md:mb-4 text-center">I'm a Contractor</h2>
-                <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 text-center leading-relaxed">
-                  I offer professional services and I'm looking for clients who need my skills.
-                </p>
-                <div className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-2 md:py-3 px-4 md:px-6 rounded-full font-medium transition-all duration-300 group-hover:shadow-lg text-center transform group-hover:-translate-y-1 text-sm md:text-base">
-                  Find Work
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* <div className="mt-24 text-center">
-          <p className="text-gray-600 text-lg font-medium">
-            What describes you the most? Select the option that best matches your needs.
-          </p>
-        </div> */}
-        
       </div>
+
+      <div className="flex flex-col md:flex-row items-center gap-8">
+        <RoleCard
+          title="I'm a Client"
+          description="Looking to hire talented professionals for your next project."
+          points={["Post Service Requests", "Browse & Hire Skilled Workers", "Track Jobs & Spending", "Secure Messaging", "Rate & Review Services"]}
+          onClick={() => setSelectedRole("client")}
+        />
+
+        <ArrowsAnimation />
+
+        <RoleCard
+          title="I'm a Contractor"
+          description="Ready to showcase your skills and work on exciting projects."
+          points={["Find & Apply for Jobs", "Build Your Portfolio", "Track Earnings & Reviews", "Manage Availability", "Grow Your Network"]}
+          onClick={() => setSelectedRole("worker")}
+        />
       </div>
+
+      <p className="mt-12 text-gray-500 text-xs">
+        Join thousands of professionals already using our platform
+      </p>
     </div>
   );
 };
 
-export default Landing;
+/** Role Card */
+const RoleCard = ({ title, description, points, onClick }) => (
+  <div
+    className="bg-[#0A0A0A] card-border p-4 rounded-lg w-96 cursor-pointer hover:scale-105 transition-transform"
+    onClick={onClick}
+  >
+    <h2 className="text-2xl font-semibold text-gray-100 text-center">{title}</h2>
+    <p className="text-gray-400 mt-2 text-center text-sm">{description}</p>
+    <ul className="mt-3 text-xs text-gray-500 space-y-1">
+      {points.map((point, idx) => (
+        <li key={idx}>• {point}</li>
+      ))}
+    </ul>
+    <button className="mt-4 w-full bg-[#262626] hover:bg-[#404040] text-gray-200 py-1.5 rounded text-sm">
+      Get Started
+    </button>
+  </div>
+);
 
-// [#0a3815]
+/** Arrows Animation between cards */
+const ArrowsAnimation = () => (
+  <motion.div className="relative flex flex-col lg:flex-row items-center justify-center my-4 lg:my-0">
+    <Arrow
+      color="#3B82F6"
+      direction="right"
+      delay={0.8}
+      animateX={3}
+      rotation="rotate-90 lg:rotate-0"
+      filterId="blueGlow"
+    />
+
+    <Arrow
+      color="#10B981"
+      direction="left"
+      delay={1.2}
+      animateX={-3}
+      rotation="-rotate-90 lg:rotate-180"
+      filterId="greenGlow"
+    />
+
+    <motion.div
+      className="absolute inset-0 flex items-center justify-center"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5, delay: 1.5 }}
+    >
+      <motion.div
+        className="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-[#3B82F6] to-[#10B981] rounded-full"
+        animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          boxShadow:
+            "0 0 20px rgba(59,130,246,0.5), 0 0 40px rgba(16,185,129,0.3)",
+        }}
+      />
+    </motion.div>
+  </motion.div>
+);
+
+const Arrow = ({ color, direction, delay, animateX, rotation, filterId }) => (
+  <div className={`relative lg:mx-2 ${rotation} mb-2 lg:mb-0`}>
+    <motion.svg
+      width="60"
+      height="30"
+      viewBox="0 0 60 30"
+      className={rotation}
+      style={{ minWidth: "60px" }}
+      animate={{ x: [0, animateX, 0] }}
+      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay }}
+    >
+      <defs>
+        <filter id={filterId}>
+          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      <motion.path
+        d="M8 15 L45 15 M38 8 L45 15 L38 22"
+        stroke={color}
+        strokeWidth="2"
+        fill="none"
+        filter={`url(#${filterId})`}
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ duration: 1.5, delay }}
+      />
+    </motion.svg>
+  </div>
+);
+
+export default Landing;

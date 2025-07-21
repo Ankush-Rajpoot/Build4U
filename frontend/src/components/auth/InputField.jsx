@@ -23,7 +23,7 @@ const InputField = ({
     )}
     <div className="relative group">
       <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none z-10">
-        <Icon className="h-3.5 w-3.5 text-black font-bold" />
+        <Icon className="h-3.5 w-3.5 text-[#e5e5e5] font-bold" />
       </div>
       <input
         id={name}
@@ -37,15 +37,15 @@ const InputField = ({
         onChange={onChange}
         className={`
           block w-full pl-8 pr-2.5 py-2 
-          bg-white/5 
-          border border-white 
+          bg-[#171717] 
+          border border-[#404040] 
           rounded-lg 
-          text-black placeholder-black font-bold
+          text-[#e5e5e5] placeholder-[#737373] font-medium
           focus:outline-none focus:ring-2 ${theme.ring} 
           focus:border-transparent 
-          focus:bg-white/10
+          focus:bg-[#262626]
           transition-all duration-300 ease-in-out
-          hover:border-white hover:bg-white/8
+          hover:border-[#737373] hover:bg-[#232323]
           text-xs font-medium
           ${className}
         `}

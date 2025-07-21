@@ -469,7 +469,7 @@ const SignUp = ({ role, theme, onToggleMode, setError, setInfo, setLoading, load
           <button
             type="button"
             onClick={onToggleMode}
-            className="text-xs text-black hover:text-white transition-colors duration-200 font-medium"
+            className="text-xs text-[#737373] hover:text-white transition-colors duration-200 font-medium"
           >
             Already have an account? Sign in
           </button>
