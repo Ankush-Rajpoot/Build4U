@@ -283,7 +283,7 @@ const Landing = () => {
 /** Role Card */
 const RoleCard = ({ title, description, points, onClick }) => (
   <div
-    className="bg-[#0A0A0A] card-border p-4 rounded-lg w-96 sm:w-96 w-[72vw] max-w-xs cursor-pointer hover:scale-105 transition-transform"
+    className="bg-[#0A0A0A] card-border p-4 rounded-lg sm:w-96 w-[72vw] max-w-xs cursor-pointer hover:scale-105 transition-transform"
     onClick={onClick}
   >
     <h2 className="text-2xl font-semibold text-gray-100 text-center">{title}</h2>
