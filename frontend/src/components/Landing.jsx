@@ -57,10 +57,10 @@ const TypewriterText = ({
   }, [currentIndex, text, speed, isTyping, isDeleting, isPaused, pauseDuration]);
 
   return (
-    <span className={className}>
+    <span className={`gradient-text ${className}`}>
       {displayText}
       {isTyping && (
-        <span className="ml-1 font-bold text-blue-500 animate-blink">|</span>
+        <span className="ml-1 font-bold text-blue-400 animate-blink cursor-glow">|</span>
       )}
     </span>
   );
@@ -172,6 +172,365 @@ const Landing = () => {
               background-position: 200% center;
             }
           }
+
+          /* Performance Optimizations */
+          .will-change-transform {
+            will-change: transform;
+          }
+
+          .will-change-auto {
+            will-change: auto;
+          }
+
+          /* Reduce motion for accessibility */
+          @media (prefers-reduced-motion: reduce) {
+            .gradient-text,
+            .introducing-badge::before,
+            .introducing-badge::after,
+            .cursor-glow,
+            .card-title,
+            .enhanced-card,
+            .enhanced-button,
+            #shineStopBelow,
+            .gif-shimmer-border::before {
+              animation: none !important;
+            }
+            
+            .will-change-transform {
+              will-change: auto;
+            }
+          }
+
+          /* GPU acceleration for heavy animations */
+          .gradient-text,
+          .introducing-badge,
+          .enhanced-card,
+          .gif-shimmer-border {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+          }
+
+          /* Optimize font rendering */
+          .introducing-text,
+          .card-title,
+          .gradient-text {
+            text-rendering: optimizeSpeed;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          }
+
+          /* Introducing Build4U Badge */
+          .introducing-badge {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 20px;
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid rgba(55, 65, 81, 0.6);
+            border-radius: 25px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+          }
+
+          .introducing-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+              90deg,
+              transparent 0%,
+              rgba(59, 130, 246, 0.4) 20%,
+              rgba(147, 197, 253, 0.6) 40%,
+              rgba(255, 255, 255, 0.8) 50%,
+              rgba(147, 197, 253, 0.6) 60%,
+              rgba(59, 130, 246, 0.4) 80%,
+              transparent 100%
+            );
+            animation: badge-shimmer 3s linear infinite;
+            border-radius: inherit;
+          }
+
+          .introducing-badge::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            background: linear-gradient(
+              90deg,
+              rgba(55, 65, 81, 0.3) 0%,
+              rgba(59, 130, 246, 0.5) 25%,
+              rgba(147, 197, 253, 0.7) 50%,
+              rgba(59, 130, 246, 0.5) 75%,
+              rgba(55, 65, 81, 0.3) 100%
+            );
+            border-radius: inherit;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: xor;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            animation: badge-border-rotate 4s linear infinite;
+          }
+
+          @keyframes badge-shimmer {
+            0% {
+              left: -100%;
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            90% {
+              opacity: 1;
+            }
+            100% {
+              left: 100%;
+              opacity: 0;
+            }
+          }
+
+          @keyframes badge-border-rotate {
+            0% {
+              background: linear-gradient(
+                90deg,
+                rgba(55, 65, 81, 0.3) 0%,
+                rgba(59, 130, 246, 0.5) 25%,
+                rgba(147, 197, 253, 0.7) 50%,
+                rgba(59, 130, 246, 0.5) 75%,
+                rgba(55, 65, 81, 0.3) 100%
+              );
+            }
+            25% {
+              background: linear-gradient(
+                180deg,
+                rgba(55, 65, 81, 0.3) 0%,
+                rgba(59, 130, 246, 0.5) 25%,
+                rgba(147, 197, 253, 0.7) 50%,
+                rgba(59, 130, 246, 0.5) 75%,
+                rgba(55, 65, 81, 0.3) 100%
+              );
+            }
+            50% {
+              background: linear-gradient(
+                270deg,
+                rgba(55, 65, 81, 0.3) 0%,
+                rgba(59, 130, 246, 0.5) 25%,
+                rgba(147, 197, 253, 0.7) 50%,
+                rgba(59, 130, 246, 0.5) 75%,
+                rgba(55, 65, 81, 0.3) 100%
+              );
+            }
+            75% {
+              background: linear-gradient(
+                360deg,
+                rgba(55, 65, 81, 0.3) 0%,
+                rgba(59, 130, 246, 0.5) 25%,
+                rgba(147, 197, 253, 0.7) 50%,
+                rgba(59, 130, 246, 0.5) 75%,
+                rgba(55, 65, 81, 0.3) 100%
+              );
+            }
+            100% {
+              background: linear-gradient(
+                90deg,
+                rgba(55, 65, 81, 0.3) 0%,
+                rgba(59, 130, 246, 0.5) 25%,
+                rgba(147, 197, 253, 0.7) 50%,
+                rgba(59, 130, 246, 0.5) 75%,
+                rgba(55, 65, 81, 0.3) 100%
+              );
+            }
+          }
+
+          .introducing-text {
+            position: relative;
+            z-index: 10;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #e5e7eb;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.025em;
+          }
+          .gradient-text {
+            background: linear-gradient(
+              135deg,
+              #ffffff 0%,
+              #e0e7ff 15%,
+              #c7d2fe 30%,
+              #93c5fd 45%,
+              #60a5fa 60%,
+              #3b82f6 75%,
+              #2563eb 90%,
+              #ffffff 100%
+            );
+            background-size: 300% 300%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 4s ease-in-out infinite;
+          }
+
+          @keyframes gradient-shift {
+            0%, 100% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+          }
+
+          .cursor-glow {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4);
+            animation: cursor-pulse 1s ease-in-out infinite alternate;
+          }
+
+          @keyframes cursor-pulse {
+            from {
+              opacity: 1;
+              text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4);
+            }
+            to {
+              opacity: 0.3;
+              text-shadow: 0 0 5px rgba(59, 130, 246, 0.4), 0 0 10px rgba(59, 130, 246, 0.2);
+            }
+          }
+
+          /* Enhanced Card Styles */
+          .enhanced-card {
+            background: linear-gradient(
+              145deg,
+              rgba(10, 10, 10, 0.9) 0%,
+              rgba(17, 24, 39, 0.8) 50%,
+              rgba(10, 10, 10, 0.9) 100%
+            );
+            border: 1px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            transition: all 0.3s ease;
+          }
+
+          .enhanced-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            background: linear-gradient(
+              135deg,
+              rgba(55, 65, 81, 0.6) 0%,
+              rgba(75, 85, 99, 0.4) 25%,
+              rgba(107, 114, 128, 0.3) 50%,
+              rgba(75, 85, 99, 0.4) 75%,
+              rgba(55, 65, 81, 0.6) 100%
+            );
+            border-radius: inherit;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: xor;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            z-index: -1;
+          }
+
+          .enhanced-card:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 
+              0 10px 25px rgba(0, 0, 0, 0.5),
+              0 0 20px rgba(59, 130, 246, 0.1);
+          }
+
+          .enhanced-card:hover::before {
+            background: linear-gradient(
+              135deg,
+              rgba(59, 130, 246, 0.3) 0%,
+              rgba(16, 185, 129, 0.2) 25%,
+              rgba(139, 92, 246, 0.2) 50%,
+              rgba(16, 185, 129, 0.2) 75%,
+              rgba(59, 130, 246, 0.3) 100%
+            );
+          }
+
+          .card-title {
+            background: linear-gradient(
+              135deg,
+              #ffffff 0%,
+              #f1f5f9 20%,
+              #e2e8f0 40%,
+              #cbd5e1 60%,
+              #94a3b8 80%,
+              #ffffff 100%
+            );
+            background-size: 200% 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: title-shimmer 3s ease-in-out infinite;
+          }
+
+          @keyframes title-shimmer {
+            0%, 100% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+          }
+
+          .card-description {
+            color: #9ca3af;
+            transition: color 0.3s ease;
+          }
+
+          .enhanced-card:hover .card-description {
+            color: #d1d5db;
+          }
+
+          .enhanced-button {
+            background: linear-gradient(
+              135deg,
+              rgba(38, 38, 38, 0.9) 0%,
+              rgba(64, 64, 64, 0.8) 50%,
+              rgba(38, 38, 38, 0.9) 100%
+            );
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+          }
+
+          .enhanced-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(59, 130, 246, 0.2),
+              transparent
+            );
+            transition: left 0.5s ease;
+          }
+
+          .enhanced-button:hover::before {
+            left: 100%;
+          }
+
+          .enhanced-button:hover {
+            background: linear-gradient(
+              135deg,
+              rgba(59, 130, 246, 0.2) 0%,
+              rgba(64, 64, 64, 0.9) 50%,
+              rgba(59, 130, 246, 0.2) 100%
+            );
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+          }
+
           /* Mobile-specific styles */
           @media (max-width: 640px) {
             .landing-mobile-hide {
@@ -195,51 +554,75 @@ const Landing = () => {
         `}
       </style>
 
-      {/* Top section: GIF and typewriter, hide GIF on mobile */}
-      <div className="text-center mb-12 md:mb-16">
+      {/* Top section: GIF, typewriter card to right (desktop only), badge below GIF, vertical arrow preserved */}
+      <div className="text-center mb-6 md:mb-8">
         <div className="flex flex-col items-center justify-center">
-          <div className="relative mb-4 w-20 h-20 md:w-24 md:h-24 flex items-center justify-center landing-mobile-hide">
-            <div className="hidden sm:block w-full h-full shadow-lg gif-shimmer-border" style={{ background: '#0A0A0A', borderRadius: '0.75rem' }}>
-              <img
-                src={finalcube1}
-                alt="Animated Cube"
-                className="w-20 h-20 md:w-24 md:h-24 object-contain rounded"
-                style={{ display: "inline-block" }}
-              />
-              {/* Vertical gradient arrow from GIF to dot */}
+          <div className="w-full flex flex-col items-center justify-center">
+            {/* Typewriter Card above GIF - single line, static width */}
+            <div className="mb-6" style={{ width: '700px', minWidth: '700px', maxWidth: '700px', overflow: 'visible', borderRadius: '40px' }}>
+              <div className="enhanced-card p-4 rounded-lg flex items-center justify-center" style={{ position: 'relative', zIndex: 2, width: '100%', overflow: 'visible', borderRadius: '40px' }}>
+                <TypewriterText
+                  text="Connecting skilled professionals with clients seeking quality services"
+                  speed={40}
+                  delay={500}
+                  pauseDuration={3000}
+                  className="text-base sm:text-lg md:text-xl mx-auto leading-relaxed font-medium px-2 whitespace-nowrap"
+                />
+              </div>
+              {/* Arrow head (comment box style) only on desktop */}
               <svg
-                className="absolute left-1/2 transform -translate-x-1/2"
-                width="18"
-                height="300"
-                viewBox="0 0 18 150"
+                className="hidden md:block"
+                width="32"
+                height="24"
+                viewBox="0 0 32 24"
                 fill="none"
-                style={{ top: '100%' }}
+                style={{ position: 'absolute', left: '50%', top: '100%', transform: 'translateX(-50%)', zIndex: 1 }}
               >
-                <defs>
-                  <linearGradient id="arrowGradient" x1="9" y1="0" x2="9" y2="150" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#000" />
-                    <stop id="shineStop" offset="0%" stopColor="#fff">
-                      <animate attributeName="offset" values="0;1" dur="1.5s" repeatCount="indefinite" />
-                      <animate attributeName="stop-color" values="#fff;#60A5FA;#fff" dur="1.5s" repeatCount="indefinite" />
-                    </stop>
-                    <stop offset="100%" stopColor="#fff" />
-                  </linearGradient>
-                </defs>
-                <line x1="9" y1="0" x2="9" y2="130" stroke="url(#arrowGradient)" strokeWidth="3" />
-                {/* Arrowhead at the tip, positioned at y=130 */}
-                <polygon points="4,123 14,123 9,135" fill="#fff" />
+                <polygon points="0,0 32,12 0,24" fill="#171717" stroke="#374151" strokeWidth="1" />
               </svg>
+            </div>
+
+            {/* GIF + vertical arrow always centered */}
+            <div className="relative mb-6 w-20 h-20 md:w-24 md:h-24 flex items-center justify-center landing-mobile-hide">
+              <div className="hidden sm:block w-full h-full shadow-lg gif-shimmer-border" style={{ background: '#0A0A0A', borderRadius: '0.75rem' }}>
+                <img
+                  src={finalcube1}
+                  alt="Animated Cube"
+                  className="w-20 h-20 md:w-24 md:h-24 object-contain rounded"
+                  style={{ display: "inline-block" }}
+                />
+                {/* Vertical gradient arrow from GIF to dot */}
+                <svg
+                  className="absolute left-1/2 transform -translate-x-1/2"
+                  width="18"
+                  height="300"
+                  viewBox="0 0 18 150"
+                  fill="none"
+                  style={{ top: '100%' }}
+                >
+                  <defs>
+                    <linearGradient id="arrowGradient" x1="9" y1="0" x2="9" y2="150" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#000" />
+                      <stop id="shineStop" offset="0%" stopColor="#fff">
+                        <animate attributeName="offset" values="0;1" dur="1.5s" repeatCount="indefinite" />
+                        <animate attributeName="stop-color" values="#fff;#60A5FA;#fff" dur="1.5s" repeatCount="indefinite" />
+                      </stop>
+                      <stop offset="100%" stopColor="#fff" />
+                    </linearGradient>
+                  </defs>
+                  <line x1="9" y1="0" x2="9" y2="130" stroke="url(#arrowGradient)" strokeWidth="3" />
+                  {/* Arrowhead at the tip, positioned at y=130 */}
+                  <polygon points="4,123 14,123 9,135" fill="#fff" />
+                </svg>
+              </div>
             </div>
           </div>
 
-          <div className="h-16 sm:h-12 flex items-center justify-center">
-            <TypewriterText
-              text="Connecting skilled professionals with clients seeking quality services"
-              speed={40}
-              delay={500}
-              pauseDuration={3000}
-              className="text-lg sm:text-xl md:text-2xl text-gray-100 max-w-3xl mx-auto leading-relaxed font-medium px-4"
-            />
+          {/* Introducing Build4U Badge below GIF and typewriter */}
+          <div className="mb-2 flex items-center justify-center">
+            <div className="introducing-badge">
+              <span className="introducing-text">Introducing Build4U</span>
+            </div>
           </div>
         </div>
       </div>
@@ -280,20 +663,20 @@ const Landing = () => {
   );
 };
 
-/** Role Card */
+/** Enhanced Role Card */
 const RoleCard = ({ title, description, points, onClick }) => (
   <div
-    className="bg-[#0A0A0A] card-border p-4 rounded-lg sm:w-96 w-[72vw] max-w-xs cursor-pointer hover:scale-105 transition-transform"
+    className="enhanced-card p-4 rounded-lg sm:w-96 w-[72vw] max-w-xs cursor-pointer"
     onClick={onClick}
   >
-    <h2 className="text-2xl font-semibold text-gray-100 text-center">{title}</h2>
-    <p className="text-gray-400 mt-2 text-center text-sm">{description}</p>
-    <ul className="mt-3 text-xs text-gray-500 space-y-1">
+    <h2 className="text-2xl font-semibold card-title text-center">{title}</h2>
+    <p className="card-description mt-2 text-center text-sm">{description}</p>
+    <ul className="mt-3 text-xs text-gray-400 space-y-1">
       {points.map((point, idx) => (
-        <li key={idx}>• {point}</li>
+        <li key={idx} className="transition-colors duration-300 hover:text-gray-300">• {point}</li>
       ))}
     </ul>
-    <button className="mt-4 w-full bg-[#262626] hover:bg-[#404040] text-gray-200 py-1.5 rounded text-sm">
+    <button className="enhanced-button mt-4 w-full text-gray-200 py-1.5 rounded text-sm relative z-10">
       Get Started
     </button>
   </div>
