@@ -4,15 +4,14 @@ import "./TypewriterCard.css";
 
 const TypewriterCard = () => (
   <div className="typewriter-border-container mb-6 hidden sm:block" style={{ marginBottom: '2.5rem' }}>
-    <div className="typewriter-border"></div>
     <div 
-      className="enhanced-card p-4 rounded-lg flex items-center justify-center" 
+      className="bg-[#0A0A0A] p-3 rounded-lg flex items-center justify-center gif-shimmer-border" 
       style={{ 
         position: 'relative', 
         zIndex: 2, 
-        width: '100%', 
+        width: 'calc(100% - 20px)', 
         overflow: 'visible', 
-        borderRadius: '40px' 
+        borderRadius: '10px' 
       }}
     >
       <TypewriterText
