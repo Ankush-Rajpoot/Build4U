@@ -1,0 +1,26 @@
+@import url('https://unpkg.com/normalize.css');
+:root {
+  --accent: #888;
+  --border-radius: 40;
+  --border-width: 3;
+  --trail-size: 25;
+}
+.typewriter-border-container {
+  position: relative;
+  border-radius: calc(var(--border-radius) * 1px);
+  max-width: 700px;
+  width: 700px;
+  min-width: 700px;
+  margin: 0 auto;
+}
+.typewriter-border {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 0 0 round calc(var(--border-radius) * 1px));
+  border-radius: calc(var(--border-radius) * 1px);
+  background: #374151;
+  z-index: 0;
+  border: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
